@@ -7,27 +7,41 @@ A personal pickleball analytics tool built on [PBVision](https://pb.vision) game
 
 ---
 
+## Repository structure
+
+```
+pbviewer/
+├── index.html          # App code (~131KB)
+└── data/
+    ├── games.json      # Game library with all shot data (~2.2MB)
+    └── ratings.json    # Ratings timeline (~6KB)
+```
+
+The app loads `data/games.json` on startup. Update that file to add new games — the app picks up the new data on next page load without touching `index.html`.
+
 ## What it does
 
-- **Court Viewer** — visualizes shot patterns on a full court. Filter by shot type, outcome, movement category, and date range. Highlights retreating vs advancing vs lateral movement.
-- **Coaching Insights** — automatically computed and ranked based on your data: 3rd shot selection, kitchen transition gap, retreating shot patterns, poach discipline, and more.
-- **Dashboard** — win rate, accuracy, rating over time, and shot mix across all games.
-- **My Games** — full game library with per-game stats.
+- **Court Viewer** — visualizes shot patterns on a full court with movement highlights, color modes, and coaching insights
+- **Coaching Insights** — automatically computed: 3rd shot selection, kitchen transition gap, retreating patterns, poach discipline
+- **Dashboard** — win rate, accuracy, rating over time, shot mix
+- **My Games** — full game library
 
-## Data
+## Updating game data
 
-49 games (Oct 2025 – Mar 2026) are pre-loaded. Use **+ Add Games** to import additional PBVision JSON exports directly in the browser.
+When you have new PBVision exports, rebuild `data/games.json` using the Python script below (or ask Claude to do it):
 
-> **Privacy note:** All data stays in your browser. Nothing is sent to any server.
+1. Export your full game library from PBVision as JSON
+2. Run the prebake script (coming soon) or rebuild via Claude
+3. Replace `data/games.json` in this repo and commit
+
+> Games imported via **+ Add Games** in the browser are saved to your local browser storage and merged with the repo data on load — they're not shared with other users.
 
 ## Deployment
 
-This is a single self-contained HTML file — no build step, no dependencies, no backend.
+Hosted via [GitHub Pages](https://pages.github.com) — no build step, no server.
 
-Hosted via [GitHub Pages](https://pages.github.com).
+On push to `main`, GitHub Pages redeploys automatically within ~60 seconds.
 
-## Updating
+## Privacy
 
-When you have a new version of the file:
-1. Replace `index.html` in this repo with the new version
-2. Commit and push — GitHub Pages redeploys automatically within ~60 seconds
+The app fetches `data/games.json` from this repo (same domain). No data is sent anywhere. `localStorage` is used only to cache user-imported games on their own device.
