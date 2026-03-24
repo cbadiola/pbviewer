@@ -522,12 +522,19 @@ input[type=range]{accent-color:var(--accent);}
       </div>
 
       <!-- Push button -->
-      <button id="gh-push-btn" onclick="pushToGitHub()"
-        style="width:100%;padding:8px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;
-               background:var(--accent-dim);border:1px solid var(--accent);color:var(--accent);">
-        ⬆ Push library to GitHub
-      </button>
-      <div id="gh-push-status" style="font-size:11px;color:var(--text3);margin-top:6px;min-height:16px;text-align:center;"></div>
+      <div style="display:flex;gap:6px;margin-bottom:6px;">
+        <button id="gh-push-btn" onclick="pushToGitHub()"
+          style="flex:1;padding:8px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;
+                 background:var(--accent-dim);border:1px solid var(--accent);color:var(--accent);">
+          ⬆ Push library to GitHub
+        </button>
+        <button onclick="checkGitHubData()" title="Check what's currently in data/games.json on GitHub"
+          style="padding:8px 10px;border-radius:6px;font-size:12px;cursor:pointer;
+                 background:var(--bg3);border:1px solid var(--border);color:var(--text2);">
+          🔍
+        </button>
+      </div>
+      <div id="gh-push-status" style="font-size:11px;color:var(--text3);margin-top:4px;min-height:16px;text-align:center;line-height:1.5;"></div>
     </div>
 
     <div class="modal-actions">
@@ -2265,13 +2272,19 @@ async function loadAppData() {
   try {
     // Try fetching from repo data/ directory first
     setStatus('Fetching game library…', 20);
-    const gamesResp = await fetch('./data/games.json');
-    if (!gamesResp.ok) throw new Error('games.json not found');
+    // Cache-bust so fresh data is always loaded after a push
+    const cacheBust = '?v=' + Date.now();
+    const gamesResp = await fetch('./data/games.json' + cacheBust);
+    if (!gamesResp.ok) {
+      if (gamesResp.status === 404) throw new Error('data/games.json not found — check your repo has a data/ folder with games.json inside it');
+      throw new Error('HTTP ' + gamesResp.status + ' fetching games.json');
+    }
     setStatus('Parsing game data…', 55);
     const games = await gamesResp.json();
+    console.log('Loaded', games.length, 'games from data/games.json');
 
     setStatus('Fetching ratings…', 70);
-    const ratingsResp = await fetch('./data/ratings.json');
+    const ratingsResp = await fetch('./data/ratings.json' + cacheBust);
     const ratings = ratingsResp.ok ? await ratingsResp.json() : [];
 
     setStatus('Building library…', 90);
@@ -2456,8 +2469,12 @@ async function pushToGitHub() {
     if (putResp.ok) {
       const result = await putResp.json();
       const commitUrl = result.commit?.html_url || `https://github.com/${repo}/commits/main`;
-      setGHPushStatus(`✓ Pushed! GitHub Pages will update in ~60s.`, 'var(--good)');
+      setGHPushStatus(
+        `✓ Pushed ${state.games.length} games. Pages updates in ~60s. Reload other devices after that.`,
+        'var(--good)'
+      );
       showToast(`✓ ${state.games.length} games pushed to GitHub`, 'success');
+      console.log('Push commit:', commitUrl);
     } else {
       const err = await putResp.json().catch(() => ({}));
       const msg = err.message || putResp.status;
@@ -2483,6 +2500,42 @@ openUploadModal = function() {
   _origOpenUpload();
   loadGHConfig();
 };
+
+
+async function checkGitHubData() {
+  const repo  = localStorage.getItem(GH_REPO_KEY);
+  const token = localStorage.getItem(GH_TOKEN_KEY);
+  if (!repo || !token) {
+    setGHPushStatus('Configure repo and token first', 'var(--warn)');
+    return;
+  }
+  setGHPushStatus('Checking GitHub…', 'var(--text3)');
+  try {
+    const resp = await fetch(
+      `https://api.github.com/repos/${repo}/contents/data/games.json`,
+      { headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' } }
+    );
+    if (resp.status === 404) {
+      setGHPushStatus('⚠ data/games.json not found in repo. Upload the data/ folder first.', 'var(--warn)');
+      return;
+    }
+    if (!resp.ok) {
+      setGHPushStatus(`✗ API error ${resp.status} — check token permissions`, 'var(--danger)');
+      return;
+    }
+    const meta = await resp.json();
+    // Decode and count games
+    const decoded = decodeURIComponent(escape(atob(meta.content.replace(/\n/g,''))));
+    const games = JSON.parse(decoded);
+    const lastCommit = meta.sha.slice(0,7);
+    setGHPushStatus(
+      `✓ GitHub has ${games.length} games · SHA ${lastCommit} · ${(meta.size/1024).toFixed(0)}KB`,
+      'var(--good)'
+    );
+  } catch(e) {
+    setGHPushStatus(`✗ Check failed: ${e.message}`, 'var(--danger)');
+  }
+}
 
 
 console.log('PB Viewer initializing…');
