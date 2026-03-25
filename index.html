@@ -3088,6 +3088,2900 @@ input[type=range]{accent-color:var(--accent);}
 <!-- DASHBOARD -->
 <div id="page-dashboard" class="page active">
   <div class="page-scroll">
+    <div class="dash-header" style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+      <div>
+        <h1 id="dash-welcome">Welcome back, Carlo</h1>
+        <p id="dash-subtitle">Loading…</p>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;padding-top:4px;">
+        <span style="font-size:11px;color:var(--text3);white-space:nowrap;">Viewing as</span>
+        <select id="dash-player-select" onchange="setActivePlayer(this.value)"
+          style="font-size:12px;font-weight:600;color:var(--text);background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:5px 10px;cursor:pointer;min-width:140px;">
+          <option value="">Loading…</option>
+        </select>
+      </div>
+    </div>
+    <div class="period-tabs">
+      <button class="period-tab" onclick="setDashPeriod('2w',this)">2 Weeks</button>
+      <button class="period-tab active" onclick="setDashPeriod('1m',this)">1 Month</button>
+      <button class="period-tab" onclick="setDashPeriod('all',this)">All Time</button>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi-card"><div class="kpi-label">Win Rate</div><div class="kpi-val" id="kpi-wr">—</div><div class="kpi-sub" id="kpi-wr-sub">—</div></div>
+      <div class="kpi-card"><div class="kpi-label">Avg Rating</div><div class="kpi-val accent" id="kpi-rating" style="font-family:var(--font-head)">—</div><div class="kpi-sub">Overall DUPR</div></div>
+      <div class="kpi-card"><div class="kpi-label">Accuracy (In)</div><div class="kpi-val" id="kpi-acc">—</div><div class="kpi-sub">Shots in</div></div>
+      <div class="kpi-card"><div class="kpi-label">Net Errors</div><div class="kpi-val" id="kpi-net">—</div><div class="kpi-sub">Of all shots</div></div>
+      <div class="kpi-card"><div class="kpi-label">Kitchen %</div><div class="kpi-val" id="kpi-kitchen">—</div><div class="kpi-sub">On serve</div></div>
+    </div>
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:20px;">
+      <div class="card-title">Rating Over Time</div>
+      <div id="rating-timeline" style="width:100%;height:160px;"></div>
+    </div>
+    <div class="dash-grid">
+      <div class="card"><div class="card-title">Coaching Priorities</div><div id="coaching-list"><div class="no-data" style="height:120px"><div style="font-size:24px;opacity:.3">🎯</div><div style="font-size:12px">Upload games to see coaching tips</div></div></div></div>
+      <div class="card"><div class="card-title">Recent Games</div><div id="recent-games-list"><div class="no-data" style="height:120px"><div style="font-size:24px;opacity:.3">📋</div><div style="font-size:12px">No games loaded yet</div></div></div></div>
+    </div>
+    <div class="dash-grid">
+      <div class="card"><div class="card-title">Rating Breakdown</div><div id="rating-breakdown"></div></div>
+      <div class="card"><div class="card-title">Shot Accuracy</div><div id="accuracy-donut"></div></div>
+    </div>
+    <div class="dash-grid">
+      <div class="card"><div class="card-title">Forehand vs Backhand</div><div id="stroke-donut"></div></div>
+      <div class="card"><div class="card-title">Shot Selection</div><div id="shot-selection"></div></div>
+    </div>
+    <div class="dash-grid">
+      <div class="card"><div class="card-title">Serve Depth</div><div id="serve-depth-chart"></div></div>
+      <div class="card"><div class="card-title">Return Depth</div><div id="return-depth-chart"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- COURT VIEWER -->
+<div id="page-viewer" class="page">
+  <div id="viewer-top">
+    <!-- Sidebar: controls only -->
+    <div id="court-sidebar">
+      <div id="court-sidebar-scroll">
+        <div class="sb-section">
+          <div class="sb-section-title">Player</div>
+          <select class="select-styled" id="player-select" onchange="onPlayerChange()">
+            <option value="">— Select player —</option>
+          </select>
+        </div>
+        <div class="sb-section">
+          <div class="sb-section-title">Outcome</div>
+          <div class="chip-grid" id="outcome-chips">
+            <div class="chip chip-in active active-in" data-out="in" onclick="toggleChip(this,'out')">In</div>
+            <div class="chip chip-net active active-net" data-out="net" onclick="toggleChip(this,'out')">Net</div>
+            <div class="chip chip-out active active-out" data-out="out" onclick="toggleChip(this,'out')">Out</div>
+          </div>
+        </div>
+        <div class="sb-section">
+          <div class="sb-section-title">Shot Types</div>
+          <div class="chip-grid" id="shot-type-chips">
+            <div class="chip active" data-sht="serve" onclick="toggleChip(this,'sht')">Serve</div>
+            <div class="chip active" data-sht="drive" onclick="toggleChip(this,'sht')">Drive</div>
+            <div class="chip active" data-sht="lob" onclick="toggleChip(this,'sht')">Lob</div>
+            <div class="chip active" data-sht="smash" onclick="toggleChip(this,'sht')">Smash</div>
+            <div class="chip active" data-sht="dink" onclick="toggleChip(this,'sht')">Dink</div>
+            <div class="chip active" data-sht="drop" onclick="toggleChip(this,'sht')">Drop</div>
+            <div class="chip active" data-sht="reset" onclick="toggleChip(this,'sht')">Reset</div>
+            <div class="chip active" data-sht="volley" onclick="toggleChip(this,'sht')">Volley</div>
+            <div class="chip active" data-sht="speedup" onclick="toggleChip(this,'sht')">Speed-up</div>
+            <div class="chip active" data-sht="return" onclick="toggleChip(this,'sht')">Return</div>
+            <div class="chip active" data-sht="other" onclick="toggleChip(this,'sht')">Other</div>
+          </div>
+        </div>
+        <div class="sb-section">
+          <div class="sb-section-title">Display</div>
+          <div class="chip-grid">
+            <div class="chip active" id="layer-impact" onclick="toggleLayer(this,'impact')">Impacts</div>
+            <div class="chip active" id="layer-origin" onclick="toggleLayer(this,'origin')">Origins</div>
+            <div class="chip" id="layer-traces" onclick="toggleLayer(this,'traces')">Traces</div>
+          </div>
+        </div>
+        <div class="sb-section">
+          <div class="sb-section-title">Color By</div>
+          <div class="chip-grid" id="color-mode-chips">
+            <div class="chip active" id="cmode-outcome" onclick="setColorMode('outcome',this)">Outcome</div>
+            <div class="chip" id="cmode-stroke" onclick="setColorMode('stroke',this)">FH / BH</div>
+            <div class="chip" id="cmode-quality" onclick="setColorMode('quality',this)">Quality</div>
+          </div>
+        </div>
+        <div class="sb-section">
+          <div class="sb-section-title">Highlight</div>
+          <div class="chip-grid">
+            <div class="chip" id="layer-retreating" onclick="toggleLayer(this,'retreating')" title="Retreating: moving back >3ft — lost position">Retreating</div>
+            <div class="chip" id="layer-advancing" onclick="toggleLayer(this,'advancing')" title="Advancing: moving toward net >3ft — transition shot">Advancing</div>
+            <div class="chip" id="layer-lateral" onclick="toggleLayer(this,'lateral')" title="Lateral: wide reach >3ft sideways">Lateral</div>
+            <div class="chip" id="layer-rushed" onclick="toggleLayer(this,'rushed')" title="Any high-stress shot (>6ft movement)">High Stress</div>
+            <div class="chip" id="layer-errors" onclick="toggleLayer(this,'errors')">Errors</div>
+            <div class="chip" id="layer-putaway" onclick="toggleLayer(this,'putaway')">Put-aways</div>
+          </div>
+        </div>
+        <div class="sb-section">
+          <div class="sb-section-title" style="display:flex;justify-content:space-between;align-items:center;">
+            Symbol Size <span id="dot-size-val" style="font-family:var(--font-mono);color:var(--text);">6</span>
+          </div>
+          <input type="range" id="dot-size-slider" min="3" max="16" value="6" step="1" style="width:100%;cursor:pointer;"
+            oninput="document.getElementById('dot-size-val').textContent=this.value;updateCourtView();">
+        </div>
+        <div class="sb-section">
+          <div class="sb-section-title" style="display:flex;justify-content:space-between;align-items:center;">
+            Partner
+            <button onclick="clearPartnerFilter()" id="partner-clear-btn" style="display:none;font-size:9px;color:var(--accent);background:none;border:none;cursor:pointer;padding:0;">✕ clear</button>
+          </div>
+          <div id="partner-chips" class="chip-grid"></div>
+        </div>
+        <div class="sb-section" style="flex:1;overflow:hidden;display:flex;flex-direction:column;">
+          <div class="sb-section-title" style="display:flex;justify-content:space-between;align-items:center;">
+            <span>Games <span id="game-count-label" style="color:var(--accent);"></span></span>
+            <button onclick="selectAllViewerGames(true)" style="font-size:9px;color:var(--text3);background:none;border:none;cursor:pointer;padding:0;">all</button>
+          </div>
+          <!-- Date bar chart -->
+          <div id="date-bar-chart" style="padding:4px 0 8px;flex-shrink:0;"></div>
+          <!-- Game list (filtered) -->
+          <div id="viewer-game-list" style="overflow-y:auto;flex:1;"></div>
+        </div>
+      </div>
+    </div>
+    <!-- Court SVG -->
+    <div id="court-main" style="display:flex;flex-direction:column;">
+      <!-- Filtered stats bar (above court) -->
+      <div id="filter-stats-bar" style="background:var(--bg2);border-bottom:1px solid var(--border);padding:6px 14px;display:flex;align-items:center;gap:16px;flex-shrink:0;overflow-x:auto;white-space:nowrap;min-height:36px;">
+        <span id="fstat-badge" style="font-size:11px;color:var(--text3);font-family:var(--font-mono);">—</span>
+        <span id="fstat-win" style="font-size:12px;font-weight:700;color:var(--text);"></span>
+        <span id="fstat-rating" style="font-size:12px;font-weight:700;color:var(--accent);"></span>
+        <span style="width:1px;background:var(--border);height:18px;flex-shrink:0;"></span>
+        <span id="fstat-in" style="font-size:11px;color:var(--good);"></span>
+        <span id="fstat-net" style="font-size:11px;color:var(--net);"></span>
+        <span id="fstat-out" style="font-size:11px;color:var(--danger);"></span>
+        <span style="width:1px;background:var(--border);height:18px;flex-shrink:0;"></span>
+        <span id="fstat-fhbh" style="font-size:11px;color:var(--text2);"></span>
+        <span id="fstat-rushed" style="font-size:11px;color:var(--warn);"></span>
+        <span id="fstat-quality" style="font-size:11px;color:var(--text2);"></span>
+      </div>
+      <div style="flex:1;position:relative;min-height:0;">
+      <div id="shot-count-badge">Select a player</div>
+      <svg id="court-svg" xmlns="http://www.w3.org/2000/svg"></svg>
+      <div style="position:absolute;bottom:12px;right:12px;display:flex;flex-direction:column;gap:4px;z-index:20;">
+        <button onclick="resetZoom()" title="Reset zoom (⌂)" style="width:30px;height:30px;background:rgba(10,12,15,.9);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;" onmouseover="this.style.background='var(--bg3)'" onmouseout="this.style.background='rgba(10,12,15,.9)'">⌂</button>
+        <div id="zoom-level" style="font-family:var(--font-mono);font-size:9px;color:var(--text3);text-align:center;background:rgba(10,12,15,.75);border-radius:4px;padding:2px 4px;">100%</div>
+      </div>
+      <!-- Hover tooltip -->
+      <div id="hover-tooltip">
+        <div class="tt-title" id="tt-title">Shot</div>
+        <div id="tt-body"></div>
+      </div>
+      <!-- Legend -->
+      <div id="court-legend">
+        <div id="legend-content">
+          <div style="font-size:8px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;">Outcome</div>
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;"><svg width="10" height="10" style="flex-shrink:0"><circle cx="5" cy="5" r="4.5" fill="#3dd68c"/></svg><span style="font-size:10px;color:rgba(255,255,255,0.75);">In</span></div>
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;"><svg width="10" height="10" style="flex-shrink:0"><circle cx="5" cy="5" r="4.5" fill="#f5a623"/></svg><span style="font-size:10px;color:rgba(255,255,255,0.75);">Net (stops at net)</span></div>
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:7px;"><svg width="10" height="10" style="flex-shrink:0"><circle cx="5" cy="5" r="4.5" fill="#e8445a"/></svg><span style="font-size:10px;color:rgba(255,255,255,0.75);">Out</span></div>
+          <div style="font-size:8px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px;">Shapes</div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.72);line-height:1.8;">&#9679;&#9673;&#10011;&#11045; Serve&#183;Drive&#183;Lob&#183;Smash<br>&#9632;&#9633;&#9642; Dink&#183;Drop&#183;Reset<br>&#9650;&#9651; Volley&#183;Speed-up<br>&#8857; Return</div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.38);margin-top:4px;font-style:italic;">Muted&#160;=&#160;origin (est.)</div>
+        </div>
+      </div>
+            <!-- Floating coaching insight box -->
+      <div id="insight-float" style="position:absolute;bottom:12px;left:12px;width:272px;max-width:calc(50% - 16px);background:rgba(8,10,14,0.95);border:1px solid rgba(255,255,255,0.14);border-radius:7px;padding:10px 13px;z-index:16;display:none;">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
+          <span id="insight-float-icon" style="font-size:12px;"></span>
+          <span id="insight-float-title" style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.9);word-wrap:break-word;"></span>
+          <div style="margin-left:auto;display:flex;align-items:center;gap:3px;">
+            <button onclick="cycleInsight(-1)" id="ins-prev" style="display:none;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.18);border-radius:3px;color:rgba(255,255,255,0.7);padding:1px 6px;font-size:10px;cursor:pointer;line-height:1.2;">&lt;</button>
+            <span id="ins-counter" style="font-size:9px;color:rgba(255,255,255,0.5);"></span>
+            <button onclick="cycleInsight(1)" id="ins-next" style="display:none;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.18);border-radius:3px;color:rgba(255,255,255,0.7);padding:1px 6px;font-size:10px;cursor:pointer;line-height:1.2;">&gt;</button>
+            <button onclick="toggleInsightExpand()" id="ins-toggle" style="background:none;border:none;color:rgba(255,255,255,0.6);padding:1px 4px;font-size:10px;cursor:pointer;line-height:1.2;" title="Expand/collapse">⬆</button>
+          </div>
+        </div>
+        <div id="insight-float-stat" style="font-size:10px;color:#00d4aa;margin-bottom:5px;line-height:1.5;word-break:break-word;"></div>
+        <div id="insight-float-body" style="overflow:hidden;transition:max-height 0.2s ease;max-height:0px;">
+          <div id="insight-float-pattern" style="font-size:10px;color:rgba(255,255,255,0.75);line-height:1.5;margin-bottom:5px;word-wrap:break-word;"></div>
+          <div id="insight-float-drill" style="font-size:10px;color:#f5c05a;background:rgba(245,166,35,0.1);border-left:2px solid #f5a623;padding:5px 8px;border-radius:0 4px 4px 0;line-height:1.6;word-wrap:break-word;"></div>
+        </div>
+      </div>
+    </div>
+      </div>
+  </div>
+  <!-- Bottom stats bar -->
+  <div id="viewer-stats-bar">
+  <div id="stats-drag-handle" onmousedown="startStatsResize(event)" title="Drag to resize"></div>
+  <div style="display:flex;flex-direction:column;justify-content:center;padding:6px 12px;border-right:1px solid var(--border);min-width:100px;flex-shrink:0;">
+    <div style="font-size:9px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;">Filtered</div>
+    <div id="fbar-filtered"></div>
+  </div>
+  <div id="viewer-stats-inner" style="display:flex;align-items:stretch;overflow-x:auto;flex:1;"></div>
+  <div style="display:flex;flex-direction:column;justify-content:center;padding:6px 12px;border-left:1px solid var(--border);min-width:110px;flex-shrink:0;text-align:right;">
+    <div style="font-size:9px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;">Overall</div>
+    <div id="fbar-overall"><div style="font-size:11px;color:var(--text3);">—</div></div>
+  </div>
+  </div>
+</div>
+
+<!-- GAMES PAGE -->
+<div id="page-games" class="page">
+  <div class="page-scroll">
+    <div class="games-header">
+      <h1 style="font-family:var(--font-head);font-size:22px;font-weight:800;">My Games Library</h1>
+      <div class="games-actions">
+        <button class="btn btn-ghost" onclick="selectAllGames(true)">Select All</button>
+        <button class="btn btn-ghost" onclick="selectAllGames(false)">Deselect All</button>
+        <button class="btn btn-danger" onclick="deleteSelectedGames()">🗑 Delete Selected</button>
+        <button class="btn btn-ghost" onclick="exportData()">⬇ Export</button>
+        <button class="btn btn-accent" onclick="openUploadModal()">+ Add Games</button>
+      </div>
+    </div>
+    <div id="games-upload-zone" class="upload-zone" onclick="document.getElementById('file-input-games').click()">
+      <div class="upload-icon">📂</div>
+      <div class="upload-text">Drop PB Vision JSON files here or click to browse</div>
+    </div>
+    <input type="file" id="file-input-games" accept=".json" multiple class="upload-input" onchange="handleFileSelect(event)">
+    <div id="games-player-context" style="display:none;margin-bottom:8px;padding:6px 12px;background:var(--bg3);border-radius:6px;border-left:3px solid var(--accent);display:flex;align-items:center;gap:8px;">
+      <span style="font-size:11px;color:var(--text2);">Showing games for</span>
+      <span id="games-player-label" style="font-size:12px;font-weight:700;color:var(--accent);">Carlo Badiola</span>
+      <span style="font-size:11px;color:var(--text3);" id="games-player-count"></span>
+      <button onclick="setActivePlayer(PRIMARY_USER)" id="games-reset-player" style="display:none;margin-left:auto;font-size:10px;color:var(--text3);background:none;border:none;cursor:pointer;padding:2px 6px;border-radius:4px;">✕ Reset to Carlo</button>
+    </div>
+    <div id="games-table-wrap">
+      <div id="games-empty" class="card" style="padding:48px;text-align:center;"><div class="no-data"><div style="font-size:32px;opacity:.3">📭</div><div>No games loaded yet.</div></div></div>
+      <div id="games-table-container" style="display:none;">
+        <table class="games-table">
+          <thead><tr><th></th><th>Date</th><th>Video ID</th><th>Score</th><th>W/L</th><th>Players</th><th>Rating</th><th>Acc.</th><th>Kitchen</th><th>Partner</th></tr></thead>
+          <tbody id="games-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HELP -->
+<div id="page-help" class="page">
+  <div class="page-scroll">
+    <h1 class="help-h1">PB Viewer — Help</h1>
+    <p style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:20px;">PB Viewer visualizes your PBVision game data with coaching-relevant signals. Import your JSON exports, then use the Court Viewer and Dashboard to understand your patterns.</p>
+
+    <h2 class="help-h2">Court Layout</h2>
+    <div class="help-grid">
+      <div class="help-card"><div class="help-card-title">Full court shown</div><div class="help-card-body">Both halves visible. <strong>Your side (left/bottom)</strong>: muted origin markers showing where you were when you hit. <strong>Opponent's side (right/top)</strong>: impact markers where the ball went. <em>⚠ Impact positions are estimated by shot type — PBVision does not record ball landing coordinates.</em></div></div>
+      <div class="help-card"><div class="help-card-title">Out-zone bands</div><div class="help-card-body">Faint red bands outside the court boundary show where out balls land: past the far baseline (long), past right/left sidelines (wide). Direction is from real PBVision data when available.</div></div>
+      <div class="help-card"><div class="help-card-title">Serve zone</div><div class="help-card-body">A faint teal zone behind your baseline shows serve origins. Serves must land past the kitchen line — the service court is from the kitchen line to the far baseline.</div></div>
+      <div class="help-card"><div class="help-card-title">Zoom and pan</div><div class="help-card-body">Scroll wheel zooms toward cursor. Click and drag to pan. Pinch to zoom on iPad. The ⌂ button (bottom-right) resets view. Resize window edge to switch between portrait and landscape layout.</div></div>
+    </div>
+
+    <h2 class="help-h2">Sidebar Controls</h2>
+    <div class="help-grid">
+      <div class="help-card"><div class="help-card-title">Player</div><div class="help-card-body">Select which player to analyze. Defaults to Carlo Badiola. The shot count shows how many games include that player.</div></div>
+      <div class="help-card"><div class="help-card-title">Outcome filter</div><div class="help-card-body">In / Net / Out. Filters both impact and origin markers. Net impacts show projected landing location. Out impacts use actual direction data (long/right/left) when tracked.</div></div>
+      <div class="help-card"><div class="help-card-title">Shot types</div><div class="help-card-body">Filter by serve, drive, dink, drop, lob, smash, volley, reset, speed-up, or other. Each type maps to a distinct shape in the legend.</div></div>
+      <div class="help-card"><div class="help-card-title">Display layers</div><div class="help-card-body"><strong>Impacts</strong> — markers on opponent's half. <strong>Origins</strong> — markers on your half. <strong>Traces</strong> — faint lines connecting origin to impact for in-court shots.</div></div>
+      <div class="help-card"><div class="help-card-title">Color By</div><div class="help-card-body"><strong>Outcome</strong>: green=in, orange=net (projected), red=out. <strong>FH/BH</strong>: teal=forehand, purple=backhand. <strong>Quality</strong>: gradient from red (poor) to green (excellent) using PBVision AI scores.</div></div>
+      <div class="help-card"><div class="help-card-title">Highlight overlays</div><div class="help-card-body">Adds dashed rings to matching markers. <strong>Retreating</strong> (red): you moved away from net &gt;3ft. <strong>Advancing</strong> (green): moving toward net &gt;3ft. <strong>Lateral</strong> (purple): wide reach &gt;3ft. <strong>High Stress</strong> (gold): any movement &gt;6ft.</div></div>
+    </div>
+
+    <h2 class="help-h2">Game Selection</h2>
+    <div class="help-grid">
+      <div class="help-card"><div class="help-card-title">Partner filter</div><div class="help-card-body">Chips at the top of the games panel show each partner with your win % when playing with them. Click to filter to only games with that partner.</div></div>
+      <div class="help-card"><div class="help-card-title">Date bar chart</div><div class="help-card-body">Each bar is one calendar month — height = games, green fill = wins. Click any bar to toggle that month on or off. The current (partial) month shows in amber with a ~ marker.</div></div>
+      <div class="help-card"><div class="help-card-title">Rolling windows</div><div class="help-card-body">Buttons above the chart: <strong>2 wks</strong>, <strong>4 wks</strong>, <strong>8 wks</strong>, <strong>All</strong>. These select by exact date range regardless of calendar month, useful when you're partway through a month.</div></div>
+      <div class="help-card"><div class="help-card-title">Individual games</div><div class="help-card-body">The scrollable list below the chart shows each game. Check or uncheck to include or exclude individual games.</div></div>
+    </div>
+
+    <h2 class="help-h2">Coaching Insight Box</h2>
+    <p style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:12px;">The floating box (bottom-left of court) shows automatically computed coaching insights ranked by impact. Click <strong>⬆</strong> to expand and see the full diagnosis and drill recommendation. Use <strong>‹ ›</strong> to cycle through all available insights.</p>
+    <div class="help-grid">
+      <div class="help-card"><div class="help-card-title">3rd Shot Selection</div><div class="help-card-body">Compares your drop vs drive accuracy on the third ball and flags if you're choosing the lower-percentage option more often.</div></div>
+      <div class="help-card"><div class="help-card-title">Kitchen Transition Gap</div><div class="help-card-body">Measures accuracy drop between shots 1–3 and shots 4–6 — the window where you should be transitioning to the kitchen.</div></div>
+      <div class="help-card"><div class="help-card-title">Retreating Shots</div><div class="help-card-body">Identifies which shot types you attempt when being pushed back from the net. High retreating drives = attacking from a recovery position.</div></div>
+      <div class="help-card"><div class="help-card-title">Poach Discipline</div><div class="help-card-body">Compares accuracy on poach shots vs standard shots. A large gap suggests over-poaching.</div></div>
+    </div>
+
+    <h2 class="help-h2">Bottom Stats Bar</h2>
+    <p style="font-size:13px;color:var(--text2);line-height:1.7;">The bar at the bottom shows <strong>Filtered</strong> stats (left) for exactly the shots on screen, <strong>Overall</strong> record and rating (right), and accuracy/shot-mix tiles in between. Drag the top edge of the bar to resize it.</p>
+
+    <h2 class="help-h2">Shot Shapes</h2>
+    <div class="help-grid">
+      <div class="help-card"><div class="help-card-title">●◉✛⬟ Back-court</div><div class="help-card-body">Circle = serve (solid). Bull's-eye = drive. Cross-in-circle = lob. Diamond = smash.</div></div>
+      <div class="help-card"><div class="help-card-title">■⬜▪ Kitchen</div><div class="help-card-body">Solid square = dink. Square-in-square = drop. Small square = reset.</div></div>
+      <div class="help-card"><div class="help-card-title">▲△ Mid-court</div><div class="help-card-body">Filled triangle = volley. Outline triangle = speed-up.</div></div>
+      <div class="help-card"><div class="help-card-title">× Other / Returns</div><div class="help-card-body">X mark = unclassified shots (mostly returns of serve).</div></div>
+    </div>
+
+    <h2 class="help-h2">Dashboard</h2>
+    <p style="font-size:13px;color:var(--text2);line-height:1.7;">Win rate, accuracy, kitchen %, and rating KPIs. Rating Over Time chart shows all 7 DUPR sub-scores. Filter by 2-week, 1-month, or all-time. Coaching priorities are from PBVision's AI advice scores ranked by frequency.</p>
+
+    <h2 class="help-h2">Data &amp; Privacy</h2>
+    <p style="font-size:13px;color:var(--text2);line-height:1.7;">All data stays in your browser's localStorage. 49 games are pre-loaded in this file. Import additional JSON exports via <strong>+ Add Games</strong>. Export your library with the ⬇ Export button in My Games.</p>
+
+    <h2 class="help-h2">What's Estimated vs Ground Truth</h2>
+    <p style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:8px;"><strong>Verified from PBVision data:</strong> outcome (in/net/out), out direction (long/right/left), shot type, stroke (FH/BH), player court side, movement magnitude and direction (smov), quality score.</p>
+    <p style="font-size:13px;color:var(--text2);line-height:1.7;"><strong>Estimated (zone-based):</strong> exact impact landing position, exact origin position. These are approximated using shot-type zones and movement data. Use for clustering and pattern recognition — not precise coordinates.</p>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="upload-modal" onclick="if(event.target===this)closeUploadModal()">
+  <div class="modal" style="max-width:420px;">
+    <div class="modal-title">Add Games</div>
+
+    <!-- Step 1: Pick file -->
+    <div class="upload-zone" onclick="document.getElementById('file-input-modal').click()" style="padding:20px;margin-bottom:12px;"
+         ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
+      <div class="upload-icon" style="font-size:24px;">📂</div>
+      <div class="upload-text">Drop PBVision JSON or click to browse</div>
+    </div>
+    <input type="file" id="file-input-modal" accept=".json" multiple class="upload-input" onchange="handleFileSelect(event)">
+
+    <div class="divider"></div>
+
+    <!-- GitHub Sync Section -->
+    <div style="margin-bottom:10px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <div style="font-size:11px;font-weight:700;color:var(--text2);">☁ Sync to GitHub</div>
+        <button onclick="toggleGHSetup()" id="gh-setup-toggle"
+          style="font-size:10px;color:var(--accent);background:none;border:none;cursor:pointer;padding:0;">
+          Configure ▾
+        </button>
+      </div>
+
+      <!-- GitHub setup fields (collapsed by default if already configured) -->
+      <div id="gh-setup-fields" style="display:none;background:var(--bg3);border-radius:6px;padding:10px;margin-bottom:8px;">
+        <div style="font-size:10px;color:var(--text3);margin-bottom:8px;line-height:1.5;">
+          Enter your GitHub repo and a fine-grained Personal Access Token with <strong>Contents: Read &amp; Write</strong> permission scoped to this repo only.
+          <a href="https://github.com/settings/tokens?type=beta" target="_blank" style="color:var(--accent);">Create token →</a>
+        </div>
+        <input id="gh-repo" class="modal-input" placeholder="username/pbviewer" style="margin-bottom:6px;font-family:var(--font-mono);font-size:11px;"
+               oninput="saveGHConfig()">
+        <input id="gh-token" class="modal-input" type="password" placeholder="github_pat_…"
+               style="font-family:var(--font-mono);font-size:11px;" oninput="saveGHConfig()">
+        <div id="gh-config-status" style="font-size:10px;color:var(--text3);margin-top:6px;"></div>
+      </div>
+
+      <!-- Push button -->
+      <div style="display:flex;gap:6px;margin-bottom:6px;">
+        <button id="gh-push-btn" onclick="pushToGitHub()"
+          style="flex:1;padding:8px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;
+                 background:var(--accent-dim);border:1px solid var(--accent);color:var(--accent);">
+          ⬆ Push library to GitHub
+        </button>
+        <button onclick="checkGitHubData()" title="Check what's currently in data/games.json on GitHub"
+          style="padding:8px 10px;border-radius:6px;font-size:12px;cursor:pointer;
+                 background:var(--bg3);border:1px solid var(--border);color:var(--text2);">
+          🔍
+        </button>
+      </div>
+      <div id="gh-push-status" style="font-size:11px;color:var(--text3);margin-top:4px;min-height:16px;text-align:center;line-height:1.5;"></div>
+    </div>
+
+    <div id="upload-result" style="display:none;margin-bottom:10px;padding:10px;background:var(--bg3);border-radius:6px;border:1px solid var(--border);font-size:11px;"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeUploadModal()">Close</button>
+    </div>
+  </div>
+</div>
+<div id="toast">Toast</div>
+
+<script>
+// ═══════════════════════════════════════════
+// CONSTANTS & STATE
+// ═══════════════════════════════════════════
+const PRIMARY_USER = 'Carlo Badiola';
+const STORAGE_KEY = 'pbv_games_v3';
+const CONFIG_KEY = 'pbv_config_v3';
+
+// Data loaded asynchronously from data/games.json
+// See loadAppData() below
+const INLINED_GAMES = [];
+const RATINGS_TIMELINE = [];
+
+const ADVICE_LABELS = {
+  legal_serve_percentage:'Serve Fault Rate', serve_quality:'Serve Quality',
+  return_quality:'Return Quality', third_shot_quality:'Third Shot Quality',
+  legal_third_shot_percentage:'Third Shot Legality', drop_shot_consistency:'Drop Consistency',
+  dink_consistency:'Dink Consistency', rallies_won_with_resets:'Resets Effectiveness',
+  rallies_won_with_speedups:'Speed-up Effectiveness',
+  kitchen_arrival_percentage_on_serve:'Kitchen Arrival (Serve)',
+};
+
+let state = {
+  games: [],
+  activePlayer: PRIMARY_USER,  // active player for dashboard + games table
+  config: { theme: 'dark' },
+  dashPeriod: '1m',
+  viewer: {
+    selectedGames: new Set(),
+    activeShotTypes: new Set(['serve','drive','lob','smash','dink','drop','reset','volley','speedup','return','other']),
+    activeOutcomes: new Set(['in','net','out']),
+    layers: new Set(['impact','origin']),
+    colorMode: 'outcome',
+  },
+  shotIndex: [], // flat array of all rendered shots for hover
+};
+
+// ═══════════════════════════════════════════
+// STORAGE
+// ═══════════════════════════════════════════
+function loadFromStorage() {
+  // Returns array of user-imported games from localStorage (empty if none).
+  // The base library (data/games.json) is fetched separately by loadAppData().
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const stored = JSON.parse(raw);
+      if (stored && stored.length) return stored;
+    }
+  } catch(e) {}
+  return [];
+}
+function saveToStorage() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state.games)); localStorage.setItem(CONFIG_KEY, JSON.stringify(state.config)); } catch(e) {}
+}
+
+// ═══════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════
+function getCarloGames(withinDays) {
+  const now = Date.now()/1000;
+  return state.games.filter(g => {
+    if (!g.players.find(p => p.name === PRIMARY_USER)) return false;
+    if (withinDays && g.epoch) { if ((now - g.epoch)/86400 > withinDays) return false; }
+    return true;
+  });
+}
+function getCarloData(g) { return g.players.find(p => p.name === PRIMARY_USER); }
+function avgOf(arr, fn) {
+  const vals = arr.map(fn).filter(v => v !== null && v !== undefined && !isNaN(v) && v > 0);
+  return vals.length ? vals.reduce((a,b)=>a+b,0)/vals.length : 0;
+}
+function pct(v) { return (v*100).toFixed(0)+'%'; }
+function rating(v) { return v ? v.toFixed(2) : '—'; }
+function ratingColor(v) {
+  if (!v) return 'var(--text)';
+  if (v >= 4.0) return 'var(--good)'; if (v >= 3.5) return 'var(--accent)';
+  if (v >= 3.0) return 'var(--warn)'; return 'var(--danger)';
+}
+function showToast(msg, type='') {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = type ? 'show '+type : 'show';
+  setTimeout(()=>t.className='', 3000);
+}
+function openUploadModal() { document.getElementById('upload-modal').classList.add('open'); }
+function closeUploadModal() { document.getElementById('upload-modal').classList.remove('open'); }
+function setActivePlayer(name) {
+  if (!name) return;
+  state.activePlayer = name;
+  // Update welcome message
+  const wEl = document.getElementById('dash-welcome');
+  if (wEl) wEl.textContent = name === PRIMARY_USER ? 'Welcome back, Carlo' : 'Viewing: ' + name.split(' ')[0];
+  // Sync viewer player selector
+  const vSel = document.getElementById('player-select');
+  if (vSel && vSel.value !== name) {
+    vSel.value = name;
+    if (vSel.value === name) { // only if option exists
+      state.viewer.selectedGames.clear();
+      state.games.filter(g=>g.players.find(p=>p.name===name)).forEach(g=>state.viewer.selectedGames.add(g.key));
+    }
+  }
+  updateDashboard();
+  renderGamesTable();
+}
+
+function buildDashPlayerSelect() {
+  const sel = document.getElementById('dash-player-select');
+  if (!sel) return;
+  // Build player map from games Carlo is in (the host's games)
+  const playerMap = new Map();
+  state.games.forEach(g => {
+    // Only include games where PRIMARY_USER plays (these are the shared games)
+    if (!g.players.find(p => p.name === PRIMARY_USER)) return;
+    g.players.forEach(p => {
+      if (!playerMap.has(p.name)) playerMap.set(p.name, 0);
+      playerMap.set(p.name, playerMap.get(p.name) + 1);
+    });
+  });
+  const cur = sel.value || state.activePlayer;
+  sel.innerHTML = [...playerMap.entries()]
+    .sort((a,b) => a[0]===PRIMARY_USER?-1 : b[0]===PRIMARY_USER?1 : b[1]-a[1])
+    .map(([name, n]) => `<option value="${name}">${name}${n < playerMap.get(PRIMARY_USER) ? ' ('+n+')' : ''}</option>`)
+    .join('');
+  sel.value = state.activePlayer || PRIMARY_USER;
+}
+
+function setDashPeriod(p, el) {
+  state.dashPeriod = p;
+  document.querySelectorAll('.period-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  updateDashboard();
+}
+function exportData() {
+  const blob = new Blob([JSON.stringify({version:3,games:state.games},null,2)], {type:'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'pbv-library-'+new Date().toISOString().slice(0,10)+'.json'; a.click();
+  showToast('Exported!','success');
+}
+
+// ═══════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════
+function showPage(name, event) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  if (event && event.currentTarget) event.currentTarget.classList.add('active');
+  if (name==='viewer') { buildViewerSidebar(); updateCourtView(); updateLegend(); }
+  if (name==='dashboard') {
+    buildDashPlayerSelect();
+    updateDashboard();
+    // Re-render chart after layout settles (fixes iPad rendering at 0px width)
+    setTimeout(() => {
+      if (document.getElementById('page-dashboard').classList.contains('active')) {
+        renderRatingChart();
+      }
+    }, 100);
+  }
+  if (name==='games') renderGamesTable();
+}
+function toggleTheme() {
+  const isLight = document.body.getAttribute('data-theme')==='light';
+  const t = isLight ? 'dark' : 'light';
+  document.body.setAttribute('data-theme', t);
+  document.querySelector('.theme-toggle').textContent = t==='light' ? '☀️' : '🌙';
+  state.config.theme = t; saveToStorage();
+  updateCourtView();
+  // Re-render legend with hardcoded colors (always readable on dark overlay)
+  updateLegend();
+}
+
+// ═══════════════════════════════════════════
+// FILE PARSING
+// ═══════════════════════════════════════════
+const SHOT_MAP_SHT = {0:'drive',1:'dink',2:'drop',3:'lob',4:'smash'};
+function classifyShot(sh, shidx) {
+  const tagKeys = Object.keys(sh.tag||{});
+  if (tagKeys.some(k=>k.includes('serve')) || (shidx===0 && sh.sht==null)) return 'serve';
+  if (sh.spd===1) return 'speedup';
+  if (sh.sht==='atp'||sh.sht==='erne') return 'speedup';
+  if (sh.res===1) return 'reset';         // reset before volley
+  if (sh.vol===1 && sh.sht===4) return 'smash';
+  if (sh.vol===1) return 'volley';
+  if (sh.sht!=null && SHOT_MAP_SHT[sh.sht]) return SHOT_MAP_SHT[sh.sht];
+  if (shidx===0) return 'serve';
+  if (shidx===1) return 'return';  // return of serve
+  return 'other';
+}
+function parseFile(jsonObj) {
+  let sessions = [];
+  if (Array.isArray(jsonObj)) sessions = jsonObj;
+  else if (jsonObj.sessions) sessions = jsonObj.sessions;
+  else if (jsonObj.data && jsonObj.data.sessions) sessions = jsonObj.data.sessions;
+  else if (jsonObj.ses) sessions = [jsonObj];
+  else if (jsonObj.games) return importLibrary(jsonObj.games);
+  return sessions.map(parseSession).filter(Boolean);
+}
+function importLibrary(games) {
+  let added=0;
+  games.forEach(g => {
+    const key = g.key || g.vid+'_'+g.si;
+    if (!state.games.find(x=>x.key===key)) { state.games.push(g); added++; }
+  });
+  return added;
+}
+function parseSession(ses) {
+  try {
+    const s=ses.ses||{}, gd=ses.gd||{}, pd=ses.pd||[], ca=ses.ca||[], ral=ses.ral||[];
+    const vid=s.vid||'unknown', si=s.si||0, key=vid+'_'+si;
+    const players = pd.map((p,idx) => {
+      if (!p) return null;
+      const t=p.trends||{}, r=t.ratings||{};
+      const adv=(ca[idx]?ca[idx].advice||[]:[]).filter(a=>a.relevance>0.25).sort((a,b)=>b.relevance-a.relevance).slice(0,5);
+      return {idx,name:p.name||'Player '+(idx+1),team:p.team,avatar_id:p.avatar_id,
+        shot_count:p.shot_count||0,team_shot_pct:p.total_team_shot_percentage||0,
+        left_pct:p.left_side_percentage||0,court_coverage:p.court_coverage||{},
+        kitchen_arr:p.kitchen_arrival_percentage||{},ratings:r,
+        shot_quality:t.shot_quality||{},shot_accuracy:t.shot_accuracy||{},
+        shot_selection:t.shot_selection||{},serve_depth:t.serve_depth||{},
+        return_depth:t.return_depth||{},kitchen_arrivals:t.kitchen_arrivals||{},
+        won:!!(t.flags&&t.flags.won_game),num_rallies:t.num_rallies||0,
+        num_rallies_won:t.num_rallies_won||0,advice:adv};
+    }).filter(Boolean);
+    const shots=[];
+    ral.forEach((rally,ridx)=>{
+      const pls=rally.pls||[];
+      (rally.sh||[]).forEach((sh,shidx)=>{
+        const pid=sh.pid, err=sh.err;
+        let outcome='in';
+        let outDir=null;
+        if (err) {
+          const f=err.f||{};
+          if (err.pop===1 && !f.n && !f.sh && !f.out) { outcome='in'; }
+          else if (f.n||f.sh) { outcome='net'; }
+          else if (f.out) { outcome='out'; outDir=f.out.dir||null; }
+          else { outcome='out'; }
+        }
+        const smov=sh.smov||null;
+        const stress=smov?Math.round(Math.sqrt(smov[0]**2+smov[1]**2)*100)/100:0;
+        const pside=pid!=null&&pid<pls.length?pls[pid].left||0:null;
+        shots.push({pid,ridx,shidx,shotType:classifyShot(sh,shidx),outcome,dir:outDir,
+          quality:sh.q?Math.round(sh.q.ex*1000)/1000:null,
+          isFinal:sh.fin===1,isVolley:sh.vol===1,isPoach:sh.po===1,
+          isSpeedup:sh.spd===1,isPutaway:sh.put===1,stress,
+          stroke:sh.st===1?'fh':sh.st===0?'bh':sh.st===2?'2h':null,
+          side:pside,smovX:smov?smov[0]:0});
+      });
+    });
+    const epoch=s.ge;
+    const date=epoch?new Date(epoch*1000):null;
+    const partnerOf={};
+    players.forEach(p=>{
+      const partner=players.find(q=>q.team===p.team&&q.idx!==p.idx);
+      partnerOf[String(p.idx)]=partner?partner.name:null;
+    });
+    return {key,vid,si,name:s.name||'Game '+vid.slice(0,8),
+      date:date?date.toISOString():null,
+      dateLabel:date?date.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'Unknown',
+      epoch:epoch||0,num_players:s.np||4,game_outcome:gd.game_outcome||[],
+      scoring:gd.scoring||'side_out',min_points:gd.min_points||11,
+      avg_shots:gd.avg_shots||0,kitchen_rallies:gd.kitchen_rallies||0,
+      team_kitchen:gd.team_percentage_to_kitchen||[],
+      players,shots,partnerOf,included:true};
+  } catch(e) { console.error(e); return null; }
+}
+function handleFileSelect(e) { processFiles(Array.from(e.target.files)); e.target.value=''; }
+function onDragOver(e) { e.preventDefault(); e.currentTarget.classList.add('drag'); }
+function onDragLeave(e) { e.currentTarget.classList.remove('drag'); }
+function onDrop(e) { e.preventDefault(); e.currentTarget.classList.remove('drag'); processFiles(Array.from(e.dataTransfer.files)); }
+async function processFiles(files) {
+  let added=0, dupes=[], failed=[];
+  const toReplace = [];  // sessions that are dupes but could be replaced
+
+  for (const file of files) {
+    if (!file.name.endsWith('.json')) continue;
+    try {
+      const json = JSON.parse(await file.text());
+      const parsed = parseFile(json);
+      if (typeof parsed==='number') { added+=parsed; continue; }
+      for (const ses of parsed) {
+        const existing = state.games.find(g=>g.key===ses.key);
+        if (existing) {
+          dupes.push(ses);
+          // Track if the new version is newer or has different score
+          const scoreChanged = JSON.stringify(existing.game_outcome) !== JSON.stringify(ses.game_outcome);
+          const isNewer = ses.epoch > existing.epoch;
+          toReplace.push({ses, existing, scoreChanged, isNewer});
+        } else {
+          state.games.push(ses); added++;
+        }
+      }
+    } catch(e) { failed.push(file.name+': '+e.message); }
+  }
+
+  // If we added new games, save and refresh immediately
+  if (added > 0) { saveToStorage(); refreshAll(); }
+
+  // Build result summary to show INSIDE the modal (don't close yet)
+  const statusEl = document.getElementById('upload-result');
+  if (statusEl) {
+    let html = '';
+    if (added > 0) html += `<div style="color:var(--good);font-weight:600;margin-bottom:6px;">✓ Added ${added} new game${added!==1?'s':''}</div>`;
+    if (failed.length) html += `<div style="color:var(--danger);margin-bottom:6px;">✗ ${failed.join('<br>')}</div>`;
+    if (toReplace.length) {
+      html += `<div style="color:var(--warn);font-weight:600;margin-bottom:6px;">⚠ ${toReplace.length} game${toReplace.length!==1?'s':''} already in library:</div>`;
+      toReplace.forEach(({ses, existing, scoreChanged, isNewer}) => {
+        const badge = scoreChanged ? ' <span style="color:var(--warn)">score changed</span>' : isNewer ? ' <span style="color:var(--accent)">newer</span>' : '';
+        html += `<div style="font-size:11px;color:var(--text2);margin-bottom:3px;display:flex;align-items:center;gap:6px;">
+          <span>${ses.dateLabel} · ${existing.game_outcome.join('–')} → ${ses.game_outcome.join('–')}${badge}</span>
+        </div>`;
+      });
+      html += `<div style="display:flex;gap:6px;margin-top:8px;">
+        <button onclick="replaceGames(window._pendingReplace, true)" style="flex:1;padding:6px;border-radius:5px;background:var(--accent-dim);border:1px solid var(--accent);color:var(--accent);font-size:11px;font-weight:600;cursor:pointer;">
+          Replace all with new versions
+        </button>
+        <button onclick="replaceGames(window._pendingReplace, false)" style="padding:6px 10px;border-radius:5px;background:var(--bg3);border:1px solid var(--border);color:var(--text2);font-size:11px;cursor:pointer;">
+          Keep existing
+        </button>
+      </div>`;
+      window._pendingReplace = toReplace;
+    }
+    if (added === 0 && dupes.length === 0 && failed.length === 0) {
+      html = '<div style="color:var(--text3);font-size:12px;">No games found in file.</div>';
+    }
+    statusEl.innerHTML = html;
+    statusEl.style.display = html ? 'block' : 'none';
+    // Only auto-close if everything went clean (no dupes, no failures)
+    if (toReplace.length === 0 && failed.length === 0) {
+      if (added > 0) showToast('Added '+added+' game'+(added!==1?'s':''), 'success');
+      setTimeout(closeUploadModal, 800);
+    }
+    return;
+  }
+
+  // Fallback if statusEl missing
+  saveToStorage(); refreshAll();
+  if (added>0) showToast('Added '+added+(dupes.length?' ('+dupes.length+' dupes)':''), 'success');
+  else if (dupes.length) showToast(dupes.length+' game'+(dupes.length!==1?'s already':'s already')+' in library — use Replace to update', 'warn');
+  closeUploadModal();
+}
+
+function replaceGames(pending, doReplace) {
+  if (doReplace && pending) {
+    pending.forEach(({ses, existing}) => {
+      const idx = state.games.findIndex(g=>g.key===ses.key);
+      if (idx >= 0) state.games[idx] = ses;
+    });
+    saveToStorage(); refreshAll();
+    showToast('Replaced '+pending.length+' game'+(pending.length!==1?'s':''), 'success');
+  }
+  window._pendingReplace = null;
+  closeUploadModal();
+}
+function refreshAll() {
+  buildDashPlayerSelect();
+  updateDashboard(); renderGamesTable();
+  if (document.getElementById('page-viewer').classList.contains('active')) {
+    buildViewerSidebar(); updateCourtView();
+  }
+}
+
+// ═══════════════════════════════════════════
+// DASHBOARD
+// ═══════════════════════════════════════════
+function updateDashboard() {
+  const days = state.dashPeriod==='2w'?14:state.dashPeriod==='1m'?30:null;
+  const games = getActiveGames(days);
+  // Update player picker UI to reflect current state
+  const dp = document.getElementById('dash-player-select');
+  if (dp && dp.value !== state.activePlayer) dp.value = state.activePlayer;
+  document.getElementById('dash-subtitle').textContent =
+    games.length+' game'+(games.length!==1?'s':'')+' · '+(state.dashPeriod==='2w'?'Last 2 weeks':state.dashPeriod==='1m'?'Last month':'All time');
+
+  if (!games.length) {
+    ['kpi-wr','kpi-rating','kpi-acc','kpi-net','kpi-kitchen'].forEach(id=>document.getElementById(id).textContent='—');
+    return;
+  }
+  const cd = games.map(g=>getActiveData(g)).filter(Boolean);
+  const wins = cd.filter(d=>d.won).length;
+  const wr = (wins/games.length*100).toFixed(0);
+  const wrEl = document.getElementById('kpi-wr');
+  wrEl.textContent = wr+'%'; wrEl.className='kpi-val '+(wr>=50?'good':'bad');
+  document.getElementById('kpi-wr-sub').textContent = wins+'W – '+(cd.length-wins)+'L';
+  const avgR = avgOf(cd, d=>d.ratings.overall);
+  const rEl = document.getElementById('kpi-rating');
+  rEl.textContent = avgR.toFixed(2); rEl.style.color = ratingColor(avgR);
+  const avgIn = avgOf(cd, d=>d.shot_accuracy.in);
+  const accEl = document.getElementById('kpi-acc');
+  accEl.textContent = pct(avgIn); accEl.className='kpi-val '+(avgIn>=0.82?'good':avgIn>=0.75?'warn':'bad');
+  const avgNet = avgOf(cd, d=>d.shot_accuracy.net);
+  const netEl = document.getElementById('kpi-net');
+  netEl.textContent = pct(avgNet); netEl.className='kpi-val '+(avgNet<=0.06?'good':avgNet<=0.10?'warn':'bad');
+  const avgKit = avgOf(cd, d=>d.kitchen_arrivals.serving_side||0);
+  const kitEl = document.getElementById('kpi-kitchen');
+  kitEl.textContent = pct(avgKit); kitEl.className='kpi-val '+(avgKit>=0.85?'good':avgKit>=0.70?'warn':'bad');
+
+  // Coaching
+  const adviceCounts={};
+  games.forEach(g=>{const c=getActiveData(g);if(c)c.advice.forEach(a=>adviceCounts[a.kind]=(adviceCounts[a.kind]||0)+1);});
+  const sorted=Object.entries(adviceCounts).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const coachEl=document.getElementById('coaching-list');
+  const urgentMap={legal_serve_percentage:'danger',dink_consistency:'warn',drop_shot_consistency:'warn',legal_third_shot_percentage:'danger'};
+  const tips={legal_serve_percentage:'Focus on legal deep serves.',dink_consistency:'Soft hands at kitchen. Keep dinks low.',drop_shot_consistency:'Third shots need to land soft in kitchen.',legal_third_shot_percentage:'Commit to the drop on third shots.',serve_quality:'Aim for consistent medium-to-deep depth.',return_quality:'Returns deep toward opponent backhand.',kitchen_arrival_percentage_on_serve:'Transition forward after serving immediately.'};
+  coachEl.innerHTML = sorted.length ? sorted.map(([k,cnt])=>
+    `<div class="coaching-item ${urgentMap[k]||'accent'}">
+      <div class="coaching-title">${ADVICE_LABELS[k]||k.replace(/_/g,' ')} <span style="float:right;font-size:10px;color:var(--text3)">${cnt}/${games.length}</span></div>
+      <div class="coaching-body">${tips[k]||'Track this in practice.'}</div>
+    </div>`).join('') :
+    '<div style="font-size:12px;color:var(--text3);padding:8px 0">No coaching data</div>';
+
+  // Recent games
+  const recentEl=document.getElementById('recent-games-list');
+  recentEl.innerHTML=[...games].sort((a,b)=>b.epoch-a.epoch).slice(0,8).map(g=>{
+    const c=getActiveData(g); if(!c) return '';
+    return `<div class="recent-game">
+      <div class="rg-date">${g.dateLabel?g.dateLabel.slice(0,6):'?'}</div>
+      <div class="rg-info"><div class="rg-score">${g.game_outcome.join(' – ')} <span class="win-badge ${c.won?'w':'l'}">${c.won?'W':'L'}</span></div>
+        ${g.partnerOf[String(c.idx)]?'<div class="rg-partner">w/ '+g.partnerOf[String(c.idx)]+'</div>':''}</div>
+      <div class="rg-rating">${rating(c.ratings.overall)}</div></div>`;
+  }).join('');
+
+  renderRatingChart();
+
+  // Accuracy donut
+  const avgOut=avgOf(cd, d=>d.shot_accuracy.out);
+  renderDonut('accuracy-donut',[
+    {label:'In',val:avgIn,color:'var(--in)'},
+    {label:'Net',val:avgNet,color:'var(--net)'},
+    {label:'Out',val:avgOut,color:'var(--out)'},
+  ],pct(avgIn),'In');
+
+  // FH/BH donut
+  let fh=0,bh=0;
+  games.forEach(g=>{const c=getActiveData(g);if(!c)return;g.shots.filter(s=>s.pid===c.idx).forEach(s=>{if(s.stroke==='fh')fh++;else if(s.stroke==='bh')bh++;});});
+  const tot=fh+bh||1;
+  renderDonut('stroke-donut',[
+    {label:'Forehand',val:fh/tot,color:'var(--accent)'},
+    {label:'Backhand',val:bh/tot,color:'#9b7fe8'},
+  ],pct(fh/tot),'FH');
+
+  // Shot selection bars
+  const selEl=document.getElementById('shot-selection');
+  selEl.innerHTML=['drive','dink','drop','volley','speedup','smash'].map(cat=>{
+    const val=avgOf(cd, d=>d.shot_selection[cat]||0);
+    return `<div class="bar-row"><div class="bar-label">${cat.charAt(0).toUpperCase()+cat.slice(1)}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${val*100}%;background:var(--accent2)"></div></div>
+      <div class="bar-val">${pct(val)}</div></div>`;
+  }).join('');
+
+  // Depth charts
+  const depthCats=['deep','medium','shallow','net','out'];
+  ['serve','return'].forEach(type=>{
+    const el=document.getElementById(type+'-depth-chart');
+    if(!el) return;
+    el.innerHTML=depthCats.map(cat=>{
+      const val=avgOf(cd, d=>d[type+'_depth'][cat]||0);
+      return `<div class="bar-row"><div class="bar-label">${cat.charAt(0).toUpperCase()+cat.slice(1)}</div>
+        <div class="bar-track"><div class="bar-fill" style="width:${val*100}%;background:${type==='serve'?'var(--accent)':'var(--accent2)'}"></div></div>
+        <div class="bar-val">${pct(val)}</div></div>`;
+    }).join('');
+  });
+
+  // Rating breakdown
+  const rbEl=document.getElementById('rating-breakdown');
+  rbEl.innerHTML=['serve','return','offense','defense','agility','consistency'].map(cat=>{
+    const val=avgOf(cd, d=>d.ratings[cat]);
+    return `<div class="rating-bar"><div class="rating-name">${cat.charAt(0).toUpperCase()+cat.slice(1)}</div>
+      <div class="rating-track"><div class="rating-fill" style="width:${Math.min(100,(val/6)*100)}%;background:${ratingColor(val)}"></div></div>
+      <div class="rating-num" style="color:${ratingColor(val)}">${rating(val)}</div></div>`;
+  }).join('');
+}
+
+function renderDonut(id, segments, centerText, centerLabel) {
+  const el=document.getElementById(id); if(!el) return;
+  const sz=120,cx=60,cy=60,R=44,iR=28;
+  let paths='',leg='',a=-Math.PI/2;
+  segments.forEach(seg=>{
+    const da=seg.val*2*Math.PI, ea=a+da;
+    const x1=cx+R*Math.cos(a),y1=cy+R*Math.sin(a),x2=cx+R*Math.cos(ea),y2=cy+R*Math.sin(ea);
+    const ix1=cx+iR*Math.cos(ea),iy1=cy+iR*Math.sin(ea),ix2=cx+iR*Math.cos(a),iy2=cy+iR*Math.sin(a);
+    if(da>0.005) paths+=`<path d="M${x1.toFixed(1)},${y1.toFixed(1)} A${R},${R} 0 ${da>Math.PI?1:0},1 ${x2.toFixed(1)},${y2.toFixed(1)} L${ix1.toFixed(1)},${iy1.toFixed(1)} A${iR},${iR} 0 ${da>Math.PI?1:0},0 ${ix2.toFixed(1)},${iy2.toFixed(1)} Z" fill="${seg.color}" opacity="0.9"/>`;
+    leg+=`<div style="display:flex;align-items:center;gap:5px;margin-bottom:3px;"><div style="width:8px;height:8px;border-radius:2px;background:${seg.color};flex-shrink:0;"></div><span style="font-size:11px;color:var(--text2)">${seg.label}</span><span style="font-size:11px;font-family:var(--font-mono);color:var(--text);margin-left:auto;">${pct(seg.val)}</span></div>`;
+    a=ea;
+  });
+  el.innerHTML=`<div style="display:flex;align-items:center;gap:16px;">
+    <svg width="${sz}" height="${sz}">${paths}<circle cx="${cx}" cy="${cy}" r="${iR-1}" fill="var(--bg2)"/>
+    <text x="${cx}" y="${cy-4}" text-anchor="middle" font-size="14" font-weight="800" font-family="var(--font-head)" fill="var(--text)">${centerText}</text>
+    <text x="${cx}" y="${cy+10}" text-anchor="middle" font-size="9" font-family="var(--font-mono)" fill="var(--text3)">${centerLabel}</text></svg>
+    <div style="flex:1;">${leg}</div></div>`;
+}
+
+function renderRatingChart() {
+  const el=document.getElementById('rating-timeline'); if(!el) return;
+  const W=Math.max(el.getBoundingClientRect().width||0, el.clientWidth||0)||400, H=160;
+  const mL=36,mR=16,mT=10,mB=34,dW=W-mL-mR,dH=H-mT-mB;
+  const days=state.dashPeriod==='2w'?14:state.dashPeriod==='1m'?30:null;
+  const now=Date.now()/1000;
+  let pts=RATINGS_TIMELINE.filter(p=>!days||(now-p.epoch)/86400<=days);
+  if(pts.length<2) pts=RATINGS_TIMELINE;
+  if(!pts.length){el.innerHTML='<div style="color:var(--text3);padding:16px;font-size:12px">No data</div>';return;}
+  const cats=['overall','serve','offense','defense','agility','consistency'];
+  const colors={overall:'#00d4aa',serve:'#f5a623',offense:'#e8445a',defense:'#3dd68c',agility:'#9b7fe8',consistency:'#0099cc'};
+  const allV=pts.flatMap(p=>cats.map(c=>p[c]||0)).filter(Boolean);
+  const minV=Math.max(0,Math.min(...allV)-0.15), maxV=Math.min(6,Math.max(...allV)+0.15);
+  const xS=i=>mL+(i/(pts.length-1||1))*dW;
+  const yS=v=>mT+dH-(v-minV)/(maxV-minV)*dH;
+  const gVals=[]; for(let v=Math.ceil(minV*2)/2;v<=maxV;v+=0.5) gVals.push(v);
+  let svg=`<svg width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg">`;
+  gVals.forEach(v=>{
+    const y=yS(v).toFixed(1);
+    svg+=`<line x1="${mL}" y1="${y}" x2="${W-mR}" y2="${y}" stroke="var(--border)" stroke-width="1"/>`;
+    svg+=`<text x="${mL-4}" y="${parseFloat(y)+3}" text-anchor="end" font-size="8" fill="var(--text3)" font-family="var(--font-mono)">${v.toFixed(1)}</text>`;
+  });
+  cats.filter(c=>c!=='overall').forEach(cat=>{
+    const pathD=pts.map((p,i)=>`${i===0?'M':'L'}${xS(i).toFixed(1)},${yS(p[cat]||0).toFixed(1)}`).join(' ');
+    svg+=`<path d="${pathD}" fill="none" stroke="${colors[cat]}" stroke-width="1.2" opacity="0.45" stroke-linejoin="round"/>`;
+  });
+  const oD=pts.map((p,i)=>`${i===0?'M':'L'}${xS(i).toFixed(1)},${yS(p.overall||0).toFixed(1)}`).join(' ');
+  svg+=`<path d="${oD}" fill="none" stroke="${colors.overall}" stroke-width="2.5" stroke-linejoin="round"/>`;
+  pts.forEach((p,i)=>{ svg+=`<circle cx="${xS(i).toFixed(1)}" cy="${yS(p.overall||0).toFixed(1)}" r="3" fill="${colors.overall}"/>`; });
+  const step=Math.max(1,Math.floor(pts.length/6));
+  pts.forEach((p,i)=>{
+    if(i%step===0||i===pts.length-1)
+      svg+=`<text x="${xS(i).toFixed(1)}" y="${H-4}" text-anchor="middle" font-size="8" fill="var(--text3)" font-family="var(--font-mono)">${p.date}</text>`;
+  });
+  // Legend
+  let lx=mL;
+  cats.forEach(cat=>{
+    svg+=`<line x1="${lx}" y1="${mT+dH/2}" x2="${lx+10}" y2="${mT+dH/2}" stroke="${colors[cat]}" stroke-width="${cat==='overall'?2.5:1.5}" opacity="${cat==='overall'?1:0.65}"/>`;
+    svg+=`<text x="${lx+12}" y="${mT+dH/2+3}" font-size="8" fill="var(--text2)" font-family="var(--font-mono)" opacity="${cat==='overall'?1:0.65}">${cat.charAt(0).toUpperCase()+cat.slice(1)}</text>`;
+    lx+=55;
+  });
+  svg+='</svg>';
+  el.innerHTML=svg;
+}
+
+// ═══════════════════════════════════════════
+// GAMES TABLE
+// ═══════════════════════════════════════════
+function renderGamesTable() {
+  const tbody=document.getElementById('games-tbody');
+  const empty=document.getElementById('games-empty');
+  const container=document.getElementById('games-table-container');
+  const player = state.activePlayer || PRIMARY_USER;
+  // Filter: if not PRIMARY_USER, only show games they're in
+  const visibleGames = player === PRIMARY_USER
+    ? state.games
+    : state.games.filter(g => g.players.find(p => p.name === player));
+  if(!visibleGames.length){empty.style.display='';container.style.display='none';return;}
+  empty.style.display='none'; container.style.display='';
+  // Update player context bar
+  const ctxBar = document.getElementById('games-player-context');
+  const ctxLabel = document.getElementById('games-player-label');
+  const ctxCount = document.getElementById('games-player-count');
+  const ctxReset = document.getElementById('games-reset-player');
+  if (ctxBar) {
+    ctxBar.style.display = 'flex';
+    if (ctxLabel) ctxLabel.textContent = player;
+    if (ctxCount) ctxCount.textContent = `(${visibleGames.length} games)`;
+    if (ctxReset) ctxReset.style.display = player !== PRIMARY_USER ? 'block' : 'none';
+  }
+  tbody.innerHTML=[...visibleGames].sort((a,b)=>b.epoch-a.epoch).map(g=>{
+    const cp=g.players.find(p=>p.name===player);
+    const score=g.game_outcome.join('–');
+    const pills=g.players.map(p=>`<span class="player-pill ${p.name===player?'primary':''}">${p.name}</span>`).join('');
+    return `<tr class="${g.included===false?'excluded':''} game-summary-row" data-key="${g.key}" style="cursor:pointer;">
+      <td onclick="event.stopPropagation()"><input type="checkbox" class="table-checkbox game-cb" data-key="${g.key}" ${g.included!==false?'checked':''}
+        onchange="toggleGameIncluded('${g.key}',this.checked)"></td>
+      <td onclick="toggleGameExpand('${g.key}')">${g.dateLabel||'—'}</td>
+      <td onclick="toggleGameExpand('${g.key}')" style="font-family:var(--font-mono);font-size:10px;color:var(--text3)">${g.vid.slice(0,8)}…</td>
+      <td onclick="toggleGameExpand('${g.key}')" style="font-weight:600">${score}</td>
+      <td onclick="toggleGameExpand('${g.key}')">${cp?`<span class="win-badge ${cp.won?'w':'l'}">${cp.won?'W':'L'}</span>`:'—'}</td>
+      <td onclick="toggleGameExpand('${g.key}')">${pills}</td>
+      <td onclick="toggleGameExpand('${g.key}')" style="font-family:var(--font-mono);color:${ratingColor(cp?.ratings.overall)}">${rating(cp?.ratings.overall)}</td>
+      <td onclick="toggleGameExpand('${g.key}')" style="font-family:var(--font-mono)">${cp?pct(cp.shot_accuracy.in):'—'}</td>
+      <td onclick="toggleGameExpand('${g.key}')" style="font-family:var(--font-mono)">${cp?pct(cp.kitchen_arrivals.serving_side||0):'—'}</td>
+      <td onclick="toggleGameExpand('${g.key}')" style="font-size:11px;color:var(--text3)">${cp?g.partnerOf[String(cp.idx)]||'—':'—'}</td>
+    </tr>
+    <tr class="game-detail-row" id="detail-${g.key}" style="display:none;">
+      <td colspan="10" style="padding:0;background:var(--bg2);">
+        <div id="detail-content-${g.key}"></div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function toggleGameExpand(key) {
+  const detailRow = document.getElementById('detail-'+key);
+  const summaryRow = document.querySelector('tr[data-key="'+key+'"]');
+  if (!detailRow) return;
+  const isOpen = detailRow.style.display !== 'none';
+  // Close all others first
+  document.querySelectorAll('.game-detail-row').forEach(r => r.style.display = 'none');
+  document.querySelectorAll('.game-summary-row').forEach(r => r.classList.remove('expanded'));
+  if (!isOpen) {
+    detailRow.style.display = '';
+    summaryRow?.classList.add('expanded');
+    // Render detail if not yet rendered
+    const content = document.getElementById('detail-content-'+key);
+    if (content && !content._rendered) {
+      content._rendered = true;
+      renderGameDetail(key, content);
+    }
+  }
+}
+
+function renderGameDetail(key, el) {
+  const g = state.games.find(x => x.key === key);
+  if (!g) return;
+  const player = state.activePlayer || PRIMARY_USER;
+
+  // Group players into teams
+  const teams = {};
+  g.players.forEach(p => {
+    const t = p.team ?? 0;
+    if (!teams[t]) teams[t] = [];
+    teams[t].push(p);
+  });
+
+  // Stat bar helper
+  const bar = (val, color='var(--accent2)', max=1) => {
+    const w = Math.min(100, Math.round((val||0)/max*100));
+    return `<div style="flex:1;height:3px;background:var(--bg4);border-radius:2px;min-width:40px;"><div style="width:${w}%;height:100%;background:${color};border-radius:2px;"></div></div>`;
+  };
+  const statRow = (label, val, color, barVal, barColor) =>
+    `<div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+      <div style="font-size:10px;color:var(--text3);width:52px;flex-shrink:0;">${label}</div>
+      ${bar(barVal??parseFloat(val), barColor||color)}
+      <div style="font-size:11px;font-family:var(--font-mono);color:${color||'var(--text2)'};width:36px;text-align:right;">${val}</div>
+    </div>`;
+
+  const teamCards = Object.entries(teams).map(([teamIdx, players]) => {
+    const won = players[0]?.won;
+    const score = g.game_outcome;
+    const teamScore = won ? Math.max(...score) : Math.min(...score);
+
+    const playerCards = players.map(p => {
+      const isActive = p.name === player;
+      const r = p.ratings || {};
+      const acc = p.shot_accuracy || {};
+      const kit = p.kitchen_arrivals || {};
+      const sel = p.shot_selection || {};
+      const partner = g.partnerOf[String(p.idx)];
+
+      return `<div style="padding:10px 12px;border-bottom:1px solid var(--border);">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <div style="width:6px;height:6px;border-radius:50%;background:${isActive?'var(--accent)':'var(--text3)'};flex-shrink:0;"></div>
+          <div style="font-size:12px;font-weight:${isActive?'700':'500'};color:${isActive?'var(--text)':'var(--text2)'};">${p.name}</div>
+          ${isActive?`<span style="font-size:9px;background:var(--accent-dim);color:var(--accent);border-radius:3px;padding:1px 5px;font-weight:600;">YOU</span>`:''}
+          <div style="margin-left:auto;font-size:13px;font-weight:700;font-family:var(--font-mono);color:${ratingColor(r.overall)}">${rating(r.overall)}</div>
+        </div>
+        ${statRow('Accuracy', pct(acc.in), acc.in>=0.85?'var(--good)':acc.in>=0.75?'var(--warn)':'var(--danger)', acc.in)}
+        ${statRow('Kitchen', pct(kit.serving_side||0), (kit.serving_side||0)>=0.8?'var(--good)':'var(--warn)', kit.serving_side||0)}
+        ${statRow('Drive %', pct(sel.drive||0), 'var(--accent2)', sel.drive||0)}
+        ${statRow('Drop %', pct(sel.drop||0), 'var(--accent)', sel.drop||0)}
+        <div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap;">
+          ${p.shot_count?`<span style="font-size:9px;color:var(--text3);">${p.shot_count} shots</span>`:''}
+          ${p.ratings?.serve?`<span style="font-size:9px;color:var(--text3);">Srv ${p.ratings.serve.toFixed(1)}</span>`:''}
+          ${p.ratings?.offense?`<span style="font-size:9px;color:var(--text3);">Off ${p.ratings.offense.toFixed(1)}</span>`:''}
+          ${p.ratings?.defense?`<span style="font-size:9px;color:var(--text3);">Def ${p.ratings.defense.toFixed(1)}</span>`:''}
+        </div>
+      </div>`;
+    }).join('');
+
+    return `<div style="flex:1;min-width:220px;border:1px solid ${won?'rgba(61,214,140,0.3)':'rgba(255,255,255,0.08)'};border-radius:8px;overflow:hidden;background:var(--bg3);">
+      <div style="padding:8px 12px;background:${won?'rgba(61,214,140,0.1)':'rgba(232,68,90,0.07)'};border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;">
+        <span style="font-size:13px;font-weight:700;color:${won?'var(--good)':'var(--danger)'};">${teamScore}</span>
+        <span style="font-size:11px;font-weight:600;color:${won?'var(--good)':'var(--danger)'};">${won?'WON':'LOST'}</span>
+        <span style="font-size:10px;color:var(--text3);margin-left:auto;">${players.map(p=>p.name.split(' ')[0]).join(' & ')}</span>
+      </div>
+      ${playerCards}
+    </div>`;
+  }).join('');
+
+  el.innerHTML = `<div style="padding:12px 16px;">
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px;">${teamCards}</div>
+    <div style="font-size:10px;color:var(--text3);text-align:center;">${g.avg_shots?`Avg ${g.avg_shots.toFixed(1)} shots/rally · `:''} ${g.kitchen_rallies||0} kitchen rallies · ${g.players.length} players</div>
+  </div>`;
+}
+function toggleGameIncluded(key,included) {
+  const g=state.games.find(g=>g.key===key); if(g) g.included=included; saveToStorage();
+  const row=document.querySelector(`tr[data-key="${key}"]`); if(row) row.className=included?'':'excluded';
+}
+function selectAllGames(val) { state.games.forEach(g=>g.included=val); saveToStorage(); renderGamesTable(); }
+function deleteSelectedGames() {
+  const keys=Array.from(document.querySelectorAll('.game-cb:checked')).map(cb=>cb.dataset.key);
+  if(!keys.length){showToast('No games selected','');return;}
+  if(!confirm('Delete '+keys.length+' game'+(keys.length!==1?'s':'')+'?')) return;
+  state.games=state.games.filter(g=>!keys.includes(g.key));
+  saveToStorage(); refreshAll(); showToast('Deleted '+keys.length,'success');
+}
+
+// ═══════════════════════════════════════════
+// VIEWER — SIDEBAR
+// ═══════════════════════════════════════════
+function buildViewerSidebar() {
+  // ── Player selector
+  const playerMap = new Map();
+  state.games.forEach(g => g.players.forEach(p => {
+    if (!playerMap.has(p.name)) playerMap.set(p.name, []);
+    playerMap.get(p.name).push(g);
+  }));
+  const sel = document.getElementById('player-select');
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">— Select player —</option>';
+  [...playerMap.entries()]
+    .sort((a,b)=>a[0]===PRIMARY_USER?-1:b[0]===PRIMARY_USER?1:b[1].length-a[1].length)
+    .forEach(([name,gs])=>{
+      const o=document.createElement('option');
+      o.value=name; o.textContent=name+' ('+gs.length+')';
+      sel.appendChild(o);
+    });
+  if (cur) sel.value=cur;
+  if (!sel.value && playerMap.size) sel.value=PRIMARY_USER||[...playerMap.keys()][0];
+
+  const player = sel.value;
+
+  // ── Partner chips
+  const partnerChips = document.getElementById('partner-chips');
+  const clearBtn     = document.getElementById('partner-clear-btn');
+  if (partnerChips) {
+    // Find all partners for this player
+    const partnerMap = new Map();
+    state.games.forEach(g => {
+      const cp = g.players.find(p=>p.name===player);
+      if (!cp) return;
+      const partner = g.partnerOf[String(cp.idx)];
+      if (!partner) return;
+      if (!partnerMap.has(partner)) partnerMap.set(partner,{n:0,wins:0});
+      const pm = partnerMap.get(partner);
+      pm.n++;
+      if (cp.won) pm.wins++;
+    });
+    partnerChips.innerHTML = [...partnerMap.entries()]
+      .sort((a,b)=>b[1].n-a[1].n)
+      .map(([name,d]) => {
+        const winPct = Math.round(100*d.wins/d.n);
+        const active = state.viewer.partnerFilter === name;
+        const col = winPct>=50 ? 'var(--good)' : 'var(--danger)';
+        return `<div class="chip ${active?'active':''}" 
+          onclick="togglePartnerFilter('${name}')" 
+          title="${name}: ${d.n} games, ${winPct}% win"
+          style="font-size:10px;${active?'':''}">
+          ${name.split(' ')[0]} <span style="color:${col};font-size:9px;">${winPct}%</span>
+        </div>`;
+      }).join('');
+    if (clearBtn) clearBtn.style.display = state.viewer.partnerFilter ? 'block' : 'none';
+  }
+
+  // ── Determine eligible games
+  const allEligible = state.games
+    .filter(g => g.players.find(p=>p.name===player))
+    .filter(g => {
+      if (!state.viewer.partnerFilter) return true;
+      const cp = g.players.find(p=>p.name===player);
+      if (!cp) return false;
+      return g.partnerOf[String(cp.idx)] === state.viewer.partnerFilter;
+    })
+    .sort((a,b)=>a.epoch-b.epoch);
+
+  // Init selectedGames if empty or partner filter changed
+  if (state.viewer.selectedGames.size === 0 || state.viewer._lastPlayer !== player || state.viewer._lastPartner !== state.viewer.partnerFilter) {
+    state.viewer.selectedGames.clear();
+    allEligible.forEach(g=>state.viewer.selectedGames.add(g.key));
+    state.viewer._lastPlayer = player;
+    state.viewer._lastPartner = state.viewer.partnerFilter;
+  }
+
+  // ── Date bar chart
+  renderDateBarChart(allEligible, player);
+
+  // ── Game list
+  const gl = document.getElementById('viewer-game-list');
+  const countLabel = document.getElementById('game-count-label');
+  const selectedCount = allEligible.filter(g=>state.viewer.selectedGames.has(g.key)).length;
+  if (countLabel) countLabel.textContent = `(${selectedCount}/${allEligible.length})`;
+
+  gl.innerHTML = allEligible.slice().reverse().map(g => {
+    const cp = g.players.find(p=>p.name===player);
+    const checked = state.viewer.selectedGames.has(g.key);
+    return `<div class="game-list-item">
+      <input type="checkbox" ${checked?'checked':''} onchange="toggleViewerGame('${g.key}',this.checked)">
+      <div class="game-list-label">${g.dateLabel?g.dateLabel.slice(0,6):'?'} — ${g.game_outcome.join('–')}</div>
+      <span style="font-size:10px;font-weight:700;color:${cp?.won?'var(--good)':'var(--danger)'}">${cp?.won?'W':'L'}</span>
+    </div>`;
+  }).join('') || '<div style="font-size:11px;color:var(--text3);padding:4px 0">No games</div>';
+}
+
+function renderDateBarChart(games, player) {
+  const el = document.getElementById('date-bar-chart');
+  if (!el || !games.length) { if(el) el.innerHTML=''; return; }
+
+  const now = Date.now()/1000;
+  const W = (el.parentElement?.clientWidth||180) - 24;
+
+  // Quick-select buttons
+  const quickBtns = `<div style="display:flex;gap:3px;margin-bottom:6px;flex-wrap:wrap;">
+    ${[['2w','2 wks'],['4w','4 wks'],['8w','8 wks'],['all','All']].map(([key,label])=>
+      `<button onclick="applyDateWindow('${key}')" 
+        style="font-size:9px;padding:2px 6px;border-radius:3px;cursor:pointer;font-family:var(--font-mono);
+        background:${state.viewer.dateWindow===key?'var(--accent-dim)':'var(--bg3)'};
+        border:1px solid ${state.viewer.dateWindow===key?'var(--accent)':'var(--border)'};
+        color:${state.viewer.dateWindow===key?'var(--accent)':'var(--text2)'};">${label}</button>`
+    ).join('')}
+  </div>`;
+
+  // Group by month
+  const months = new Map();
+  games.forEach(g => {
+    const d = new Date(g.epoch*1000);
+    const key = d.toLocaleDateString('en-US',{month:'short',year:'2-digit'});
+    if (!months.has(key)) months.set(key, {games:[], firstEpoch:g.epoch, label:key});
+    months.get(key).games.push(g);
+  });
+
+  // Determine current month label to flag as "partial"
+  const nowDt = new Date();
+  const currentMonthKey = nowDt.toLocaleDateString('en-US',{month:'short',year:'2-digit'});
+
+  const maxGames = Math.max(...[...months.values()].map(m=>m.games.length));
+  const barH = 26, labelH = 13, totalH = barH + labelH + 2;
+  const months_arr = [...months.entries()];
+  const nM = months_arr.length;
+  const barW = Math.max(4, Math.floor((W - 2) / nM) - 2);
+  const gap  = 2;
+
+  let svg = `<svg width="${W}" height="${totalH}" xmlns="http://www.w3.org/2000/svg" style="overflow:visible;">`;
+
+  months_arr.forEach(([label, data], i) => {
+    const x = i * (barW + gap);
+    const allSel = data.games.every(g => state.viewer.selectedGames.has(g.key));
+    const someSel = data.games.some(g => state.viewer.selectedGames.has(g.key));
+    const wins = data.games.filter(g => g.players.find(p=>p.name===player)?.won).length;
+    const totalBarH = maxGames ? Math.round(data.games.length/maxGames*barH) : 0;
+    const winH = maxGames ? Math.round(wins/maxGames*barH) : 0;
+    const keys = data.games.map(g=>`'${g.key}'`).join(',');
+    const opacity = allSel ? '1' : someSel ? '0.55' : '0.25';
+    const isPartial = label === currentMonthKey;
+
+    svg += `<g onclick="toggleMonthGames([${keys}])" style="cursor:pointer;">
+      <title>${label}: ${data.games.length} games (${wins}W-${data.games.length-wins}L)${isPartial?' · partial month':''}</title>
+      <rect x="${x}" y="${barH-totalBarH}" width="${barW}" height="${totalBarH}" 
+            fill="${isPartial?'var(--warn)':'var(--accent2)'}" opacity="${opacity}" rx="1"/>
+      <rect x="${x}" y="${barH-winH}" width="${barW}" height="${winH}" 
+            fill="var(--good)" opacity="${opacity}" rx="1"/>
+      ${isPartial ? `<text x="${x+barW/2}" y="${barH-totalBarH-2}" text-anchor="middle" font-size="7" fill="var(--warn)" opacity="0.8">~</text>` : ''}
+      <text x="${x+barW/2}" y="${totalH}" text-anchor="middle" font-size="7.5" 
+            fill="${allSel?'var(--text2)':'var(--text3)'}" font-family="var(--font-mono)">${label.split(' ')[0]}</text>
+    </g>`;
+  });
+  svg += '</svg>';
+  el.innerHTML = quickBtns + svg;
+}
+
+function applyDateWindow(key) {
+  state.viewer.dateWindow = key;
+  const player = document.getElementById('player-select').value;
+  if (!player) return;
+  const now = Date.now()/1000;
+  const weeks = key==='2w'?2:key==='4w'?4:key==='8w'?8:null;
+  const cutoff = weeks ? now - weeks*7*86400 : 0;
+  state.games
+    .filter(g=>g.players.find(p=>p.name===player))
+    .filter(g=>{
+      if(!state.viewer.partnerFilter) return true;
+      const cp=g.players.find(p=>p.name===player);
+      return cp && g.partnerOf[String(cp.idx)]===state.viewer.partnerFilter;
+    })
+    .forEach(g => {
+      if (g.epoch >= cutoff) state.viewer.selectedGames.add(g.key);
+      else state.viewer.selectedGames.delete(g.key);
+    });
+  buildViewerSidebar();
+  updateCourtView();
+}
+
+
+function toggleMonthGames(keys) {
+  const anySelected = keys.some(k => state.viewer.selectedGames.has(k));
+  if (anySelected) {
+    keys.forEach(k => state.viewer.selectedGames.delete(k));
+  } else {
+    keys.forEach(k => state.viewer.selectedGames.add(k));
+  }
+  buildViewerSidebar();
+  updateCourtView();
+}
+
+function selectAllViewerGames(val) {
+  const player = document.getElementById('player-select').value;
+  state.games
+    .filter(g=>g.players.find(p=>p.name===player))
+    .filter(g=>{
+      if (!state.viewer.partnerFilter) return true;
+      const cp=g.players.find(p=>p.name===player);
+      return cp && g.partnerOf[String(cp.idx)]===state.viewer.partnerFilter;
+    })
+    .forEach(g => val ? state.viewer.selectedGames.add(g.key) : state.viewer.selectedGames.delete(g.key));
+  buildViewerSidebar();
+  updateCourtView();
+}
+
+function togglePartnerFilter(name) {
+  if (state.viewer.partnerFilter === name) {
+    state.viewer.partnerFilter = null;
+  } else {
+    state.viewer.partnerFilter = name;
+  }
+  state.viewer.selectedGames.clear();
+  buildViewerSidebar();
+  updateCourtView();
+}
+
+function clearPartnerFilter() {
+  state.viewer.partnerFilter = null;
+  state.viewer.selectedGames.clear();
+  buildViewerSidebar();
+  updateCourtView();
+}
+
+
+function toggleViewerGame(key,checked) {
+  if(checked) state.viewer.selectedGames.add(key); else state.viewer.selectedGames.delete(key);
+  updateCourtView();
+}
+function onPlayerChange() {
+  const player=document.getElementById('player-select').value;
+  if (player && player !== state.activePlayer) {
+    state.activePlayer = player;
+    // Sync dashboard picker
+    const dp = document.getElementById('dash-player-select');
+    if (dp) dp.value = player;
+    const wEl = document.getElementById('dash-welcome');
+    if (wEl) wEl.textContent = player === PRIMARY_USER ? 'Welcome back, Carlo' : 'Viewing: ' + player.split(' ')[0];
+  }
+  state.viewer.selectedGames.clear();
+  state.games.filter(g=>g.players.find(p=>p.name===player)).forEach(g=>state.viewer.selectedGames.add(g.key));
+  buildViewerSidebar(); updateCourtView();
+}
+function toggleChip(el, group) {
+  const val=el.dataset.sht||el.dataset.out;
+  const set=group==='sht'?state.viewer.activeShotTypes:state.viewer.activeOutcomes;
+  if(set.has(val)){set.delete(val);el.classList.remove('active','active-in','active-out','active-net');}
+  else {
+    set.add(val);
+    if(group==='out'){
+      if(val==='in') el.classList.add('active','active-in');
+      else if(val==='net') el.classList.add('active','active-net');
+      else el.classList.add('active','active-out');
+    } else el.classList.add('active');
+  }
+  updateCourtView();
+}
+function toggleLayer(el, layer) {
+  if(state.viewer.layers.has(layer)){state.viewer.layers.delete(layer);el.classList.remove('active');}
+  else{state.viewer.layers.add(layer);el.classList.add('active');}
+  updateCourtView();
+}
+function setColorMode(mode, el) {
+  state.viewer.colorMode = mode;
+  document.querySelectorAll('#color-mode-chips .chip').forEach(c=>c.classList.remove('active'));
+  if(el) el.classList.add('active');
+  updateCourtView();
+}
+function qualityColor(q) {
+  if(q==null) return '#666';
+  const t=Math.max(0,Math.min(1,q));
+  if(t<0.5){return `rgb(255,${Math.round(t*2*245)},35)`;}
+  return `rgb(${Math.round((1-(t-0.5)*2)*245)},214,${Math.round(35+(t-0.5)*2*105)})`;
+}
+
+// ═══════════════════════════════════════════
+// COURT DRAWING — 2D FULL COURT
+// ═══════════════════════════════════════════
+// Court: 20ft wide × 44ft long. Net at z=22 (midpoint).
+// BOTTOM HALF = player's side (z=0 to z=22 mapped to bottom)
+// TOP HALF    = opponent's side (z=22 to z=44 mapped to top)
+// SVG: y=0 is TOP of screen = far baseline (z=44)
+//      y=H is BOTTOM of screen = near baseline (z=0)
+// We support landscape (court rotated sideways) and portrait (top-bottom)
+
+function getCourtLayout() {
+  const wrap = document.getElementById('court-main');
+  const W = wrap.clientWidth || 600;
+  const H = wrap.clientHeight || 700;
+  return { W, H, landscape: W > H * 1.1 };
+}
+
+function courtCoords(layout) {
+  const { W, H, landscape } = layout;
+  if (!landscape) {
+    // Portrait: court runs top-to-bottom. Net is horizontal in the middle.
+    const mL=80, mR=36, mT=52, mB=80;  // wider margins for 6ft out-zone bands
+    const dW=W-mL-mR, dH=H-mT-mB;
+    const scX=dW/20, scZ=dH/44;
+    // z=0 (near baseline) → SVG y = mT+dH (bottom)
+    // z=44 (far baseline) → SVG y = mT (top)
+    return {
+      landscape:false, W, H, mL, mR, mT, mB, dW, dH, scX, scZ,
+      px: (x)=> mL + x*scX,
+      py: (z)=> mT + (44-z)*scZ,
+      courtLeft: mL, courtRight: mL+dW,
+      courtTop: mT, courtBottom: mT+dH,
+      netY: mT+(44-22)*scZ,
+      kitNearY: mT+(44-15)*scZ,
+      kitFarY:  mT+(44-29)*scZ,
+      centerX: mL+10*scX,
+    };
+  } else {
+    // Landscape: court rotated 90°. Net is a VERTICAL line in the center.
+    // "z" (depth) maps to horizontal (x-axis in SVG)
+    // "x" (width) maps to vertical (y-axis in SVG)
+    const mT=80, mB=56, mL=80, mR=60;  // wider margins for 6ft out-zone bands
+    const dH=H-mT-mB, dW=W-mL-mR;
+    const scX=dH/20, scZ=dW/44;
+    // z=0 (near baseline) → SVG x = mL (left)
+    // z=44 (far baseline) → SVG x = mL+dW (right)
+    // x=0 (left sideline) → SVG y = mT (top)
+    // x=20 (right sideline) → SVG y = mT+dH (bottom)
+    return {
+      landscape:true, W, H, mL, mR, mT, mB, dH, dW, scX, scZ,
+      px: (x)=> mT + x*scX,      // court x → SVG y (vertical)
+      py: (z)=> mL + z*scZ,      // court z → SVG x (horizontal)
+      courtLeft: mL, courtRight: mL+dW,
+      courtTop: mT, courtBottom: mT+dH,
+      netY: mL+22*scZ,
+      kitNearY: mL+15*scZ,
+      kitFarY:  mL+29*scZ,
+      centerX: mT+10*scX,
+    };
+  }
+}
+
+function drawCourt(cc) {
+  const { W, H, landscape } = cc;
+  const { px, py, courtLeft, courtRight, courtTop, courtBottom, netY, kitNearY, kitFarY, centerX } = cc;
+  const isDark = document.body.getAttribute('data-theme')!=='light';
+  const courtFill = isDark?'#1a3a5c':'#2a6da8';
+  const kitFill   = isDark?'rgba(245,166,35,0.07)':'rgba(245,166,35,0.10)';
+  const lineCol   = 'rgba(255,255,255,0.75)';
+  const netCol    = '#fff';
+  const kitCol    = '#f5a623';
+  const bg        = isDark?'#0a0c0f':'#e8ecf2';
+  const textCol   = isDark?'rgba(255,255,255,0.32)':'rgba(0,0,0,0.32)';
+
+  let s = `<defs>
+    <filter id="glow"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <filter id="glow2"><feGaussianBlur stdDeviation="5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="rgba(255,255,255,0.3)"/>
+    </marker>
+  </defs>`;
+  s += `<rect width="${W}" height="${H}" fill="${bg}"/>`;
+
+  if (!landscape) {
+    // Portrait court
+    s += `<rect x="${courtLeft}" y="${courtTop}" width="${cc.dW}" height="${cc.dH}" fill="${courtFill}" rx="2"/>`;
+    // Out-zone bands (faint red — where out balls land)
+    const outBandColor = 'rgba(232,68,90,0.13)';
+    const outLabelColor = 'rgba(232,68,90,0.35)';
+    const outBand = cc.scZ * 6;  // wider bands to clearly contain out markers
+    // Past far baseline (top)
+    s += `<rect x="${courtLeft}" y="${courtTop - outBand}" width="${cc.dW}" height="${outBand}" fill="${outBandColor}" rx="2"/>`;
+    s += `<text x="${centerX}" y="${courtTop - outBand/2 + 4}" text-anchor="middle" font-size="8" fill="${outLabelColor}" font-family="var(--font-mono)">OUT — LONG</text>`;
+    // Past left sideline
+    s += `<rect x="${courtLeft - outBand}" y="${courtTop}" width="${outBand}" height="${cc.dH}" fill="${outBandColor}" rx="2"/>`;
+    s += `<text x="${courtLeft - outBand/2}" y="${(courtTop+courtBottom)/2 + 4}" text-anchor="middle" font-size="8" fill="${outLabelColor}" font-family="var(--font-mono)" transform="rotate(-90,${courtLeft-outBand/2},${(courtTop+courtBottom)/2})">OUT LEFT</text>`;
+    // Past right sideline
+    s += `<rect x="${courtRight}" y="${courtTop}" width="${outBand}" height="${cc.dH}" fill="${outBandColor}" rx="2"/>`;
+    s += `<text x="${courtRight + outBand/2}" y="${(courtTop+courtBottom)/2 + 4}" text-anchor="middle" font-size="8" fill="${outLabelColor}" font-family="var(--font-mono)" transform="rotate(90,${courtRight+outBand/2},${(courtTop+courtBottom)/2})">OUT RIGHT</text>`;
+    // Kitchen zones tint
+    s += `<rect x="${courtLeft}" y="${kitNearY}" width="${cc.dW}" height="${kitFarY-kitNearY}" fill="${kitFill}"/>`;
+    // Boundary
+    s += `<rect x="${courtLeft}" y="${courtTop}" width="${cc.dW}" height="${cc.dH}" fill="none" stroke="${lineCol}" stroke-width="1.8"/>`;
+    // Halves
+    s += `<line x1="${courtLeft}" y1="${netY}" x2="${courtRight}" y2="${netY}" stroke="${netCol}" stroke-width="3.5" stroke-linecap="round"/>`;
+    // Kitchen lines
+    s += `<line x1="${courtLeft}" y1="${kitNearY}" x2="${courtRight}" y2="${kitNearY}" stroke="${kitCol}" stroke-width="1.2" stroke-dasharray="5,3" opacity="0.8"/>`;
+    s += `<line x1="${courtLeft}" y1="${kitFarY}" x2="${courtRight}" y2="${kitFarY}" stroke="${kitCol}" stroke-width="1.2" stroke-dasharray="5,3" opacity="0.8"/>`;
+    // Center lines
+    s += `<line x1="${centerX}" y1="${courtTop}" x2="${centerX}" y2="${kitFarY}" stroke="${lineCol}" stroke-width="1" opacity="0.5"/>`;
+    s += `<line x1="${centerX}" y1="${kitNearY}" x2="${centerX}" y2="${courtBottom}" stroke="${lineCol}" stroke-width="1" opacity="0.5"/>`;
+    // Labels
+    s += `<text x="${centerX}" y="${kitFarY-6}" text-anchor="middle" font-size="8" fill="${kitCol}" font-family="var(--font-mono)" opacity="0.8">KITCHEN</text>`;
+    s += `<text x="${centerX}" y="${kitNearY-6}" text-anchor="middle" font-size="8" fill="${kitCol}" font-family="var(--font-mono)" opacity="0.8">KITCHEN</text>`;
+    s += `<text x="${centerX}" y="${(netY+courtBottom)/2+4}" text-anchor="middle" font-size="9" fill="${textCol}" font-family="var(--font-mono)">YOUR SIDE ↑</text>`;
+    s += `<text x="${centerX}" y="${(netY+courtTop)/2+4}" text-anchor="middle" font-size="9" fill="${textCol}" font-family="var(--font-mono)">OPPONENT'S SIDE</text>`;
+    s += `<text x="${centerX}" y="${(netY+courtTop)/2+16}" text-anchor="middle" font-size="8" fill="rgba(245,166,35,0.35)" font-family="var(--font-mono)" font-style="italic">⚠ impacts estimated</text>`;
+    s += `<text x="${courtLeft-4}" y="${netY+4}" text-anchor="end" font-size="9" fill="rgba(255,255,255,.5)" font-family="var(--font-mono)">NET</text>`;
+  } else {
+    // Landscape court (rotated 90°)
+    const cL=cc.mL,cR=cc.mL+cc.dW,cT=cc.mT,cB=cc.mT+cc.dH;
+    s += `<rect x="${cL}" y="${cT}" width="${cc.dW}" height="${cc.dH}" fill="${courtFill}" rx="2"/>`;
+    // Out-zone bands (landscape)
+    const outBandColorL = 'rgba(232,68,90,0.13)';
+    const outLabelColorL = 'rgba(232,68,90,0.35)';
+    const outBandL = cc.scZ * 6;  // wider bands to clearly contain out markers
+    // Past far baseline (right in landscape)
+    s += `<rect x="${cR}" y="${cT}" width="${outBandL}" height="${cc.dH}" fill="${outBandColorL}" rx="2"/>`;
+    s += `<text x="${cR + outBandL/2}" y="${(cT+cB)/2 + 4}" text-anchor="middle" font-size="8" fill="${outLabelColorL}" font-family="var(--font-mono)" transform="rotate(90,${cR+outBandL/2},${(cT+cB)/2})">OUT LONG</text>`;
+    // Past right sideline (bottom in landscape)
+    s += `<rect x="${cL}" y="${cB}" width="${cc.dW}" height="${outBandL}" fill="${outBandColorL}" rx="2"/>`;
+    s += `<text x="${(cL+cR)/2}" y="${cB + outBandL/2 + 4}" text-anchor="middle" font-size="8" fill="${outLabelColorL}" font-family="var(--font-mono)">OUT RIGHT</text>`;
+    // Past left sideline (top in landscape)
+    s += `<rect x="${cL}" y="${cT - outBandL}" width="${cc.dW}" height="${outBandL}" fill="${outBandColorL}" rx="2"/>`;
+    s += `<text x="${(cL+cR)/2}" y="${cT - outBandL/2 + 4}" text-anchor="middle" font-size="8" fill="${outLabelColorL}" font-family="var(--font-mono)">OUT LEFT</text>`;
+    // Kitchen zones tint (now vertical bands)
+    s += `<rect x="${kitNearY}" y="${cT}" width="${kitFarY-kitNearY}" height="${cc.dH}" fill="${kitFill}"/>`;
+    // Boundary
+    s += `<rect x="${cL}" y="${cT}" width="${cc.dW}" height="${cc.dH}" fill="none" stroke="${lineCol}" stroke-width="1.8"/>`;
+    // Net — vertical line
+    s += `<line x1="${netY}" y1="${cT-4}" x2="${netY}" y2="${cB+4}" stroke="${netCol}" stroke-width="3.5" stroke-linecap="round"/>`;
+    // Kitchen lines — vertical dashed
+    s += `<line x1="${kitNearY}" y1="${cT}" x2="${kitNearY}" y2="${cB}" stroke="${kitCol}" stroke-width="1.2" stroke-dasharray="5,3" opacity="0.8"/>`;
+    s += `<line x1="${kitFarY}" y1="${cT}" x2="${kitFarY}" y2="${cB}" stroke="${kitCol}" stroke-width="1.2" stroke-dasharray="5,3" opacity="0.8"/>`;
+    // Center lines
+    s += `<line x1="${cL}" y1="${centerX}" x2="${kitNearY}" y2="${centerX}" stroke="${lineCol}" stroke-width="1" opacity="0.5"/>`;
+    s += `<line x1="${kitFarY}" y1="${centerX}" x2="${cR}" y2="${centerX}" stroke="${lineCol}" stroke-width="1" opacity="0.5"/>`;
+    // Labels
+    s += `<text x="${(kitNearY+kitFarY)/2}" y="${cT-8}" text-anchor="middle" font-size="8" fill="${kitCol}" font-family="var(--font-mono)" opacity="0.8">KITCHEN</text>`;
+    s += `<text x="${(cL+netY)/2}" y="${centerX-6}" text-anchor="middle" font-size="9" fill="${textCol}" font-family="var(--font-mono)">← YOUR SIDE</text>`;
+    s += `<text x="${(netY+cR)/2}" y="${centerX-6}" text-anchor="middle" font-size="9" fill="${textCol}" font-family="var(--font-mono)">OPPONENT'S SIDE →</text>`;
+    s += `<text x="${(netY+cR)/2}" y="${centerX+8}" text-anchor="middle" font-size="8" fill="rgba(245,166,35,0.35)" font-family="var(--font-mono)" font-style="italic">⚠ impacts estimated</text>`;
+    s += `<text x="${netY}" y="${cT-8}" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.5)" font-family="var(--font-mono)">NET</text>`;
+  }
+  return s;
+}
+
+// ═══════════════════════════════════════════
+// SHOT SHAPES — 9 distinct symbols
+// ═══════════════════════════════════════════
+// Group A (back court): serve=⊙ drive=● lob=◎ smash=⬟ 
+// Group B (kitchen):    dink=■ drop=▪ reset=⬜
+// Group C (mid court):  volley=▲ speedup=△
+// other=×
+
+function shotSymbolPath(type, cx, cy, r) {
+  switch(type) {
+    case 'serve':   return `<circle cx="${cx}" cy="${cy}" r="${r}" />`; // solid circle
+    case 'drive':   return `<circle cx="${cx}" cy="${cy}" r="${r*0.75}" /><circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke-width="1.2" />`; // circle with ring
+    case 'lob':     return `<circle cx="${cx}" cy="${cy}" r="${r}" /><line x1="${cx-r*1.4}" y1="${cy}" x2="${cx+r*1.4}" y2="${cy}" stroke-width="1.2" /><line x1="${cx}" y1="${cy-r*1.4}" x2="${cx}" y2="${cy+r*1.4}" stroke-width="1.2" />`; // circle+cross (lob)
+    case 'smash':   return `<polygon points="${cx},${cy-r*1.3} ${cx+r*1.1},${cy+r*0.7} ${cx},${cy+r*0.3} ${cx-r*1.1},${cy+r*0.7}" />`; // 4-pt star/diamond
+    case 'dink':    return `<rect x="${cx-r}" y="${cy-r}" width="${r*2}" height="${r*2}" rx="2" />`; // solid square
+    case 'drop':    return `<rect x="${cx-r*0.7}" y="${cy-r*0.7}" width="${r*1.4}" height="${r*1.4}" rx="1" /><rect x="${cx-r*1.1}" y="${cy-r*1.1}" width="${r*2.2}" height="${r*2.2}" rx="3" fill="none" stroke-width="1.2" />`; // square in square
+    case 'reset':   return `<rect x="${cx-r*0.85}" y="${cy-r*0.85}" width="${r*1.7}" height="${r*1.7}" rx="2" />`; // solid small square
+    case 'volley':  return `<polygon points="${cx},${cy-r*1.35} ${cx+r*1.2},${cy+r*0.85} ${cx-r*1.2},${cy+r*0.85}" />`; // filled triangle
+    case 'speedup': return `<polygon points="${cx},${cy-r*1.35} ${cx+r*1.2},${cy+r*0.85} ${cx-r*1.2},${cy+r*0.85}" fill="none" stroke-width="1.5" />`; // outline triangle
+    case 'return':  return `<circle cx="${cx}" cy="${cy}" r="${r*0.9}" fill="none" stroke-width="1.8"/><line x1="${cx}" y1="${cy-r*0.5}" x2="${cx}" y2="${cy+r*0.5}" stroke-width="1.5"/>`; // circle with tick = return
+    default:        return `<line x1="${cx-r}" y1="${cy-r}" x2="${cx+r}" y2="${cy+r}" stroke-width="1.8"/><line x1="${cx+r}" y1="${cy-r}" x2="${cx-r}" y2="${cy+r}" stroke-width="1.8"/>`; // X
+  }
+}
+
+// ═══════════════════════════════════════════
+// POSITION COMPUTATION
+// ═══════════════════════════════════════════
+function getImpactCoords(sh) {
+  // Impact coords on opponent's half. z=22=net, z=44=far baseline.
+  // kitchen/NVZ line at z=29. All zones verified against pickleball rules.
+  // For out shots: dir (long/right/left) and sd (near/far) come from PBVision raw data.
+  const seed = (sh.ridx||0)*997 + (sh.shidx||0)*31 + 7;
+  function sr(n) { const v=Math.sin(seed+n)*43758.5453; return v-Math.floor(v); }
+  function sc(n,s) { return (sr(n)*2-1)*s; }
+  let x, z;
+
+  if (sh.outcome === 'net') {
+    // Net shot: ball hit the net and DIDN'T reach opponent's side.
+    // Place on hitter's side of the net (z=21–21.8) — physically accurate
+    // and visually separates from 'in' shots which start at z=22.1+
+    z = 20.3 + sr(1)*0.9;  // z=20.3-21.2: clearly hitter's side, separated from origins
+    x = 1.5 + sr(2)*17;
+
+  } else if (sh.outcome === 'out') {
+    const dir = sh.dir;
+    const sd  = sh.sd;  // 'near'=closer to net, 'far'=closer to baseline, null=unknown
+    // Depth based on sd: near=z24-32, far=z34-43, none=z24-43 full range
+    const zNear = sd==='near' ? [24, 31] : sd==='far' ? [34, 43] : [24, 43];
+
+    if (dir === 'right') {
+      // Past right sideline — push well into the out-band so it's unambiguous
+      x = 22.5 + sr(1)*2.0;  // min 2.5ft past sideline
+      z = zNear[0] + sr(2)*(zNear[1]-zNear[0]);
+    } else if (dir === 'left') {
+      // Past left sideline — push well into the out-band
+      x = -2.5 - sr(1)*2.0;  // min 2.5ft past sideline
+      z = zNear[0] + sr(2)*(zNear[1]-zNear[0]);
+    } else {
+      // 'long' or no dir — past far baseline
+      z = 44.8 + sr(1)*3.0;
+      x = 2 + sr(2)*16;
+    }
+
+  } else {
+    // 'in' — zone by shot type, verified against pickleball rules
+    const zones = {
+      serve:   {x0:0.5,  x1:19.5, z0:29.2, z1:43},
+      drive:   {x0:1,    x1:19,   z0:29,   z1:43},
+      lob:     {x0:2,    x1:18,   z0:37,   z1:43},
+      smash:   {x0:2,    x1:18,   z0:29,   z1:43},
+      dink:    {x0:1.5,  x1:18.5, z0:22.5, z1:28.8},
+      drop:    {x0:1.5,  x1:18.5, z0:22.5, z1:28.8},
+      reset:   {x0:2,    x1:18,   z0:22.5, z1:28.8},
+      volley:  {x0:1.5,  x1:18.5, z0:29,   z1:43},
+      speedup: {x0:2,    x1:18,   z0:29,   z1:43},
+      return:  {x0:1,    x1:19,   z0:33,   z1:43},
+      other:   {x0:1.5,  x1:18.5, z0:26,   z1:43},
+    };
+    const zn = zones[sh.shotType] || zones.other;
+    x = zn.x0 + sr(1)*(zn.x1-zn.x0) + sc(3,0.6);
+    z = zn.z0 + sr(2)*(zn.z1-zn.z0) + sc(4,0.6);
+    x = Math.max(0.2, Math.min(19.8, x));
+    z = Math.max(22.1, Math.min(43.9, z));
+  }
+  return { x, z };
+}
+
+function getOriginCoords(sh) {
+  // ESTIMATED origin position. No absolute position data in PBVision exports.
+  // pls[pid].left gives court side per rally (0=right half, 1=left half).
+  // smovX is lateral movement before the shot — used for directional drift.
+  // Scatter widened so distribution matches real court usage width.
+  const seed = (sh.ridx||0)*613 + (sh.shidx||0)*17 + 3;
+  function sr(n) { const v=Math.sin(seed+n)*31415.9265; return v-Math.floor(v); }
+
+  // Depth zones: z=0 own baseline → z=22 net
+  const zones = {
+    serve:   {z0:-3.5, z1:-0.5},
+    return:  {z0:0.5,  z1:4},    // return of serve — near own baseline
+    other:   {z0:0.5,  z1:6},
+    drive:   {z0:3,    z1:14},
+    lob:     {z0:12,   z1:19},
+    smash:   {z0:15,   z1:21},
+    dink:    {z0:17,   z1:22},
+    drop:    {z0:7,    z1:17},
+    reset:   {z0:16,   z1:22},
+    volley:  {z0:15,   z1:22},
+    speedup: {z0:17,   z1:22},
+  };
+  const zn = zones[sh.shotType] || zones.other;
+  const z = zn.z0 + sr(1)*(zn.z1-zn.z0);
+
+  // X position: side-biased but with enough scatter to fill the court width.
+  // sideBase: right-side player starts center-right (13), left-side at center-left (7).
+  // smovX scaled 0.6 adds real lateral movement signal.
+  // Scatter ±4.5 gives realistic coverage — right-side player still x>10 ~80% of shots.
+  const sideBase = sh.side===1 ? 7 : sh.side===0 ? 13 : 10;
+  const x = Math.max(0.5, Math.min(19.5,
+    sideBase + (sh.smovX||0)*0.6 + (sr(2)*2 - 1)*4.5
+  ));
+  return { x, z };
+}
+
+// ═══════════════════════════════════════════
+// MAIN COURT VIEW
+// ═══════════════════════════════════════════
+function updateCourtView() {
+  hideShotHover();
+  state.shotIndex = [];  // reset before rebuild
+  const svg = document.getElementById('court-svg');
+  const badge = document.getElementById('shot-count-badge');
+  if (!svg) return;
+
+  const player = document.getElementById('player-select').value;
+  const r = parseFloat(document.getElementById('dot-size-slider').value)||6;
+
+  if (!state.games.length) { badge.textContent='Upload games to begin'; svg.innerHTML=''; return; }
+  if (!player) { badge.textContent='Select a player'; svg.innerHTML=''; return; }
+
+  const selGames = state.games.filter(g=>state.viewer.selectedGames.has(g.key));
+  const shots = [];
+  selGames.forEach(g=>{
+    const pd=g.players.find(p=>p.name===player);
+    if(!pd) return;
+    g.shots.forEach(sh=>{
+      if(sh.pid!==pd.idx) return;
+      if(!state.viewer.activeShotTypes.has(sh.shotType)) return;
+      if(!state.viewer.activeOutcomes.has(sh.outcome)) return;
+      shots.push({...sh, _gameKey:g.key, _partnerOf:g.partnerOf});
+    });
+  });
+
+  const layout = getCourtLayout();
+  const cc = courtCoords(layout);
+  const { landscape, px, py } = cc;
+
+  // Convert court coords → SVG coords based on layout
+  function toSVG(courtX, courtZ) {
+    if (!landscape) {
+      return { svgX: px(courtX), svgY: py(courtZ) };
+    } else {
+      // In landscape: court x→svg y, court z→svg x
+      return { svgX: py(courtZ), svgY: px(courtX) };
+    }
+  }
+
+  let svgContent = drawCourt(cc);
+  svgContent += '<g id="shot-traces"></g>';
+
+  // ── LAYER FLAGS
+  const showImpact    = state.viewer.layers.has('impact');
+  const showOrigin    = state.viewer.layers.has('origin');
+  const showTraces    = state.viewer.layers.has('traces');
+  const showRushed    = state.viewer.layers.has('rushed');
+  const showErrors    = state.viewer.layers.has('errors');
+  const showPutaway   = state.viewer.layers.has('putaway');
+  const showRetreating= state.viewer.layers.has('retreating');
+  const showAdvancing = state.viewer.layers.has('advancing');
+  const showLateral   = state.viewer.layers.has('lateral');
+  const colorMode     = state.viewer.colorMode || 'outcome';
+
+  const OUTCOME_COLORS = { in:'#3dd68c', net:'#f5a623', out:'#e8445a' };
+  const STROKE_COLORS  = { fh:'#00d4aa', bh:'#9b7fe8' };
+  const ORIGIN_BASE    = 'rgba(180,200,255,0.32)';
+
+  // ── PRE-DRAW TRACE LINES (behind markers)
+  // Only draw traces for in-court shots (skip out balls — they go off-court and look like ghosts)
+  if (showTraces) {
+    shots.forEach(sh => {
+      if (sh.outcome !== 'in') return;  // skip out/net — off-court impacts look like ghosts
+      const imp = getImpactCoords(sh);
+      const ori = getOriginCoords(sh);
+      // Skip if origin is behind baseline (serves) — those traces span the whole court
+      if (ori.z < 0) return;
+      const impS = toSVG(imp.x, imp.z);
+      const oriS = toSVG(ori.x, ori.z);
+      const col = OUTCOME_COLORS[sh.outcome] || '#888';
+      svgContent += `<line x1="${oriS.svgX.toFixed(1)}" y1="${oriS.svgY.toFixed(1)}"
+        x2="${impS.svgX.toFixed(1)}" y2="${impS.svgY.toFixed(1)}"
+        stroke="${col}" stroke-width="0.7" opacity="0.14" stroke-dasharray="3,3"/>`;
+    });
+  }
+
+  // ── SHOT MARKERS
+  shots.forEach((sh, i) => {
+    const imp = getImpactCoords(sh);
+    const ori = getOriginCoords(sh);
+    const impSVG = toSVG(imp.x, imp.z);
+    const oriSVG = toSVG(ori.x, ori.z);
+
+    const outcomeColor = OUTCOME_COLORS[sh.outcome] || '#aaa';
+    const strokeColor  = sh.stroke ? (STROKE_COLORS[sh.stroke] || outcomeColor) : '#888';
+    const qColor       = qualityColor(sh.quality);
+    const isRushed     = sh.stress > 6;
+    const isError      = sh.outcome==='net' || sh.outcome==='out';
+    const isPutaway    = sh.isPutaway;
+
+    let fillColor = colorMode==='stroke' ? strokeColor
+                  : colorMode==='quality' ? qColor
+                  : outcomeColor;
+
+    const errorDim  = showErrors  && !isError   ? 0.15 : null;
+    const putawayDim= showPutaway && !isPutaway  ? 0.15 : null;
+    const baseOpacity = errorDim ?? putawayDim ?? 0.82;
+
+    state.shotIndex.push({ i, sh, impSVG, oriSVG, imp, ori });
+
+    // IMPACT marker (opponent's half)
+    if (showImpact) {
+      svgContent += `<g class="shot-marker impact-marker" data-idx="${i}"
+        style="cursor:pointer;" transform="translate(${impSVG.svgX.toFixed(1)},${impSVG.svgY.toFixed(1)})">`;
+      svgContent += `<g fill="${fillColor}" stroke="${fillColor}" opacity="${baseOpacity}">`;
+      svgContent += shotSymbolPath(sh.shotType, 0, 0, r);
+      svgContent += '</g>';
+      // Mark out shots with a subtle X indicator so they're unmistakably out
+      if (showImpact && sh.outcome === 'out') {
+        svgContent += `<g opacity="0.6"><line x1="${-r*0.8}" y1="${-r*0.8}" x2="${r*0.8}" y2="${r*0.8}" stroke="#e8445a" stroke-width="1.8" stroke-linecap="round"/><line x1="${r*0.8}" y1="${-r*0.8}" x2="${-r*0.8}" y2="${r*0.8}" stroke="#e8445a" stroke-width="1.8" stroke-linecap="round"/></g>`;
+      }
+      if (showRushed && isRushed)
+        svgContent += `<circle cx="0" cy="0" r="${r*1.85}" fill="none" stroke="#f5a623" stroke-width="1.8" opacity="0.8"/>`;
+      if (showErrors && isError)
+        svgContent += `<circle cx="0" cy="0" r="${r*1.85}" fill="none" stroke="${outcomeColor}" stroke-width="2" opacity="0.9" filter="url(#glow)"/>`;
+      if (showPutaway && isPutaway)
+        svgContent += `<circle cx="0" cy="0" r="${r*1.85}" fill="none" stroke="#fff" stroke-width="2" opacity="0.9" filter="url(#glow)"/>`;
+      // Movement category rings (shown on ORIGIN markers only — but impact gets dim if not matching)
+      if (showRetreating && sh.movecat==='retreating')
+        svgContent += `<circle cx="0" cy="0" r="${r*1.85}" fill="none" stroke="#e8445a" stroke-width="2" opacity="0.9" stroke-dasharray="3,2"/>`;
+      if (showAdvancing && sh.movecat==='advancing')
+        svgContent += `<circle cx="0" cy="0" r="${r*1.85}" fill="none" stroke="#3dd68c" stroke-width="2" opacity="0.9" stroke-dasharray="3,2"/>`;
+      if (showLateral && sh.movecat==='lateral')
+        svgContent += `<circle cx="0" cy="0" r="${r*1.85}" fill="none" stroke="#9b7fe8" stroke-width="2" opacity="0.9" stroke-dasharray="3,2"/>`;
+      svgContent += '</g>';
+    }
+
+    // ORIGIN marker (player's half — estimated position)
+    if (showOrigin) {
+      const originFill   = colorMode==='stroke' ? strokeColor+'44'
+                         : colorMode==='quality' ? qColor+'55'
+                         : ORIGIN_BASE;
+      const originStroke = colorMode==='stroke' ? strokeColor
+                         : colorMode==='quality' ? qColor
+                         : 'rgba(180,200,255,0.55)';
+      svgContent += `<g class="shot-marker origin-marker" data-idx="${i}"
+        style="cursor:pointer;" transform="translate(${oriSVG.svgX.toFixed(1)},${oriSVG.svgY.toFixed(1)})">`;
+      svgContent += `<g fill="${originFill}" stroke="${originStroke}" stroke-width="1.2" opacity="${baseOpacity*0.85}">`;
+      svgContent += shotSymbolPath(sh.shotType, 0, 0, r*0.8);
+      svgContent += '</g>';
+      if (showRushed && isRushed)
+        svgContent += `<circle cx="0" cy="0" r="${r*1.65}" fill="none" stroke="#f5a623" stroke-width="1.5" opacity="0.65"/>`;
+      if (showRetreating && sh.movecat==='retreating')
+        svgContent += `<circle cx="0" cy="0" r="${r*1.65}" fill="none" stroke="#e8445a" stroke-width="2" opacity="0.9" stroke-dasharray="3,2"/>`;
+      if (showAdvancing && sh.movecat==='advancing')
+        svgContent += `<circle cx="0" cy="0" r="${r*1.65}" fill="none" stroke="#3dd68c" stroke-width="2" opacity="0.9" stroke-dasharray="3,2"/>`;
+      if (showLateral && sh.movecat==='lateral')
+        svgContent += `<circle cx="0" cy="0" r="${r*1.65}" fill="none" stroke="#9b7fe8" stroke-width="2" opacity="0.9" stroke-dasharray="3,2"/>`;
+      svgContent += '</g>';
+    }
+  });
+
+  svg.innerHTML = svgContent;
+  badge.textContent = shots.length+' shot'+(shots.length!==1?'s':'')+' · '+selGames.length+' game'+(selGames.length!==1?'s':'');
+  if (!shots.length) badge.textContent = 'No shots match filters';
+
+  // Attach hover events
+  svg.querySelectorAll('.shot-marker').forEach(el => {
+    el.addEventListener('mouseenter', (e) => showShotHover(e, parseInt(el.dataset.idx), cc, toSVG));
+    el.addEventListener('mouseleave', hideShotHover);
+  });
+  // Clear hover when mouse leaves the court area entirely
+  svg.onmouseleave = hideShotHover;
+  if(!svg._vzInited){svg._vzInited=true;svg._vz={x:0,y:0,scale:1};initPanZoom(svg);}
+  applyViewBox(svg,cc.W,cc.H);
+
+  // Update stats bar
+  updateViewerStatsBar(player, selGames, shots);
+  // Update legend
+  updateLegend();
+}
+
+// ═══════════════════════════════════════════
+// HOVER TOOLTIP + TRACE
+// ═══════════════════════════════════════════
+function showShotHover(e, idx, cc, toSVG) {
+  const entry = state.shotIndex[idx]; if (!entry) return;
+  const {sh, impSVG, oriSVG} = entry;
+  const tooltip = document.getElementById('hover-tooltip');
+  const courtMain = document.getElementById('court-main');
+  const rect = courtMain.getBoundingClientRect();
+  const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+
+  // Draw glow trace line
+  const traceGroup = document.getElementById('shot-traces');
+  if (traceGroup) {
+    const midX = (impSVG.svgX+oriSVG.svgX)/2;
+    const midY = (impSVG.svgY+oriSVG.svgY)/2;
+    const outcomeColor = {in:'#3dd68c',net:'#f5a623',out:'#e8445a'}[sh.outcome]||'#aaa';
+    traceGroup.innerHTML = `
+      <line x1="${oriSVG.svgX.toFixed(1)}" y1="${oriSVG.svgY.toFixed(1)}" x2="${impSVG.svgX.toFixed(1)}" y2="${impSVG.svgY.toFixed(1)}"
+        stroke="${outcomeColor}" stroke-width="2" opacity="0.5" filter="url(#glow)" stroke-dasharray="4,3"/>
+      <line x1="${oriSVG.svgX.toFixed(1)}" y1="${oriSVG.svgY.toFixed(1)}" x2="${impSVG.svgX.toFixed(1)}" y2="${impSVG.svgY.toFixed(1)}"
+        stroke="${outcomeColor}" stroke-width="1" opacity="0.9" stroke-dasharray="4,3"/>
+      <circle cx="${oriSVG.svgX.toFixed(1)}" cy="${oriSVG.svgY.toFixed(1)}" r="8" fill="none" stroke="${outcomeColor}" stroke-width="2" opacity="0.7" filter="url(#glow)"/>
+      <circle cx="${impSVG.svgX.toFixed(1)}" cy="${impSVG.svgY.toFixed(1)}" r="8" fill="none" stroke="${outcomeColor}" stroke-width="2" opacity="0.7" filter="url(#glow)"/>
+    `;
+  }
+
+  // Tooltip content
+  document.getElementById('tt-title').textContent = sh.shotType.charAt(0).toUpperCase()+sh.shotType.slice(1)+' — '+sh.outcome.toUpperCase();
+  const rows = [
+    ['Stroke', sh.stroke ? sh.stroke.toUpperCase() : '—'],
+    ['Quality', sh.quality!=null ? (sh.quality*100).toFixed(0)+'%' : '—'],
+    ['Movement', sh.stress ? (sh.stress.toFixed(1)+'ft · '+(sh.movecat||'moving')) : '—'],
+    ['Direction', sh.outcome==='net' ? 'hit net' : sh.smovY!=null ? (sh.smovY>1?'→ net':sh.smovY<-1?'← baseline':'holding') + (sh.smovX>1?' + right':sh.smovX<-1?' + left':'') : '—'],
+    ['Type flags', [sh.isVolley?'VOL':'',sh.isPoach?'PCH':'',sh.isPutaway?'PUT':'',sh.isSpeedup?'SPD':''].filter(Boolean).join(' ')||'—'],
+  ];
+  document.getElementById('tt-body').innerHTML = rows.map(([l,v])=>
+    `<div class="tt-row"><span>${l}</span><span class="tt-val">${v}</span></div>`).join('');
+
+  // Position tooltip near cursor but keep in bounds
+  let tx = mx+16, ty = my-60;
+  if (tx+230 > cc.W) tx = mx-230;
+  if (ty < 0) ty = my+16;
+  tooltip.style.left = tx+'px'; tooltip.style.top = ty+'px'; tooltip.style.display='block';
+}
+function hideShotHover() {
+  document.getElementById('hover-tooltip').style.display='none';
+  const tg=document.getElementById('shot-traces'); if(tg) tg.innerHTML='';
+}
+
+// ═══════════════════════════════════════════
+// STATS BAR + LEGEND
+// ═══════════════════════════════════════════
+function updateViewerStatsBar(player, selGames, filteredShots) {
+  const el=document.getElementById('viewer-stats-inner'); if(!el) return;
+  // Filtered shot stats (based on current outcome/type/game filters)
+  const fs = filteredShots || [];
+  const fsIn  = fs.filter(s=>s.outcome==='in').length;
+  const fsNet = fs.filter(s=>s.outcome==='net').length;
+  const fsOut = fs.filter(s=>s.outcome==='out').length;
+  const fsTotal = fs.length || 1;
+  const fsInPct  = Math.round(fsIn /fsTotal*100);
+  const fsNetPct = Math.round(fsNet/fsTotal*100);
+  const fsOutPct = Math.round(fsOut/fsTotal*100);
+  // FH/BH for filtered shots
+  const fsFH = fs.filter(s=>s.stroke==='fh').length;
+  const fsBH = fs.filter(s=>s.stroke==='bh').length;
+  const fsFHBH = fsFH+fsBH||1;
+  // Rushed for filtered shots
+  const fsRushed = fs.filter(s=>s.stress>6 && s.stress>0).length;
+  const fsWithStress = fs.filter(s=>s.stress>0).length||1;
+  const pd=selGames.map(g=>g.players.find(p=>p.name===player)).filter(Boolean);
+  if(!pd.length){el.innerHTML='';return;}
+  let fh=0,bh=0,rushed=0,totalStress=0;
+  selGames.forEach(g=>{
+    const p=g.players.find(q=>q.name===player); if(!p) return;
+    g.shots.filter(s=>s.pid===p.idx).forEach(s=>{
+      if(s.stroke==='fh') fh++; else if(s.stroke==='bh') bh++;
+      if(s.stress>0){totalStress++; if(s.stress>6) rushed++;}
+    });
+  });
+  const tot=fh+bh||1, rPct=totalStress?(rushed/totalStress*100).toFixed(0):'—';
+  const wins=pd.filter(d=>d.won).length;
+  const avgR=avgOf(pd,d=>d.ratings.overall);
+  const avgIn=avgOf(pd,d=>d.shot_accuracy.in);
+  const avgKit=avgOf(pd,d=>d.kitchen_arrivals.serving_side||0);
+
+  function tile(label,val,color) {
+    return `<div class="stat-tile"><div class="stat-tile-val" style="color:${color||'var(--text)'}">${val}</div><div class="stat-tile-label">${label}</div></div>`;
+  }
+  const selHtml = `<div id="viewer-sel-mini">
+    <div style="font-size:9px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px;">Shot Mix</div>
+    ${['drive','dink','drop','volley','speedup'].map(k=>{
+      const v=avgOf(pd,d=>d.shot_selection[k]||0);
+      return `<div style="display:flex;align-items:center;gap:5px;margin-bottom:2px;">
+        <div style="width:52px;font-size:10px;color:var(--text2)">${k.charAt(0).toUpperCase()+k.slice(1)}</div>
+        <div style="flex:1;height:4px;background:var(--bg4);border-radius:2px"><div style="width:${(v*100).toFixed(0)}%;height:100%;background:var(--accent2);border-radius:2px"></div></div>
+        <div style="width:30px;font-size:10px;font-family:var(--font-mono);text-align:right">${pct(v)}</div></div>`;
+    }).join('')}
+  </div>`;
+  // Filtered shots summary tile
+  const filteredTile = fs.length > 0 ? `<div style="display:inline-flex;flex-direction:column;justify-content:center;padding:8px 16px;border-right:1px solid var(--border);min-width:160px;background:rgba(0,212,170,0.06);flex-shrink:0;">
+    <div style="font-size:9px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px;">Filtered: ${fs.length} shots</div>
+    <div style="display:flex;gap:10px;">
+      <div style="text-align:center"><div style="font-size:15px;font-weight:800;font-family:var(--font-head);color:#3dd68c">${fsInPct}%</div><div style="font-size:8px;color:var(--text3)">IN</div></div>
+      <div style="text-align:center"><div style="font-size:15px;font-weight:800;font-family:var(--font-head);color:#f5a623">${fsNetPct}%</div><div style="font-size:8px;color:var(--text3)">NET</div></div>
+      <div style="text-align:center"><div style="font-size:15px;font-weight:800;font-family:var(--font-head);color:#e8445a">${fsOutPct}%</div><div style="font-size:8px;color:var(--text3)">OUT</div></div>
+      <div style="text-align:center"><div style="font-size:15px;font-weight:800;font-family:var(--font-head);">${Math.round(fsFH/fsFHBH*100)}%/${Math.round(fsBH/fsFHBH*100)}%</div><div style="font-size:8px;color:var(--text3)">FH/BH</div></div>
+      <div style="text-align:center"><div style="font-size:15px;font-weight:800;font-family:var(--font-head);color:${Math.round(fsRushed/fsWithStress*100)>20?'var(--danger)':'var(--good)'}">${Math.round(fsRushed/fsWithStress*100)}%</div><div style="font-size:8px;color:var(--text3)">RUSHED</div></div>
+    </div>
+  </div>` : '';
+
+  el.innerHTML = filteredTile +
+    tile('Record',wins+'W–'+(pd.length-wins)+'L',wins/pd.length>=0.5?'var(--good)':'var(--danger)') +
+    tile('Avg Rating',avgR.toFixed(2),ratingColor(avgR)) +
+    tile('Accuracy',pct(avgIn),avgIn>=0.82?'var(--good)':avgIn>=0.75?'var(--warn)':'var(--danger)') +
+    tile('Kitchen %',pct(avgKit),avgKit>=0.85?'var(--good)':avgKit>=0.70?'var(--warn)':'var(--danger)') +
+    tile('FH / BH',pct(fh/tot)+' / '+pct(bh/tot)) +
+    tile('Rushed %',rPct+'%',rPct>20?'var(--danger)':rPct>12?'var(--warn)':'var(--good)') +
+    selHtml;
+
+  // Generate coaching insight — pass allShots (unfiltered for this player/game combo)
+  const _allShotsForInsight = [];
+  selGames.forEach(g=>{
+    const _pd=g.players.find(p=>p.name===player); if(!_pd) return;
+    g.shots.forEach(sh=>{ if(sh.pid===_pd.idx) _allShotsForInsight.push(sh); });
+  });
+  generateInsight(filteredShots||[], _allShotsForInsight, 
+    state.viewer.activeShotTypes, state.viewer.activeOutcomes, state.viewer.layers);
+
+  // Also populate the top filter stats bar
+  const fb = document.getElementById('fstat-badge');
+  if (fb) {
+    const fs = filteredShots || [];
+    const fsN = fs.length;
+    const activeTypes = [...state.viewer.activeShotTypes];
+    const typeLabel = activeTypes.length >= 10 ? 'all types'
+      : activeTypes.length <= 2 ? activeTypes.join('+')
+      : activeTypes.length + ' types';
+    const outcomeLabel = [...state.viewer.activeOutcomes].join('+');
+    fb.textContent = fsN + ' shot' + (fsN!==1?'s':'') + ' · ' + typeLabel + ' · ' + outcomeLabel;
+
+    const fsIn  = fs.filter(s=>s.outcome==='in').length;
+    const fsNet = fs.filter(s=>s.outcome==='net').length;
+    const fsOut = fs.filter(s=>s.outcome==='out').length;
+    const fsFH  = fs.filter(s=>s.stroke==='fh').length;
+    const fsBH  = fs.filter(s=>s.stroke==='bh').length;
+    const fsStr = fsFH+fsBH||1;
+    const fsRush = fs.filter(s=>s.stress>6).length;
+    const fsStressN = fs.filter(s=>s.stress>0).length||1;
+    const fsQuals = fs.map(s=>s.quality).filter(q=>q!=null);
+    const fsAvgQ = fsQuals.length ? fsQuals.reduce((a,b)=>a+b,0)/fsQuals.length : null;
+
+    const el_in     = document.getElementById('fstat-in');
+    const el_net    = document.getElementById('fstat-net');
+    const el_out    = document.getElementById('fstat-out');
+    const el_fhbh   = document.getElementById('fstat-fhbh');
+    const el_rushed = document.getElementById('fstat-rushed');
+    const el_qual   = document.getElementById('fstat-quality');
+    const el_win    = document.getElementById('fstat-win');
+    const el_rating = document.getElementById('fstat-rating');
+
+    if (el_win)    el_win.textContent    = wins+'W–'+(pd.length-wins)+'L';
+    if (el_rating) { el_rating.textContent = avgRating>0?avgRating.toFixed(2)+' avg':''; el_rating.style.color=ratingColor(avgRating); }
+    if (el_in)     el_in.textContent     = fsN ? '✓ '+pct(fsIn/fsN)+' in'  : '';
+    if (el_net)    el_net.textContent    = fsN ? '~ '+pct(fsNet/fsN)+' net' : '';
+    if (el_out)    el_out.textContent    = fsN ? '✗ '+pct(fsOut/fsN)+' out' : '';
+    if (el_fhbh && fsStr>1) el_fhbh.textContent = 'FH '+pct(fsFH/fsStr)+' / BH '+pct(fsBH/fsStr);
+    if (el_rushed && fsStressN>5) el_rushed.textContent = '⚡ '+pct(fsRush/fsStressN)+' rushed';
+    if (el_qual && fsAvgQ!=null) el_qual.textContent = 'Q: '+(fsAvgQ*100).toFixed(0)+'%';
+  }
+
+  // ── BOTTOM BAR: filtered shot summary (left)
+  const fbFiltered = document.getElementById('fbar-filtered');
+  if (fbFiltered && fs.length > 0) {
+    fbFiltered.innerHTML = `
+      <div style="font-size:15px;font-weight:800;font-family:var(--font-head);color:var(--text)">${fs.length}</div>
+      <div style="display:flex;flex-direction:column;gap:1px;margin-left:6px;">
+        <div style="font-size:9px;color:var(--good);">✓ ${fsInPct}%</div>
+        <div style="font-size:9px;color:var(--net);">~ ${fsNetPct}%</div>
+        <div style="font-size:9px;color:var(--danger);">✗ ${fsOutPct}%</div>
+      </div>`;
+  } else if (fbFiltered) {
+    fbFiltered.innerHTML = `<div style="font-size:11px;color:var(--text3);">—</div>`;
+  }
+
+  // ── BOTTOM BAR: overall record (right)
+  const fbOverall = document.getElementById('fbar-overall');
+  if (fbOverall && pd.length > 0) {
+    fbOverall.innerHTML = `
+      <div style="font-size:11px;font-weight:700;color:${wins/pd.length>=0.5?'var(--good)':'var(--danger)'};">${wins}W–${pd.length-wins}L</div>
+      <div style="font-size:11px;font-family:var(--font-mono);color:${ratingColor(avgRating)};">${avgRating.toFixed(2)}</div>
+      <div style="font-size:9px;color:var(--text3);">${pd.length} games</div>`;
+  }
+
+}
+
+function updateLegend() {
+  const el = document.getElementById('legend-content');
+  if (!el) return;
+  const cm = state.viewer.colorMode || 'outcome';
+  const DIM  = 'rgba(255,255,255,0.45)';
+  const MED  = 'rgba(255,255,255,0.72)';
+  const HEAD = 'rgba(255,255,255,0.5)';
+  const row  = (c,l) => `<div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+    <svg width="11" height="11" style="flex-shrink:0"><circle cx="5.5" cy="5.5" r="4.5" fill="${c}"/></svg>
+    <span style="font-size:10px;color:${MED};">${l}</span></div>`;
+  const ringRow = (c,l) => `<div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+    <svg width="11" height="11" style="flex-shrink:0"><circle cx="5.5" cy="5.5" r="4.5" fill="none" stroke="${c}" stroke-width="1.8"/></svg>
+    <span style="font-size:10px;color:${MED};">${l}</span></div>`;
+  const sec  = t => `<div style="font-size:8px;font-weight:700;color:${HEAD};text-transform:uppercase;letter-spacing:.07em;margin:7px 0 4px;">${t}</div>`;
+
+  let h = '';
+
+  if (cm === 'outcome') {
+    h += sec('Outcome');
+    h += row('#3dd68c','In');
+    h += row('#f5a623','Net (stops at net)');
+    h += row('#e8445a','Out');
+  } else if (cm === 'stroke') {
+    h += sec('Stroke');
+    h += row('#00d4aa','Forehand');
+    h += row('#9b7fe8','Backhand');
+    h += row('rgba(255,255,255,0.3)','No data');
+  } else {
+    h += sec('Shot Quality');
+    h += `<div style="display:flex;align-items:center;gap:4px;margin-bottom:3px;">
+      <div style="width:64px;height:6px;border-radius:3px;background:linear-gradient(to right,#e8445a,#f5a623,#3dd68c);flex-shrink:0;"></div>
+      <span style="font-size:9px;color:${DIM};">Low→High</span></div>`;
+  }
+
+  const hl = [];
+  if (state.viewer.layers.has('retreating')) hl.push(['#e8445a','Retreating']);
+  if (state.viewer.layers.has('advancing'))  hl.push(['#3dd68c','Advancing']);
+  if (state.viewer.layers.has('lateral'))    hl.push(['#9b7fe8','Lateral']);
+  if (state.viewer.layers.has('rushed'))     hl.push(['#f5a623','High Stress']);
+  if (state.viewer.layers.has('errors'))     hl.push(['#e8445a','Errors']);
+  if (state.viewer.layers.has('putaway'))    hl.push(['#ffffff','Put-aways']);
+  if (hl.length) {
+    h += sec('Highlights');
+    hl.forEach(([c,l]) => h += ringRow(c,l));
+  }
+
+  h += sec('Shapes');
+  h += `<div style="font-size:10px;color:${MED};line-height:1.8;">
+    ●◉✛⬟ Serve·Drive·Lob·Smash<br>    ⊙ Return·
+    ■⬜▪ Dink·Drop·Reset<br>
+    ▲△ Volley·Speed-up<br>
+    <span style="font-size:9px;color:${DIM};">Muted = origin (est.)</span>
+  </div>`;
+
+  el.innerHTML = h;
+}
+
+
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+// Restore theme immediately before any rendering (must be synchronous)
+try {
+  const _cfg = JSON.parse(localStorage.getItem(CONFIG_KEY) || '{}');
+  if (_cfg.theme === 'light') {
+    document.body.setAttribute('data-theme', 'light');
+    const _btn = document.querySelector('.theme-toggle');
+    if (_btn) _btn.textContent = '☀️';
+    state.config.theme = 'light';
+  }
+} catch(e) {}
+// NOTE: Do NOT call updateDashboard() here — DOM elements don't exist yet at
+// script-parse time. All rendering happens in loadAppData() → DOMContentLoaded.
+const gamesZone = document.getElementById('games-upload-zone');
+if(gamesZone) { gamesZone.addEventListener('dragover',onDragOver); gamesZone.addEventListener('dragleave',onDragLeave); gamesZone.addEventListener('drop',onDrop); }
+if(typeof ResizeObserver!=='undefined') {
+  new ResizeObserver(debouncedCourtUpdate).observe(document.getElementById('court-main')||document.body);
+  new ResizeObserver(()=>{ if(document.getElementById('page-dashboard').classList.contains('active')) renderRatingChart(); }).observe(document.getElementById('rating-timeline')||document.body);
+}
+let _rafResize=null;
+function debouncedCourtUpdate(){if(_rafResize)cancelAnimationFrame(_rafResize);_rafResize=requestAnimationFrame(()=>{if(document.getElementById('page-viewer').classList.contains('active'))updateCourtView();});}
+window.addEventListener('resize',debouncedCourtUpdate);
+// ── PAN/ZOOM
+function applyViewBox(svg,W,H){if(!svg._vz)return;const{x,y,scale}=svg._vz;svg.setAttribute('viewBox',`${x} ${y} ${W/scale} ${H/scale}`);}
+function initPanZoom(svg){
+  let drag=false,ds={x:0,y:0},vs={x:0,y:0};
+  svg.addEventListener('wheel',e=>{
+    e.preventDefault();const{W,H}=getCourtLayout();const vz=svg._vz;
+    const rect=svg.getBoundingClientRect();
+    const mx=(e.clientX-rect.left)/rect.width*W,my=(e.clientY-rect.top)/rect.height*H;
+    const zf=e.deltaY<0?1.15:0.87,ns=Math.max(0.5,Math.min(8,vz.scale*zf));
+    const sr2=ns/vz.scale;vz.x=mx-(mx-vz.x)*sr2;vz.y=my-(my-vz.y)*sr2;vz.scale=ns;
+    applyViewBox(svg,W,H);
+    const zl=document.getElementById('zoom-level');if(zl)zl.textContent=Math.round(ns*100)+'%';
+  },{passive:false});
+  svg.addEventListener('mousedown',e=>{if(e.target.closest('.shot-marker'))return;drag=true;ds={x:e.clientX,y:e.clientY};vs={x:svg._vz.x,y:svg._vz.y};svg.style.cursor='grabbing';e.preventDefault();});
+  window.addEventListener('mousemove',e=>{if(!drag)return;const{W,H}=getCourtLayout();const rect=svg.getBoundingClientRect();svg._vz.x=vs.x-(e.clientX-ds.x)/rect.width*W/svg._vz.scale;svg._vz.y=vs.y-(e.clientY-ds.y)/rect.height*H/svg._vz.scale;applyViewBox(svg,W,H);});
+  window.addEventListener('mouseup',()=>{drag=false;svg.style.cursor='default';});
+  let ltd=0;
+  svg.addEventListener('touchstart',e=>{if(e.touches.length===2){ltd=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);}else if(e.touches.length===1){drag=true;ds={x:e.touches[0].clientX,y:e.touches[0].clientY};vs={x:svg._vz.x,y:svg._vz.y};}e.preventDefault();},{passive:false});
+  svg.addEventListener('touchmove',e=>{const{W,H}=getCourtLayout();if(e.touches.length===2){const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);const f=d/(ltd||d);svg._vz.scale=Math.max(0.5,Math.min(8,svg._vz.scale*f));ltd=d;applyViewBox(svg,W,H);}else if(e.touches.length===1&&drag){const rect=svg.getBoundingClientRect();svg._vz.x=vs.x-(e.touches[0].clientX-ds.x)/rect.width*W/svg._vz.scale;svg._vz.y=vs.y-(e.touches[0].clientY-ds.y)/rect.height*H/svg._vz.scale;applyViewBox(svg,W,H);}e.preventDefault();},{passive:false});
+  svg.addEventListener('touchend',()=>{drag=false;});
+}
+function resetZoom(){const svg=document.getElementById('court-svg');if(!svg)return;svg._vz={x:0,y:0,scale:1};const{W,H}=getCourtLayout();applyViewBox(svg,W,H);const zl=document.getElementById('zoom-level');if(zl)zl.textContent='100%';}
+
+// ═══════════════════════════════════════════════════════
+// COACHING INSIGHT ENGINE — Computed, contextual, ranked
+// ═══════════════════════════════════════════════════════
+
+// Compute all insights from shot data. Returns array ranked by coaching impact.
+// allShots = complete Carlo shot set, filteredShots = current filter view
+function computeInsights(filteredShots, allShots) {
+  if (!allShots.length) return [];
+  const insights = [];
+
+  // ── Helper
+  const inPct = arr => arr.length ? Math.round(100*arr.filter(s=>s.outcome==='in').length/arr.length) : null;
+  const avgQ  = arr => {
+    const qs = arr.filter(s=>s.quality!=null).map(s=>s.quality);
+    return qs.length ? Math.round(sum(qs)/qs.length*100) : null;
+  };
+  function sum(arr) { return arr.reduce((a,b)=>a+b,0); }
+  function typeSplit(shots) {
+    const m = {};
+    shots.forEach(s=>{ if(!m[s.shotType]) m[s.shotType]={n:0,in:0,q:[]}; m[s.shotType].n++; if(s.outcome==='in') m[s.shotType].in++; if(s.quality!=null) m[s.shotType].q.push(s.quality); });
+    return m;
+  }
+
+  // ── INSIGHT: 3rd Shot Selection
+  const third = allShots.filter(s=>s.shidx===2);
+  const tDrives = third.filter(s=>s.shotType==='drive');
+  const tDrops  = third.filter(s=>s.shotType==='drop');
+  if (tDrives.length>=5 && tDrops.length>=5) {
+    const driveIn = inPct(tDrives), dropIn = inPct(tDrops);
+    const gap = dropIn - driveIn;
+    const drivePct = Math.round(100*tDrives.length/third.length);
+    const dropPct  = Math.round(100*tDrops.length/third.length);
+    if (gap > 5) {
+      insights.push({
+        id:'3rd-shot', priority: gap * (drivePct-dropPct)/10,
+        icon:'🎯', title:'3rd Shot Selection',
+        stat:`Drive: ${driveIn}% in (${drivePct}% of 3rds) · Drop: ${dropIn}% in (${dropPct}% of 3rds)`,
+        pattern:`You choose drives ${drivePct-dropPct}pp more often despite drops being ${gap}pp more accurate. Over ${tDrives.length+tDrops.length} third shots, that's roughly ${Math.round((tDrives.length*gap/100))} extra errors from shot selection alone. Note: deep opponent returns may force some third-shot drives — filter to \'Retreating\' to see which third shots are driven from a pushed-back position.`,
+        drill:`Drill: third-shot drop from baseline. Serve → 2 steps → soft drop into the kitchen. Target: increase drops to 40–50% of third shots. Current: ${dropPct}%.`,
+        category:'shot-selection',
+      });
+    }
+  }
+
+  // ── INSIGHT: Rally Degradation
+  const early = allShots.filter(s=>s.shidx<=2);
+  const mid   = allShots.filter(s=>s.shidx>=3&&s.shidx<=5);
+  const late  = allShots.filter(s=>s.shidx>=6);
+  if (early.length>=20 && mid.length>=10) {
+    const eIn = inPct(early), mIn = inPct(mid), lIn = late.length>=5?inPct(late):null;
+    const drop = eIn - mIn;
+    if (drop >= 5) {
+      insights.push({
+        id:'rally-drop', priority: drop * 1.5,
+        icon:'📉', title:'Kitchen Transition Gap',
+        stat:`Shots 1–3: ${eIn}% in → Shots 4–6: ${mIn}% in${lIn?` → Shots 7+: ${lIn}% in`:''}`,
+        pattern:`Your accuracy drops ${drop}pp between the opening and transition phases. This is the kitchen approach window — shots 4–6 — where most points are decided. You're not getting to the kitchen cleanly.`,
+        drill:`Drill: skinny singles transition. After the third shot, force yourself to advance before shot 5. Practice "drop-and-move" sequences until the transition is automatic. The goal: maintain ${eIn}% accuracy through shot 6.`,
+        category:'movement',
+      });
+    }
+  }
+
+  // ── INSIGHT: Mid-rally retreating (EXCLUDES returns of serve — those are expected to retreat)
+  // si=1 (return of serve) naturally involves backward movement from a deep serve — expected.
+  // The real coaching signal is si>=2: Carlo was pushed BACK during an active rally.
+  const retreatingAll    = allShots.filter(s=>s.movecat==='retreating');
+  const retreating       = retreatingAll.filter(s=>s.shidx >= 2);  // exclude returns
+  const retTransition    = retreating.filter(s=>s.shidx<=5);       // transition zone collapse
+  const retKitchen       = retreating.filter(s=>s.shidx>=6);       // pushed off kitchen
+  if (retreating.length >= 10) {
+    const retIn      = inPct(retreating);
+    const allIn      = inPct(allShots);
+    const retDrives  = retreating.filter(s=>s.shotType==='drive');
+    const retIn_drv  = inPct(retDrives);
+    const setDrives  = allShots.filter(s=>s.shotType==='drive'&&s.movecat==='set');
+    const setIn_drv  = inPct(setDrives);
+    const retDinks   = retKitchen.filter(s=>s.shotType==='dink');
+    const setDinks   = allShots.filter(s=>s.shotType==='dink'&&s.movecat==='set');
+    const retIn_dnk  = inPct(retDinks);
+    const setIn_dnk  = inPct(setDinks);
+    const topType    = Object.entries(
+      retreating.reduce((acc,s)=>{acc[s.shotType]=(acc[s.shotType]||0)+1;return acc;},{})
+    ).sort((a,b)=>b[1]-a[1])[0];
+    const driveNote = retDrives.length>5 && setIn_drv && retIn_drv
+      ? ` Retreating drives land in ${retIn_drv}% vs ${setIn_drv}% when settled — a ${setIn_drv-retIn_drv}pp gap from attacking while off-balance.`
+      : '';
+    const kitNote = retDinks.length>=3 && setIn_dnk && retIn_dnk
+      ? ` When pushed off the kitchen (${retKitchen.length} times), your dink accuracy drops to ${retIn_dnk}% vs ${setIn_dnk}% when settled.`
+      : '';
+    insights.push({
+      id:'retreating', priority: Math.max(0, allIn-retIn)*2 + retreating.length/10,
+      icon:'⬅', title:'Position Loss Under Pressure',
+      stat:`${retreating.length} mid-rally retreats (${Math.round(100*retreating.length/allShots.length)}% of shots) · ${retIn}% in · ${retTransition.length} in transition, ${retKitchen.length} pushed off kitchen`,
+      pattern:`These are shots where you were moving backward during an active rally — not returns of serve (which naturally require backing up). ${retTransition.length} happen in the transition zone (shots 3–6), meaning deep returns from your opponents are preventing your kitchen approach.${driveNote}${kitNote}`,
+      drill:`Two drills: (1) "Transition reset" — when a return pushes you back on the 3rd/4th shot, resist the urge to drive. Hit a high defensive reset, recover position, then re-attack. (2) "Kitchen hold" — practice holding your kitchen position against a partner feeding hard drives at your feet. The goal is to absorb and reset, not retreat.`,
+      category:'movement',
+    });
+  }
+
+  // ── INSIGHT: Movement vs quality
+  const set = allShots.filter(s=>s.movecat==='set');
+  const adv = allShots.filter(s=>s.movecat==='advancing');
+  if (set.length>=20 && adv.length>=10) {
+    const setQ = avgQ(set), advQ = avgQ(adv);
+    if (setQ && advQ && advQ > setQ+3) {
+      insights.push({
+        id:'flow-state', priority: (advQ-setQ)/2,
+        icon:'⚡', title:'You Play Better Moving',
+        stat:`Moving toward net: q=${advQ}% · Stationary: q=${setQ}% · ${advQ-setQ}pp quality advantage when advancing`,
+        pattern:`Your shot quality is higher when you're moving forward than when you're waiting. This suggests you play better with momentum than from a static set position — you're a transition player, not a camp-and-wait player.`,
+        drill:`Drill: "continuous movement" – never stand completely still at the kitchen. Maintain a gentle split-step or weight transfer between shots. Staying dynamic improves your readiness and shot quality.`,
+        category:'movement',
+      });
+    }
+  }
+
+  // ── INSIGHT: Return quality
+  const returns = allShots.filter(s=>s.shotType==='return');
+  if (returns.length >= 20) {
+    const retIn   = inPct(returns);
+    const retQ    = avgQ(returns);
+    // BH vs FH returns
+    const bhRet   = returns.filter(s=>s.stroke==='bh');
+    const fhRet   = returns.filter(s=>s.stroke==='fh');
+    const bhRetIn = inPct(bhRet);
+    const fhRetIn = inPct(fhRet);
+    // Are returns setting up kitchen approach?
+    const retAdv = returns.filter(s=>s.movecat==='advancing');
+    const retAdvPct = Math.round(100*retAdv.length/returns.length);
+    const bhPct   = Math.round(100*bhRet.length/returns.length);
+    const fhPct   = Math.round(100*fhRet.length/returns.length);
+    // Only surface if there's something worth flagging
+    const strokeNote = bhRet.length>10 && fhRet.length>10 && Math.abs(bhRetIn-fhRetIn) > 5
+      ? ` BH returns: ${bhRetIn}% in vs FH returns: ${fhRetIn}% in.`
+      : '';
+    if (retAdvPct < 35 || strokeNote) {
+      insights.push({
+        id:'return-quality', priority: 8,
+        icon:'↩', title:'Return Patterns',
+        stat:`${returns.length} returns · ${retIn}% in · ${bhPct}% BH / ${fhPct}% FH · ${retAdvPct}% hit while advancing`,
+        pattern:`You return ${bhPct}% backhand — typical if you're positioned center-left to protect your BH. Only ${retAdvPct}% of your returns are hit while moving forward toward the kitchen.${strokeNote} A return that doesn't advance your position hands the initiative back to the serving team.`,
+        drill:`Drill: "return and go" — every return should trigger forward movement. After contact, take 2 steps toward the kitchen. You're aiming to reach the transition zone (halfway to kitchen) before your opponent hits the 3rd shot. Depth and direction matter less than getting your feet moving forward immediately after contact.`,
+        category:'return',
+      });
+    }
+  }
+
+  // ── INSIGHT: Poach accuracy
+  const poach    = allShots.filter(s=>s.isPoach);
+  const nonPoach = allShots.filter(s=>!s.isPoach);
+  if (poach.length >= 8) {
+    const pIn = inPct(poach), npIn = inPct(nonPoach);
+    const gap2 = npIn - pIn;
+    if (gap2 > 5) {
+      insights.push({
+        id:'poach', priority: gap2,
+        icon:'🔀', title:'Poach Discipline',
+        stat:`${poach.length} poaches · ${pIn}% in vs ${npIn}% non-poach · ${gap2}pp accuracy cost`,
+        pattern:`You're losing ${gap2} percentage points of accuracy on poaches vs your regular shots. Poaching is a gamble that's not paying off statistically. You leave your side open AND hit at a lower rate.`,
+        drill:`Drill: poach discipline — only poach when the ball is clearly on your forehand AND you can see the opponent is off-balance. Practice reading the setup, not just reacting to the opportunity.`,
+        category:'tactical',
+      });
+    }
+  }
+
+  // ── INSIGHT: Dink consistency
+  const dinks = allShots.filter(s=>s.shotType==='dink');
+  if (dinks.length>=15) {
+    const dIn = inPct(dinks);
+    const netDinks = dinks.filter(s=>s.outcome==='net');
+    const netPct = Math.round(100*netDinks.length/dinks.length);
+    if (netPct > 10) {
+      insights.push({
+        id:'dink-net', priority: netPct,
+        icon:'🍽', title:'Dink Net Errors',
+        stat:`${dinks.length} dinks · ${dIn}% in · ${netPct}% hit net`,
+        pattern:`${netPct}% of your dinks hit the net. Dink errors are almost always net errors (too low) rather than long (too high). This suggests paddle angle at contact is too closed, or you're not generating enough lift.`,
+        drill:`Drill: dink with a slight upward brush — finish with paddle face open. The ball should clear the net by 4–6 inches consistently. Do 50 cross-court dinks focusing on a gentle arc, not a flat trajectory.`,
+        category:'shot-quality',
+      });
+    }
+  }
+
+  // ── INSIGHT: Partner performance split (if partner filter active)
+  // Computed in partner context if enough games
+
+  // Sort by priority descending
+  insights.sort((a,b)=>b.priority-a.priority);
+  return insights;
+}
+
+// State for cycling through insights
+let _insightIndex = 0;
+let _lastInsightKey = '';
+
+let _insightExpanded = false;
+
+function toggleInsightExpand() {
+  _insightExpanded = !_insightExpanded;
+  const body = document.getElementById('insight-float-body');
+  const btn  = document.getElementById('ins-toggle');
+  if (body) body.style.maxHeight = _insightExpanded ? '300px' : '0px';
+  if (btn)  btn.textContent = _insightExpanded ? '⬇' : '⬆';
+}
+
+function generateInsight(filteredShots, allShots, activeTypes, activeOutcomes, activeLayers) {
+  const box = document.getElementById('insight-float');
+  if (!box) return;
+
+  if (!allShots.length) { box.style.display='none'; return; }
+
+  const insights = computeInsights(filteredShots, allShots);
+  if (!insights.length) { box.style.display='none'; return; }
+
+  const contextKey = activeTypes.size+'-'+activeOutcomes.size+'-'+activeLayers.size;
+  if (contextKey !== _lastInsightKey) { _insightIndex = 0; _lastInsightKey = contextKey; }
+  _insightIndex = Math.max(0, Math.min(_insightIndex, insights.length-1));
+
+  const ins = insights[_insightIndex];
+  const hasMore = insights.length > 1;
+
+  const iconEl    = document.getElementById('insight-float-icon');
+  const titleEl   = document.getElementById('insight-float-title');
+  const statEl    = document.getElementById('insight-float-stat');
+  const patternEl = document.getElementById('insight-float-pattern');
+  const drillEl   = document.getElementById('insight-float-drill');
+  const counterEl = document.getElementById('ins-counter');
+  const prevBtn   = document.getElementById('ins-prev');
+  const nextBtn   = document.getElementById('ins-next');
+
+  if (iconEl)    iconEl.textContent    = ins.icon;
+  if (titleEl)   titleEl.textContent   = ins.title;
+  if (statEl)    statEl.textContent    = ins.stat;
+  if (patternEl) patternEl.textContent = ins.pattern;
+  if (drillEl)   drillEl.textContent   = ins.drill;
+  if (counterEl) counterEl.textContent = hasMore ? `${_insightIndex+1}/${insights.length}` : '';
+  if (prevBtn)   prevBtn.style.display = hasMore ? 'inline-block' : 'none';
+  if (nextBtn)   nextBtn.style.display = hasMore ? 'inline-block' : 'none';
+
+  // Keep expanded state on update
+  const body = document.getElementById('insight-float-body');
+  if (body) body.style.maxHeight = _insightExpanded ? '300px' : '0px';
+
+  box.style.display = 'block';
+}
+
+function cycleInsight(dir) {
+  const player = document.getElementById('player-select').value;
+  const selGames = state.games.filter(g=>state.viewer.selectedGames.has(g.key));
+  const allShots = []; const filtered = [];
+  selGames.forEach(g=>{
+    const pd=g.players.find(p=>p.name===player); if(!pd) return;
+    g.shots.forEach(sh=>{
+      if(sh.pid!==pd.idx) return;
+      allShots.push(sh);
+      if(state.viewer.activeShotTypes.has(sh.shotType)&&state.viewer.activeOutcomes.has(sh.outcome)) filtered.push(sh);
+    });
+  });
+  const insights = computeInsights(filtered, allShots);
+  _insightIndex = ((_insightIndex + dir) % insights.length + insights.length) % insights.length;
+  generateInsight(filtered, allShots, state.viewer.activeShotTypes, state.viewer.activeOutcomes, state.viewer.layers);
+}
+
+
+// ── RESIZABLE BOTTOM BAR
+function startStatsResize(e) {
+  e.preventDefault();
+  const bar = document.getElementById('viewer-stats-bar');
+  const startY = e.clientY;
+  const startH = bar.getBoundingClientRect().height;
+  function onMove(ev) {
+    const delta = startY - ev.clientY;  // drag up = increase height
+    const newH = Math.max(60, Math.min(280, startH + delta));
+    bar.style.minHeight = newH + 'px';
+    bar.style.maxHeight = newH + 'px';
+  }
+  function onUp() {
+    window.removeEventListener('mousemove', onMove);
+    window.removeEventListener('mouseup', onUp);
+  }
+  window.addEventListener('mousemove', onMove);
+  window.addEventListener('mouseup', onUp);
+}
+
+// ═══════════════════════════════════════════
+// DATA LOADER — fetches from data/ directory
+// ═══════════════════════════════════════════
+async function loadAppData() {
+  const overlay  = document.getElementById('app-loading');
+  const statusEl = document.getElementById('load-status');
+  const barEl    = document.getElementById('load-bar');
+
+  function setStatus(msg, pct) {
+    if (statusEl) statusEl.textContent = msg;
+    if (barEl) barEl.style.width = pct + '%';
+  }
+
+  try {
+    // Try fetching from repo data/ directory first
+    setStatus('Fetching game library…', 20);
+    // Cache-bust so fresh data is always loaded after a push
+    const cacheBust = '?v=' + Date.now();
+    const gamesResp = await fetch('./data/games.json' + cacheBust);
+    if (!gamesResp.ok) {
+      if (gamesResp.status === 404) throw new Error('data/games.json not found — check your repo has a data/ folder with games.json inside it');
+      throw new Error('HTTP ' + gamesResp.status + ' fetching games.json');
+    }
+    setStatus('Parsing game data…', 55);
+    const games = await gamesResp.json();
+    console.log('Loaded', games.length, 'games from data/games.json');
+
+    setStatus('Fetching ratings…', 70);
+    const ratingsResp = await fetch('./data/ratings.json' + cacheBust);
+    const ratings = ratingsResp.ok ? await ratingsResp.json() : [];
+
+    setStatus('Building library…', 90);
+    // Merge: GitHub games.json is the source of truth.
+    // localStorage only contributes games NOT already in games.json.
+    // This means a corrected push to GitHub will always win over stale local imports.
+    const stored = loadFromStorage();
+    const githubKeys = new Set(games.map(g => g.key));
+    const localOnly = stored.filter(g => !githubKeys.has(g.key));
+    state.games = [...games, ...localOnly];
+
+    // Populate ratings timeline
+    // Populate ratings timeline (RATINGS_TIMELINE is declared const at top scope)
+    RATINGS_TIMELINE.length = 0;
+    ratings.forEach(r => RATINGS_TIMELINE.push(r));
+
+    setStatus('Ready!', 100);
+    // Hide overlay and do initial render
+    if (overlay) overlay.style.display = 'none';
+    // Use two rAF passes: first lets CSS layout settle, second renders into settled DOM
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        // Select games for viewer
+        state.games.forEach(g => state.viewer.selectedGames.add(g.key));
+        // Build all views — call the active tab first for snappiest perceived load
+        buildDashPlayerSelect();
+        buildViewerSidebar();
+        updateCourtView();
+        updateLegend();
+        renderDashboard();
+        renderGamesTable();
+        // Force re-render of whichever tab is currently visible
+        const activePage = document.querySelector('.page.active');
+        if (activePage) {
+          if (activePage.id === 'page-dashboard') {
+            setTimeout(renderRatingChart, 50);
+          } else if (activePage.id === 'page-viewer') {
+            updateCourtView();
+          }
+        }
+      });
+    });
+
+  } catch (err) {
+    // Fallback: use any localStorage games, or show helpful message
+    console.warn('Could not fetch data files:', err);
+    const stored = loadFromStorage();
+    state.games = stored;
+    setStatus(stored.length
+      ? `Loaded ${stored.length} local games (remote data unavailable)`
+      : 'No data found. Use + Add Games to import PBVision exports.', 100);
+    setTimeout(() => {
+      if (overlay) overlay.style.display = 'none';
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          state.games.forEach(g => state.viewer.selectedGames.add(g.key));
+          buildDashPlayerSelect();
+          buildViewerSidebar();
+          updateCourtView();
+          updateLegend();
+          renderDashboard();
+          renderGamesTable();
+        });
+      });
+    }, 1500);
+  }
+}
+
+
+// Kick off async data load on page ready
+document.addEventListener('DOMContentLoaded', () => {
+  loadAppData();
+});
+
+// ═══════════════════════════════════════════
+// GITHUB SYNC
+// ═══════════════════════════════════════════
+const GH_REPO_KEY  = 'pbv_gh_repo';
+const GH_TOKEN_KEY = 'pbv_gh_token';
+
+function loadGHConfig() {
+  const repo  = localStorage.getItem(GH_REPO_KEY)  || '';
+  const token = localStorage.getItem(GH_TOKEN_KEY) || '';
+  const repoEl  = document.getElementById('gh-repo');
+  const tokenEl = document.getElementById('gh-token');
+  if (repoEl)  repoEl.value  = repo;
+  if (tokenEl) tokenEl.value = token;
+  updateGHStatus();
+  // Auto-show config if not yet set
+  if (!repo || !token) {
+    const fields = document.getElementById('gh-setup-fields');
+    if (fields) fields.style.display = 'block';
+    const toggle = document.getElementById('gh-setup-toggle');
+    if (toggle) toggle.textContent = 'Configure ▴';
+  }
+}
+
+function saveGHConfig() {
+  const repo  = document.getElementById('gh-repo')?.value.trim()  || '';
+  const token = document.getElementById('gh-token')?.value.trim() || '';
+  if (repo)  localStorage.setItem(GH_REPO_KEY,  repo);
+  if (token) localStorage.setItem(GH_TOKEN_KEY, token);
+  updateGHStatus();
+}
+
+function updateGHStatus() {
+  const repo  = localStorage.getItem(GH_REPO_KEY)  || '';
+  const token = localStorage.getItem(GH_TOKEN_KEY) || '';
+  const el = document.getElementById('gh-config-status');
+  if (!el) return;
+  if (repo && token) {
+    el.textContent = '✓ Configured: ' + repo;
+    el.style.color = 'var(--good)';
+  } else {
+    el.textContent = repo ? 'Token missing' : 'Repo not set';
+    el.style.color = 'var(--warn)';
+  }
+}
+
+function toggleGHSetup() {
+  const fields = document.getElementById('gh-setup-fields');
+  const toggle = document.getElementById('gh-setup-toggle');
+  if (!fields) return;
+  const open = fields.style.display !== 'none';
+  fields.style.display = open ? 'none' : 'block';
+  if (toggle) toggle.textContent = open ? 'Configure ▾' : 'Configure ▴';
+  if (!open) loadGHConfig();
+}
+
+function setGHPushStatus(msg, color) {
+  const el = document.getElementById('gh-push-status');
+  if (el) { el.textContent = msg; el.style.color = color || 'var(--text3)'; }
+}
+
+async function pushToGitHub() {
+  const repo  = localStorage.getItem(GH_REPO_KEY);
+  const token = localStorage.getItem(GH_TOKEN_KEY);
+
+  if (!repo || !token) {
+    setGHPushStatus('⚠ Configure GitHub repo and token first', 'var(--warn)');
+    const fields = document.getElementById('gh-setup-fields');
+    if (fields) fields.style.display = 'block';
+    loadGHConfig();
+    return;
+  }
+
+  const btn = document.getElementById('gh-push-btn');
+  if (btn) btn.disabled = true;
+  setGHPushStatus('Fetching current file SHA…', 'var(--text3)');
+
+  try {
+    // Step 1: GET current games.json to get its SHA
+    const getResp = await fetch(
+      `https://api.github.com/repos/${repo}/contents/data/games.json`,
+      { headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' } }
+    );
+
+    let sha = null;
+    if (getResp.ok) {
+      const meta = await getResp.json();
+      sha = meta.sha;
+    } else if (getResp.status === 404) {
+      // File doesn't exist yet — will create it
+      sha = null;
+    } else if (getResp.status === 401) {
+      setGHPushStatus('✗ Token invalid or expired. Check your Personal Access Token.', 'var(--danger)');
+      if (btn) btn.disabled = false;
+      return;
+    } else {
+      throw new Error(`GitHub API error: ${getResp.status}`);
+    }
+
+    setGHPushStatus('Encoding game library…', 'var(--text3)');
+
+    // Step 2: Encode games array as base64
+    const gamesJSON = JSON.stringify(state.games, null, 0);
+    const encoded   = btoa(unescape(encodeURIComponent(gamesJSON)));
+
+    setGHPushStatus(`Pushing ${state.games.length} games to GitHub…`, 'var(--text3)');
+
+    // Step 3: PUT to GitHub Contents API
+    const body = {
+      message: `Update games.json — ${state.games.length} games (via PB Viewer ${new Date().toLocaleDateString()})`,
+      content: encoded,
+    };
+    if (sha) body.sha = sha;  // required when updating existing file
+
+    const putResp = await fetch(
+      `https://api.github.com/repos/${repo}/contents/data/games.json`,
+      {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/vnd.github+json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      }
+    );
+
+    if (putResp.ok) {
+      const result = await putResp.json();
+      const commitUrl = result.commit?.html_url || `https://github.com/${repo}/commits/main`;
+      setGHPushStatus(
+        `✓ Pushed ${state.games.length} games. Pages updates in ~60s. Reload other devices after that.`,
+        'var(--good)'
+      );
+      showToast(`✓ ${state.games.length} games pushed to GitHub`, 'success');
+      console.log('Push commit:', commitUrl);
+    } else {
+      const err = await putResp.json().catch(() => ({}));
+      const msg = err.message || putResp.status;
+      if (putResp.status === 409) {
+        setGHPushStatus('✗ Conflict — file was modified elsewhere. Reload and try again.', 'var(--danger)');
+      } else if (putResp.status === 403) {
+        setGHPushStatus('✗ Permission denied. Check token has Contents: Write permission.', 'var(--danger)');
+      } else {
+        setGHPushStatus(`✗ Push failed: ${msg}`, 'var(--danger)');
+      }
+    }
+  } catch (err) {
+    setGHPushStatus(`✗ Error: ${err.message}`, 'var(--danger)');
+    console.error('GitHub push failed:', err);
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+
+// Load GitHub config when modal opens
+const _origOpenUpload = openUploadModal;
+openUploadModal = function() {
+  _origOpenUpload();
+  loadGHConfig();
+  // Clear any previous result
+  const r = document.getElementById('upload-result');
+  if (r) { r.innerHTML=''; r.style.display='none'; }
+  window._pendingReplace = null;
+};
+
+
+async function checkGitHubData() {
+  const repo  = localStorage.getItem(GH_REPO_KEY);
+  const token = localStorage.getItem(GH_TOKEN_KEY);
+  if (!repo || !token) {
+    setGHPushStatus('Configure repo and token first', 'var(--warn)');
+    return;
+  }
+  setGHPushStatus('Checking GitHub…', 'var(--text3)');
+  try {
+    const resp = await fetch(
+      `https://api.github.com/repos/${repo}/contents/data/games.json`,
+      { headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' } }
+    );
+    if (resp.status === 404) {
+      setGHPushStatus('⚠ data/games.json not found in repo. Upload the data/ folder first.', 'var(--warn)');
+      return;
+    }
+    if (!resp.ok) {
+      setGHPushStatus(`✗ API error ${resp.status} — check token permissions`, 'var(--danger)');
+      return;
+    }
+    const meta = await resp.json();
+    // Decode and count games
+    const decoded = decodeURIComponent(escape(atob(meta.content.replace(/\n/g,''))));
+    const games = JSON.parse(decoded);
+    const lastCommit = meta.sha.slice(0,7);
+    setGHPushStatus(
+      `✓ GitHub has ${games.length} games · SHA ${lastCommit} · ${(meta.size/1024).toFixed(0)}KB`,
+      'var(--good)'
+    );
+  } catch(e) {
+    setGHPushStatus(`✗ Check failed: ${e.message}`, 'var(--danger)');
+  }
+}
+
+
+console.log('PB Viewer initializing…');
+</script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PB Viewer</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
+:root {
+  --bg:#0a0c0f;--bg2:#111418;--bg3:#181d24;--bg4:#1e252f;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);
+  --text:#e8edf4;--text2:#8b96a8;--text3:#5a6474;
+  --accent:#00d4aa;--accent2:#0099cc;--accent-dim:rgba(0,212,170,0.12);
+  --warn:#f5a623;--danger:#e8445a;--good:#3dd68c;
+  --net:#f5a623;--out:#e8445a;--in:#3dd68c;
+  --font-head:'Syne',sans-serif;--font-body:'Inter',sans-serif;--font-mono:'DM Mono',monospace;
+  --radius:10px;--radius-sm:6px;--sidebar-w:220px;--nav-h:56px;
+}
+[data-theme="light"]{--bg:#f0f3f7;--bg2:#fff;--bg3:#e8ecf2;--bg4:#dde3ec;--border:rgba(0,0,0,0.07);--border2:rgba(0,0,0,0.12);--text:#111827;--text2:#4b5563;--text3:#9ca3af;--accent-dim:rgba(0,212,170,0.1);}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:var(--font-body);background:var(--bg);color:var(--text);font-size:13px;}
+#nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:0;z-index:100;padding:0 16px;}
+.nav-logo{font-family:var(--font-head);font-size:17px;font-weight:800;color:var(--accent);letter-spacing:-.5px;margin-right:32px;white-space:nowrap;}
+.nav-logo span{color:var(--text2);font-weight:400;}
+.nav-tabs{display:flex;gap:2px;flex:1;}
+.nav-tab{padding:7px 16px;border-radius:var(--radius-sm);cursor:pointer;font-size:12px;font-weight:500;color:var(--text2);transition:all .15s;border:none;background:transparent;font-family:var(--font-body);}
+.nav-tab:hover{color:var(--text);background:var(--bg3);}
+.nav-tab.active{color:var(--accent);background:var(--accent-dim);}
+.nav-actions{display:flex;gap:8px;align-items:center;}
+.btn{padding:7px 14px;border-radius:var(--radius-sm);cursor:pointer;font-size:12px;font-weight:500;border:none;font-family:var(--font-body);transition:all .15s;}
+.btn-ghost{background:var(--bg3);color:var(--text2);border:1px solid var(--border);}
+.btn-ghost:hover{color:var(--text);border-color:var(--border2);}
+.btn-accent{background:var(--accent);color:#000;}
+.btn-accent:hover{opacity:.9;}
+.btn-danger{background:rgba(232,68,90,.15);color:var(--danger);border:1px solid rgba(232,68,90,.2);}
+.theme-toggle{width:32px;height:32px;border-radius:50%;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;transition:all .15s;}
+.page{position:fixed;top:var(--nav-h);left:0;right:0;bottom:0;overflow:hidden;display:none;}
+.page.active{display:flex;}
+.page-scroll{overflow-y:auto;padding:24px;flex:1;}
+.page-scroll::-webkit-scrollbar{width:5px;}
+.page-scroll::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px;}
+/* Dashboard */
+#page-dashboard{flex-direction:column;}
+#page-dashboard .page-scroll{max-width:1200px;margin:0 auto;width:100%;}
+.dash-header{margin-bottom:28px;}
+.dash-header h1{font-family:var(--font-head);font-size:26px;font-weight:800;letter-spacing:-.5px;}
+.dash-header p{color:var(--text2);margin-top:4px;font-size:13px;}
+.period-tabs{display:flex;gap:6px;margin-bottom:20px;}
+.period-tab{padding:5px 14px;border-radius:20px;cursor:pointer;font-size:11px;font-weight:600;border:1px solid var(--border);background:transparent;color:var(--text2);font-family:var(--font-body);letter-spacing:.04em;text-transform:uppercase;transition:all .15s;}
+.period-tab.active{background:var(--accent-dim);border-color:var(--accent);color:var(--accent);}
+.kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px;}
+.kpi-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;}
+.kpi-label{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;}
+.kpi-val{font-family:var(--font-head);font-size:28px;font-weight:800;line-height:1;}
+.kpi-sub{font-size:10px;color:var(--text3);margin-top:4px;}
+.kpi-val.good{color:var(--good);}
+.kpi-val.bad{color:var(--danger);}
+.kpi-val.warn{color:var(--warn);}
+.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px;}
+.card-title{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:14px;}
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.bar-label{width:80px;font-size:11px;color:var(--text2);flex-shrink:0;}
+.bar-track{flex:1;height:6px;background:var(--bg4);border-radius:3px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:3px;transition:width .4s ease;}
+.bar-val{width:36px;text-align:right;font-size:11px;color:var(--text);font-family:var(--font-mono);flex-shrink:0;}
+.coaching-item{padding:10px 12px;border-radius:var(--radius-sm);background:var(--bg3);margin-bottom:8px;border-left:3px solid var(--accent);}
+.coaching-item.warn{border-left-color:var(--warn);}
+.coaching-item.danger{border-left-color:var(--danger);}
+.coaching-title{font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px;}
+.coaching-body{font-size:11px;color:var(--text2);line-height:1.5;}
+.no-data{display:flex;flex-direction:column;align-items:center;justify-content:center;height:200px;color:var(--text3);gap:8px;}
+.win-badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600;}
+.win-badge.w{background:rgba(61,214,140,.15);color:var(--good);}
+.win-badge.l{background:rgba(232,68,90,.15);color:var(--danger);}
+.recent-game{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);}
+.recent-game:last-child{border-bottom:none;}
+.rg-date{font-size:10px;color:var(--text3);width:60px;font-family:var(--font-mono);}
+.rg-info{flex:1;}
+.rg-score{font-size:11px;font-weight:600;color:var(--text);}
+.rg-partner{font-size:10px;color:var(--text3);}
+.rg-rating{font-family:var(--font-mono);font-size:12px;color:var(--accent);}
+.rating-bar{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.rating-name{width:90px;font-size:11px;color:var(--text2);}
+.rating-track{flex:1;height:4px;background:var(--bg4);border-radius:2px;}
+.rating-fill{height:100%;border-radius:2px;background:var(--accent);}
+.rating-num{width:35px;text-align:right;font-size:11px;font-family:var(--font-mono);color:var(--text);}
+/* Sidebar shared */
+.sb-section{border-bottom:1px solid var(--border);padding:12px 14px;}
+.sb-section-title{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;}
+.select-styled{width:100%;padding:7px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:12px;font-family:var(--font-body);cursor:pointer;appearance:none;outline:none;}
+.chip-grid{display:flex;flex-wrap:wrap;gap:4px;}
+.chip{padding:3px 9px;border-radius:12px;border:1px solid var(--border);cursor:pointer;font-size:10px;font-weight:500;color:var(--text2);background:var(--bg3);transition:all .15s;user-select:none;}
+.chip:hover{border-color:var(--border2);color:var(--text);}
+.chip.active{background:var(--accent-dim);border-color:var(--accent);color:var(--accent);}
+.chip.active-out{background:rgba(232,68,90,.12);border-color:rgba(232,68,90,.4);color:var(--out);}
+.chip.active-net{background:rgba(245,166,35,.12);border-color:rgba(245,166,35,.4);color:var(--net);}
+.chip.active-in{background:rgba(61,214,140,.12);border-color:rgba(61,214,140,.4);color:var(--in);}
+/* Games table */
+#page-games{flex-direction:column;}
+#page-games .page-scroll{max-width:1300px;margin:0 auto;width:100%;}
+.games-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+.games-header h1{font-family:var(--font-head);font-size:22px;font-weight:800;}
+.games-actions{display:flex;gap:8px;}
+.table-wrap{overflow-x:auto;}
+table.games-table{width:100%;border-collapse:collapse;font-size:12px;}
+table.games-table th{text-align:left;padding:10px 12px;font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid var(--border);white-space:nowrap;}
+table.games-table td{padding:10px 12px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:middle;}
+table.games-table tr:hover td{background:var(--bg3);}
+table.games-table tr.excluded td{opacity:.4;}
+.table-checkbox{width:16px;height:16px;cursor:pointer;accent-color:var(--accent);}
+.game-id{font-family:var(--font-mono);font-size:10px;color:var(--text3);}
+.player-pill{display:inline-block;padding:2px 7px;border-radius:10px;font-size:10px;margin:1px;background:var(--bg3);color:var(--text2);}
+.player-pill.primary{background:var(--accent-dim);color:var(--accent);}
+.upload-zone{border:2px dashed var(--border2);border-radius:var(--radius);padding:32px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:20px;background:var(--bg2);}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--accent);background:var(--accent-dim);}
+.upload-icon{font-size:32px;margin-bottom:8px;}
+.upload-text{font-size:13px;color:var(--text2);}
+.upload-sub{font-size:11px;color:var(--text3);margin-top:4px;}
+.upload-input{display:none;}
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);padding:24px;width:460px;max-width:90vw;}
+.modal-title{font-family:var(--font-head);font-size:16px;font-weight:700;margin-bottom:16px;}
+.modal-input{width:100%;padding:9px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:13px;font-family:var(--font-body);outline:none;margin-bottom:12px;}
+.modal-input:focus{border-color:var(--accent);}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;}
+.modal-note{font-size:11px;color:var(--text3);margin-bottom:8px;}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--bg3);border:1px solid var(--border2);border-radius:24px;padding:10px 20px;font-size:12px;color:var(--text);box-shadow:0 8px 32px rgba(0,0,0,.4);transition:transform .3s ease;z-index:999;}
+#toast.show{transform:translateX(-50%) translateY(0);}
+#toast.success{border-color:var(--good);color:var(--good);}
+#toast.error{border-color:var(--danger);color:var(--danger);}
+.pill{display:inline-block;padding:3px 9px;border-radius:10px;font-size:10px;font-weight:600;}
+.pill-green{background:rgba(61,214,140,.15);color:var(--good);}
+.pill-red{background:rgba(232,68,90,.15);color:var(--danger);}
+.divider{height:1px;background:var(--border);margin:16px 0;}
+/* Court viewer */
+#page-viewer{flex-direction:column;}
+#viewer-top{display:flex;flex:1;overflow:hidden;min-height:0;}
+#court-sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;}
+#court-sidebar .sb-section{overflow-y:auto;}
+#court-sidebar-scroll{flex:1;overflow-y:auto;}
+#court-main{flex:1;overflow:hidden;position:relative;background:var(--bg);}
+#court-svg{display:block;width:100%;height:100%;}
+#shot-count-badge{position:absolute;top:12px;left:50%;transform:translateX(-50%);background:rgba(10,12,15,.88);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:5px 14px;font-size:11px;color:rgba(255,255,255,0.8);backdrop-filter:blur(8px);white-space:nowrap;font-family:var(--font-mono);pointer-events:none;z-index:10;}
+#court-legend{position:absolute;top:12px;right:12px;width:170px;background:rgba(10,12,15,.92);border:1px solid rgba(255,255,255,0.15);border-radius:6px;padding:10px 12px;font-size:11px;z-index:18;max-height:calc(100% - 24px);overflow-y:auto;}
+.legend-item{display:flex;align-items:center;gap:6px;margin-bottom:3px;color:rgba(255,255,255,0.8);}
+#hover-tooltip{position:absolute;background:rgba(10,12,15,.95);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:10px 12px;font-size:11px;pointer-events:none;display:none;z-index:50;min-width:160px;max-width:220px;backdrop-filter:blur(8px);}
+.tt-title{font-weight:700;color:var(--text);margin-bottom:6px;font-size:12px;}
+.tt-row{display:flex;justify-content:space-between;gap:12px;margin-bottom:2px;color:var(--text2);}
+.tt-val{color:var(--text);font-family:var(--font-mono);}
+#viewer-stats-bar{background:var(--bg2);border-top:1px solid var(--border);flex-shrink:0;display:flex;align-items:stretch;position:relative;min-height:72px;max-height:280px;}
+#stats-drag-handle{position:absolute;top:0;left:0;right:0;height:6px;cursor:row-resize;background:transparent;z-index:10;display:flex;align-items:center;justify-content:center;}
+#stats-drag-handle:hover{background:rgba(0,212,170,0.15);}
+#stats-drag-handle::after{content:'';width:32px;height:2px;background:var(--border2);border-radius:1px;}
+.stat-tile{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 18px;border-right:1px solid var(--border);min-width:88px;gap:2px;flex-shrink:0;}
+.stat-tile-val{font-size:17px;font-weight:800;font-family:var(--font-head);}
+.stat-tile-label{font-size:9px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;}
+#viewer-sel-mini{display:inline-flex;flex-direction:column;justify-content:center;padding:8px 16px;border-right:1px solid var(--border);min-width:180px;gap:3px;}
+/* Help */
+#page-help{flex-direction:column;}
+#page-help .page-scroll{max-width:900px;margin:0 auto;width:100%;}
+.help-h1{font-family:var(--font-head);font-size:22px;font-weight:800;margin-bottom:6px;}
+.help-h2{font-family:var(--font-head);font-size:15px;font-weight:700;color:var(--accent);margin-bottom:8px;margin-top:20px;}
+.help-p{font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:8px;}
+.help-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;}
+.help-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px;}
+.help-card-title{font-size:12px;font-weight:600;color:var(--text);margin-bottom:4px;}
+.help-card-body{font-size:11px;color:var(--text2);line-height:1.6;}
+input[type=range]{accent-color:var(--accent);}
+.game-list-item{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border);}
+.game-list-item:last-child{border-bottom:none;}
+.game-list-label{flex:1;font-size:11px;color:var(--text2);}
+</style>
+</head>
+<body>
+<!-- NAV -->
+<div id="nav">
+  <div class="nav-logo">PB <span>Viewer</span></div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('dashboard',event)">Dashboard</button>
+    <button class="nav-tab" onclick="showPage('viewer',event)">Court Viewer</button>
+    <button class="nav-tab" onclick="showPage('games',event)">My Games</button>
+    <button class="nav-tab" onclick="showPage('help',event)">Help</button>
+  </div>
+  <div class="nav-actions">
+    <button class="btn btn-accent" onclick="openUploadModal()">+ Add Games</button>
+    <div class="theme-toggle" onclick="toggleTheme()">🌙</div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="page-dashboard" class="page active">
+  <div class="page-scroll">
     <div class="dash-header">
       <h1>Welcome back, Carlo</h1>
       <p id="dash-subtitle">Loading…</p>
