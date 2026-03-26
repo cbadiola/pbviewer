@@ -203,9 +203,9 @@ input[type=range]{accent-color:var(--accent);}
     // Write directly into HTML via document.write is not safe here (head),
     // so we store values for DOMContentLoaded to pick up instantly
     window._pbv_preload = {
-      subtitle: active.length + ' games Â· Last month',
+      subtitle: active.length + ' games · Last month',
       wr: Math.round(wins/pd.length*100) + '%',
-      wrSub: wins + 'W â ' + (pd.length-wins) + 'L',
+      wrSub: wins + 'W – ' + (pd.length-wins) + 'L',
       rating: avgR.toFixed(2),
       acc: Math.round(avgIn*100) + '%',
       net: Math.round(avgNet*100) + '%',
@@ -227,7 +227,7 @@ input[type=range]{accent-color:var(--accent);}
   </div>
   <div class="nav-actions">
     <button class="btn btn-accent" onclick="openUploadModal()">+ Add Games</button>
-    <div class="theme-toggle" onclick="toggleTheme()">ð</div>
+    <div class="theme-toggle" onclick="toggleTheme()">🌙</div>
   </div>
 </div>
 
@@ -237,7 +237,7 @@ input[type=range]{accent-color:var(--accent);}
     <div class="dash-header" style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;">
       <div>
         <h1 id="dash-welcome">Welcome back, Carlo</h1>
-        <p id="dash-subtitle" style="color:var(--text3);font-size:12px;">Fetching game libraryâ¦</p>
+        <p id="dash-subtitle" style="color:var(--text3);font-size:12px;">Fetching game library…</p>
       </div>
       <div style="display:flex;align-items:center;gap:8px;padding-top:4px;">
         <span style="font-size:11px;color:var(--text3);white-space:nowrap;">Viewing as</span>
@@ -253,20 +253,20 @@ input[type=range]{accent-color:var(--accent);}
       <button class="period-tab" onclick="setDashPeriod('all',this)">All Time</button>
     </div>
     <div class="kpi-grid">
-      <div class="kpi-card"><div class="kpi-label">Win Rate</div><div class="kpi-val" id="kpi-wr">â</div><div class="kpi-sub" id="kpi-wr-sub">â</div></div>
-      <div class="kpi-card"><div class="kpi-label">Avg Rating</div><div class="kpi-val accent" id="kpi-rating" style="font-family:var(--font-head)">â</div><div class="kpi-sub">Overall DUPR</div></div>
-      <div class="kpi-card"><div class="kpi-label">Accuracy (In)</div><div class="kpi-val" id="kpi-acc">â</div><div class="kpi-sub">Shots in</div></div>
-      <div class="kpi-card"><div class="kpi-label">Net Errors</div><div class="kpi-val" id="kpi-net">â</div><div class="kpi-sub">Of all shots</div></div>
-      <div class="kpi-card"><div class="kpi-label">Kitchen %</div><div class="kpi-val" id="kpi-kitchen">â</div><div class="kpi-sub">On serve</div></div>
-      <div class="kpi-card"><div class="kpi-label">W / UE Ratio</div><div class="kpi-val" id="kpi-wue">â</div><div class="kpi-sub" id="kpi-wue-sub">Winners vs Unforced</div></div>
+      <div class="kpi-card"><div class="kpi-label">Win Rate</div><div class="kpi-val" id="kpi-wr">—</div><div class="kpi-sub" id="kpi-wr-sub">—</div></div>
+      <div class="kpi-card"><div class="kpi-label">Avg Rating</div><div class="kpi-val accent" id="kpi-rating" style="font-family:var(--font-head)">—</div><div class="kpi-sub">Overall DUPR</div></div>
+      <div class="kpi-card"><div class="kpi-label">Accuracy (In)</div><div class="kpi-val" id="kpi-acc">—</div><div class="kpi-sub">Shots in</div></div>
+      <div class="kpi-card"><div class="kpi-label">Net Errors</div><div class="kpi-val" id="kpi-net">—</div><div class="kpi-sub">Of all shots</div></div>
+      <div class="kpi-card"><div class="kpi-label">Kitchen %</div><div class="kpi-val" id="kpi-kitchen">—</div><div class="kpi-sub">On serve</div></div>
+      <div class="kpi-card"><div class="kpi-label">W / UE Ratio</div><div class="kpi-val" id="kpi-wue">—</div><div class="kpi-sub" id="kpi-wue-sub">Winners vs Unforced</div></div>
     </div>
     <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:20px;">
       <div class="card-title">Rating Over Time</div>
       <div id="rating-timeline" style="width:100%;height:160px;"></div>
     </div>
     <div class="dash-grid">
-      <div class="card"><div class="card-title">Coaching Priorities</div><div id="coaching-list"><div class="no-data" style="height:120px"><div style="font-size:24px;opacity:.3">ð¯</div><div style="font-size:12px">Upload games to see coaching tips</div></div></div></div>
-      <div class="card"><div class="card-title">Recent Games</div><div id="recent-games-list"><div class="no-data" style="height:120px"><div style="font-size:24px;opacity:.3">ð</div><div style="font-size:12px">No games loaded yet</div></div></div></div>
+      <div class="card"><div class="card-title">Coaching Priorities</div><div id="coaching-list"><div class="no-data" style="height:120px"><div style="font-size:24px;opacity:.3">🎯</div><div style="font-size:12px">Upload games to see coaching tips</div></div></div></div>
+      <div class="card"><div class="card-title">Recent Games</div><div id="recent-games-list"><div class="no-data" style="height:120px"><div style="font-size:24px;opacity:.3">📋</div><div style="font-size:12px">No games loaded yet</div></div></div></div>
     </div>
     <div class="dash-grid">
       <div class="card"><div class="card-title">Rating Breakdown</div><div id="rating-breakdown"></div></div>
@@ -292,7 +292,7 @@ input[type=range]{accent-color:var(--accent);}
         <div class="sb-section">
           <div class="sb-section-title">Player</div>
           <select class="select-styled" id="player-select" onchange="onPlayerChange()">
-            <option value="">â Select player â</option>
+            <option value="">— Select player —</option>
           </select>
         </div>
         <div class="sb-section">
@@ -340,8 +340,8 @@ input[type=range]{accent-color:var(--accent);}
         <div class="sb-section">
           <div class="sb-section-title">Highlight</div>
           <div class="chip-grid">
-            <div class="chip" id="layer-retreating" onclick="toggleLayer(this,'retreating')" title="Retreating: moving back >3ft â lost position">Retreating</div>
-            <div class="chip" id="layer-advancing" onclick="toggleLayer(this,'advancing')" title="Advancing: moving toward net >3ft â transition shot">Advancing</div>
+            <div class="chip" id="layer-retreating" onclick="toggleLayer(this,'retreating')" title="Retreating: moving back >3ft — lost position">Retreating</div>
+            <div class="chip" id="layer-advancing" onclick="toggleLayer(this,'advancing')" title="Advancing: moving toward net >3ft — transition shot">Advancing</div>
             <div class="chip" id="layer-lateral" onclick="toggleLayer(this,'lateral')" title="Lateral: wide reach >3ft sideways">Lateral</div>
             <div class="chip" id="layer-rushed" onclick="toggleLayer(this,'rushed')" title="Any high-stress shot (>6ft movement)">High Stress</div>
             <div class="chip" id="layer-errors" onclick="toggleLayer(this,'errors')">Errors</div>
@@ -361,7 +361,7 @@ input[type=range]{accent-color:var(--accent);}
         <div class="sb-section">
           <div class="sb-section-title" style="display:flex;justify-content:space-between;align-items:center;">
             Partner
-            <button onclick="clearPartnerFilter()" id="partner-clear-btn" style="display:none;font-size:9px;color:var(--accent);background:none;border:none;cursor:pointer;padding:0;">â clear</button>
+            <button onclick="clearPartnerFilter()" id="partner-clear-btn" style="display:none;font-size:9px;color:var(--accent);background:none;border:none;cursor:pointer;padding:0;">✕ clear</button>
           </div>
           <div id="partner-chips" class="chip-grid"></div>
         </div>
@@ -381,7 +381,7 @@ input[type=range]{accent-color:var(--accent);}
     <div id="court-main" style="display:flex;flex-direction:column;">
       <!-- Filtered stats bar (above court) -->
       <div id="filter-stats-bar" style="background:var(--bg2);border-bottom:1px solid var(--border);padding:6px 14px;display:flex;align-items:center;gap:16px;flex-shrink:0;overflow-x:auto;white-space:nowrap;min-height:36px;">
-        <span id="fstat-badge" style="font-size:11px;color:var(--text3);font-family:var(--font-mono);">â</span>
+        <span id="fstat-badge" style="font-size:11px;color:var(--text3);font-family:var(--font-mono);">—</span>
         <span id="fstat-win" style="font-size:12px;font-weight:700;color:var(--text);"></span>
         <span id="fstat-rating" style="font-size:12px;font-weight:700;color:var(--accent);"></span>
         <span style="width:1px;background:var(--border);height:18px;flex-shrink:0;"></span>
@@ -398,7 +398,7 @@ input[type=range]{accent-color:var(--accent);}
       <svg id="court-svg" xmlns="http://www.w3.org/2000/svg"></svg>
       <svg id="dink-arcs-svg" xmlns="http://www.w3.org/2000/svg" style="display:none;position:absolute;top:0;left:0;width:100%;height:100%;background:var(--bg);z-index:5;"></svg>
       <div style="position:absolute;bottom:12px;right:12px;display:flex;flex-direction:column;gap:4px;z-index:20;">
-        <button onclick="resetZoom()" title="Reset zoom (â)" style="width:30px;height:30px;background:rgba(10,12,15,.9);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;" onmouseover="this.style.background='var(--bg3)'" onmouseout="this.style.background='rgba(10,12,15,.9)'">â</button>
+        <button onclick="resetZoom()" title="Reset zoom (⌂)" style="width:30px;height:30px;background:rgba(10,12,15,.9);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;" onmouseover="this.style.background='var(--bg3)'" onmouseout="this.style.background='rgba(10,12,15,.9)'">⌂</button>
         <div id="zoom-level" style="font-family:var(--font-mono);font-size:9px;color:var(--text3);text-align:center;background:rgba(10,12,15,.75);border-radius:4px;padding:2px 4px;">100%</div>
       </div>
       <!-- Hover tooltip -->
@@ -427,7 +427,7 @@ input[type=range]{accent-color:var(--accent);}
             <button onclick="cycleInsight(-1)" id="ins-prev" style="display:none;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.18);border-radius:3px;color:rgba(255,255,255,0.7);padding:1px 6px;font-size:10px;cursor:pointer;line-height:1.2;">&lt;</button>
             <span id="ins-counter" style="font-size:9px;color:rgba(255,255,255,0.5);"></span>
             <button onclick="cycleInsight(1)" id="ins-next" style="display:none;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.18);border-radius:3px;color:rgba(255,255,255,0.7);padding:1px 6px;font-size:10px;cursor:pointer;line-height:1.2;">&gt;</button>
-            <button onclick="toggleInsightExpand()" id="ins-toggle" style="background:none;border:none;color:rgba(255,255,255,0.6);padding:1px 4px;font-size:10px;cursor:pointer;line-height:1.2;" title="Expand/collapse">â¬</button>
+            <button onclick="toggleInsightExpand()" id="ins-toggle" style="background:none;border:none;color:rgba(255,255,255,0.6);padding:1px 4px;font-size:10px;cursor:pointer;line-height:1.2;" title="Expand/collapse">⬆</button>
           </div>
         </div>
         <div id="insight-float-stat" style="font-size:10px;color:#00d4aa;margin-bottom:5px;line-height:1.5;word-break:break-word;"></div>
@@ -449,7 +449,7 @@ input[type=range]{accent-color:var(--accent);}
   <div id="viewer-stats-inner" style="display:flex;align-items:stretch;overflow-x:auto;flex:1;"></div>
   <div style="display:flex;flex-direction:column;justify-content:center;padding:6px 12px;border-left:1px solid var(--border);min-width:110px;flex-shrink:0;text-align:right;">
     <div style="font-size:9px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;">Overall</div>
-    <div id="fbar-overall"><div style="font-size:11px;color:var(--text3);">â</div></div>
+    <div id="fbar-overall"><div style="font-size:11px;color:var(--text3);">—</div></div>
   </div>
   </div>
 </div>
@@ -462,13 +462,13 @@ input[type=range]{accent-color:var(--accent);}
       <div class="games-actions">
         <button class="btn btn-ghost" onclick="selectAllGames(true)">Select All</button>
         <button class="btn btn-ghost" onclick="selectAllGames(false)">Deselect All</button>
-        <button class="btn btn-danger" onclick="deleteSelectedGames()">ð Delete Selected</button>
-        <button class="btn btn-ghost" onclick="exportData()">â¬ Export</button>
+        <button class="btn btn-danger" onclick="deleteSelectedGames()">🗑 Delete Selected</button>
+        <button class="btn btn-ghost" onclick="exportData()">⬇ Export</button>
         <button class="btn btn-accent" onclick="openUploadModal()">+ Add Games</button>
       </div>
     </div>
     <div id="games-upload-zone" class="upload-zone" onclick="document.getElementById('file-input-games').click()">
-      <div class="upload-icon">ð</div>
+      <div class="upload-icon">📂</div>
       <div class="upload-text">Drop PB Vision JSON files here or click to browse</div>
     </div>
     <input type="file" id="file-input-games" accept=".json" multiple class="upload-input" onchange="handleFileSelect(event)">
@@ -476,10 +476,10 @@ input[type=range]{accent-color:var(--accent);}
       <span style="font-size:11px;color:var(--text2);">Showing games for</span>
       <span id="games-player-label" style="font-size:12px;font-weight:700;color:var(--accent);">Carlo Badiola</span>
       <span style="font-size:11px;color:var(--text3);" id="games-player-count"></span>
-      <button onclick="setActivePlayer(PRIMARY_USER)" id="games-reset-player" style="display:none;margin-left:auto;font-size:10px;color:var(--text3);background:none;border:none;cursor:pointer;padding:2px 6px;border-radius:4px;">â Reset to Carlo</button>
+      <button onclick="setActivePlayer(PRIMARY_USER)" id="games-reset-player" style="display:none;margin-left:auto;font-size:10px;color:var(--text3);background:none;border:none;cursor:pointer;padding:2px 6px;border-radius:4px;">✕ Reset to Carlo</button>
     </div>
     <div id="games-table-wrap">
-      <div id="games-empty" class="card" style="padding:48px;text-align:center;"><div class="no-data"><div style="font-size:32px;opacity:.3">ð­</div><div>No games loaded yet.</div></div></div>
+      <div id="games-empty" class="card" style="padding:48px;text-align:center;"><div class="no-data"><div style="font-size:32px;opacity:.3">📭</div><div>No games loaded yet.</div></div></div>
       <div id="games-table-container" style="display:none;">
         <table class="games-table">
           <thead><tr><th></th><th>Date</th><th>Video ID</th><th>Score</th><th>W/L</th><th>Players</th><th>Rating</th><th>Acc.</th><th>Kitchen</th><th>Partner</th></tr></thead>
@@ -493,15 +493,15 @@ input[type=range]{accent-color:var(--accent);}
 <!-- HELP -->
 <div id="page-help" class="page">
   <div class="page-scroll">
-    <h1 class="help-h1">PB Viewer â Help</h1>
+    <h1 class="help-h1">PB Viewer — Help</h1>
     <p style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:20px;">PB Viewer visualizes your PBVision game data with coaching-relevant signals. Import your JSON exports, then use the Court Viewer and Dashboard to understand your patterns.</p>
 
     <h2 class="help-h2">Court Layout</h2>
     <div class="help-grid">
-      <div class="help-card"><div class="help-card-title">Full court shown</div><div class="help-card-body">Both halves visible. <strong>Your side (left/bottom)</strong>: muted origin markers showing where you were when you hit. <strong>Opponent's side (right/top)</strong>: impact markers where the ball went. <em>â  Impact positions are estimated by shot type â PBVision does not record ball landing coordinates.</em></div></div>
+      <div class="help-card"><div class="help-card-title">Full court shown</div><div class="help-card-body">Both halves visible. <strong>Your side (left/bottom)</strong>: muted origin markers showing where you were when you hit. <strong>Opponent's side (right/top)</strong>: impact markers where the ball went. <em>⚠ Impact positions are estimated by shot type — PBVision does not record ball landing coordinates.</em></div></div>
       <div class="help-card"><div class="help-card-title">Out-zone bands</div><div class="help-card-body">Faint red bands outside the court boundary show where out balls land: past the far baseline (long), past right/left sidelines (wide). Direction is from real PBVision data when available.</div></div>
-      <div class="help-card"><div class="help-card-title">Serve zone</div><div class="help-card-body">A faint teal zone behind your baseline shows serve origins. Serves must land past the kitchen line â the service court is from the kitchen line to the far baseline.</div></div>
-      <div class="help-card"><div class="help-card-title">Zoom and pan</div><div class="help-card-body">Scroll wheel zooms toward cursor. Click and drag to pan. Pinch to zoom on iPad. The â button (bottom-right) resets view. Resize window edge to switch between portrait and landscape layout.</div></div>
+      <div class="help-card"><div class="help-card-title">Serve zone</div><div class="help-card-body">A faint teal zone behind your baseline shows serve origins. Serves must land past the kitchen line — the service court is from the kitchen line to the far baseline.</div></div>
+      <div class="help-card"><div class="help-card-title">Zoom and pan</div><div class="help-card-body">Scroll wheel zooms toward cursor. Click and drag to pan. Pinch to zoom on iPad. The ⌂ button (bottom-right) resets view. Resize window edge to switch between portrait and landscape layout.</div></div>
     </div>
 
     <h2 class="help-h2">Sidebar Controls</h2>
@@ -509,7 +509,7 @@ input[type=range]{accent-color:var(--accent);}
       <div class="help-card"><div class="help-card-title">Player</div><div class="help-card-body">Select which player to analyze. Defaults to Carlo Badiola. The shot count shows how many games include that player.</div></div>
       <div class="help-card"><div class="help-card-title">Outcome filter</div><div class="help-card-body">In / Net / Out. Filters both impact and origin markers. Net impacts show projected landing location. Out impacts use actual direction data (long/right/left) when tracked.</div></div>
       <div class="help-card"><div class="help-card-title">Shot types</div><div class="help-card-body">Filter by serve, drive, dink, drop, lob, smash, volley, reset, speed-up, or other. Each type maps to a distinct shape in the legend.</div></div>
-      <div class="help-card"><div class="help-card-title">Display layers</div><div class="help-card-body"><strong>Impacts</strong> â markers on opponent's half. <strong>Origins</strong> â markers on your half. <strong>Traces</strong> â faint lines connecting origin to impact for in-court shots.</div></div>
+      <div class="help-card"><div class="help-card-title">Display layers</div><div class="help-card-body"><strong>Impacts</strong> — markers on opponent's half. <strong>Origins</strong> — markers on your half. <strong>Traces</strong> — faint lines connecting origin to impact for in-court shots.</div></div>
       <div class="help-card"><div class="help-card-title">Color By</div><div class="help-card-body"><strong>Outcome</strong>: green=in, orange=net (projected), red=out. <strong>FH/BH</strong>: teal=forehand, purple=backhand. <strong>Quality</strong>: gradient from red (poor) to green (excellent) using PBVision AI scores.</div></div>
       <div class="help-card"><div class="help-card-title">Highlight overlays</div><div class="help-card-body">Adds dashed rings to matching markers. <strong>Retreating</strong> (red): you moved away from net &gt;3ft. <strong>Advancing</strong> (green): moving toward net &gt;3ft. <strong>Lateral</strong> (purple): wide reach &gt;3ft. <strong>High Stress</strong> (gold): any movement &gt;6ft.</div></div>
     </div>
@@ -517,16 +517,16 @@ input[type=range]{accent-color:var(--accent);}
     <h2 class="help-h2">Game Selection</h2>
     <div class="help-grid">
       <div class="help-card"><div class="help-card-title">Partner filter</div><div class="help-card-body">Chips at the top of the games panel show each partner with your win % when playing with them. Click to filter to only games with that partner.</div></div>
-      <div class="help-card"><div class="help-card-title">Date bar chart</div><div class="help-card-body">Each bar is one calendar month â height = games, green fill = wins. Click any bar to toggle that month on or off. The current (partial) month shows in amber with a ~ marker.</div></div>
+      <div class="help-card"><div class="help-card-title">Date bar chart</div><div class="help-card-body">Each bar is one calendar month — height = games, green fill = wins. Click any bar to toggle that month on or off. The current (partial) month shows in amber with a ~ marker.</div></div>
       <div class="help-card"><div class="help-card-title">Rolling windows</div><div class="help-card-body">Buttons above the chart: <strong>2 wks</strong>, <strong>4 wks</strong>, <strong>8 wks</strong>, <strong>All</strong>. These select by exact date range regardless of calendar month, useful when you're partway through a month.</div></div>
       <div class="help-card"><div class="help-card-title">Individual games</div><div class="help-card-body">The scrollable list below the chart shows each game. Check or uncheck to include or exclude individual games.</div></div>
     </div>
 
     <h2 class="help-h2">Coaching Insight Box</h2>
-    <p style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:12px;">The floating box (bottom-left of court) shows automatically computed coaching insights ranked by impact. Click <strong>â¬</strong> to expand and see the full diagnosis and drill recommendation. Use <strong>â¹ âº</strong> to cycle through all available insights.</p>
+    <p style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:12px;">The floating box (bottom-left of court) shows automatically computed coaching insights ranked by impact. Click <strong>⬆</strong> to expand and see the full diagnosis and drill recommendation. Use <strong>‹ ›</strong> to cycle through all available insights.</p>
     <div class="help-grid">
       <div class="help-card"><div class="help-card-title">3rd Shot Selection</div><div class="help-card-body">Compares your drop vs drive accuracy on the third ball and flags if you're choosing the lower-percentage option more often.</div></div>
-      <div class="help-card"><div class="help-card-title">Kitchen Transition Gap</div><div class="help-card-body">Measures accuracy drop between shots 1â3 and shots 4â6 â the window where you should be transitioning to the kitchen.</div></div>
+      <div class="help-card"><div class="help-card-title">Kitchen Transition Gap</div><div class="help-card-body">Measures accuracy drop between shots 1–3 and shots 4–6 — the window where you should be transitioning to the kitchen.</div></div>
       <div class="help-card"><div class="help-card-title">Retreating Shots</div><div class="help-card-body">Identifies which shot types you attempt when being pushed back from the net. High retreating drives = attacking from a recovery position.</div></div>
       <div class="help-card"><div class="help-card-title">Poach Discipline</div><div class="help-card-body">Compares accuracy on poach shots vs standard shots. A large gap suggests over-poaching.</div></div>
     </div>
@@ -536,21 +536,21 @@ input[type=range]{accent-color:var(--accent);}
 
     <h2 class="help-h2">Shot Shapes</h2>
     <div class="help-grid">
-      <div class="help-card"><div class="help-card-title">ââââ¬ Back-court</div><div class="help-card-body">Circle = serve (solid). Bull's-eye = drive. Cross-in-circle = lob. Diamond = smash.</div></div>
-      <div class="help-card"><div class="help-card-title">â â¬âª Kitchen</div><div class="help-card-body">Solid square = dink. Square-in-square = drop. Small square = reset.</div></div>
-      <div class="help-card"><div class="help-card-title">â²â³ Mid-court</div><div class="help-card-body">Filled triangle = volley. Outline triangle = speed-up.</div></div>
-      <div class="help-card"><div class="help-card-title">Ã Other / Returns</div><div class="help-card-body">X mark = unclassified shots (mostly returns of serve).</div></div>
+      <div class="help-card"><div class="help-card-title">●◉✛⬟ Back-court</div><div class="help-card-body">Circle = serve (solid). Bull's-eye = drive. Cross-in-circle = lob. Diamond = smash.</div></div>
+      <div class="help-card"><div class="help-card-title">■⬜▪ Kitchen</div><div class="help-card-body">Solid square = dink. Square-in-square = drop. Small square = reset.</div></div>
+      <div class="help-card"><div class="help-card-title">▲△ Mid-court</div><div class="help-card-body">Filled triangle = volley. Outline triangle = speed-up.</div></div>
+      <div class="help-card"><div class="help-card-title">× Other / Returns</div><div class="help-card-body">X mark = unclassified shots (mostly returns of serve).</div></div>
     </div>
 
     <h2 class="help-h2">Dashboard</h2>
     <p style="font-size:13px;color:var(--text2);line-height:1.7;">Win rate, accuracy, kitchen %, and rating KPIs. Rating Over Time chart shows all 7 DUPR sub-scores. Filter by 2-week, 1-month, or all-time. Coaching priorities are from PBVision's AI advice scores ranked by frequency.</p>
 
     <h2 class="help-h2">Data &amp; Privacy</h2>
-    <p style="font-size:13px;color:var(--text2);line-height:1.7;">All data stays in your browser's localStorage. 49 games are pre-loaded in this file. Import additional JSON exports via <strong>+ Add Games</strong>. Export your library with the â¬ Export button in My Games.</p>
+    <p style="font-size:13px;color:var(--text2);line-height:1.7;">All data stays in your browser's localStorage. 49 games are pre-loaded in this file. Import additional JSON exports via <strong>+ Add Games</strong>. Export your library with the ⬇ Export button in My Games.</p>
 
     <h2 class="help-h2">What's Estimated vs Ground Truth</h2>
     <p style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:8px;"><strong>Verified from PBVision data:</strong> outcome (in/net/out), out direction (long/right/left), shot type, stroke (FH/BH), player court side, movement magnitude and direction (smov), quality score.</p>
-    <p style="font-size:13px;color:var(--text2);line-height:1.7;"><strong>Estimated (zone-based):</strong> exact impact landing position, exact origin position. These are approximated using shot-type zones and movement data. Use for clustering and pattern recognition â not precise coordinates.</p>
+    <p style="font-size:13px;color:var(--text2);line-height:1.7;"><strong>Estimated (zone-based):</strong> exact impact landing position, exact origin position. These are approximated using shot-type zones and movement data. Use for clustering and pattern recognition — not precise coordinates.</p>
   </div>
 </div>
 
@@ -562,7 +562,7 @@ input[type=range]{accent-color:var(--accent);}
     <!-- Step 1: Pick file -->
     <div class="upload-zone" onclick="document.getElementById('file-input-modal').click()" style="padding:20px;margin-bottom:12px;"
          ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
-      <div class="upload-icon" style="font-size:24px;">ð</div>
+      <div class="upload-icon" style="font-size:24px;">📂</div>
       <div class="upload-text">Drop PBVision JSON or click to browse</div>
       <div style="font-size:9px;color:var(--text3);margin-top:4px;">Auto-fetches augmented stats from PBVision API</div>
     </div>
@@ -573,10 +573,10 @@ input[type=range]{accent-color:var(--accent);}
     <!-- GitHub Sync Section -->
     <div style="margin-bottom:10px;">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-        <div style="font-size:11px;font-weight:700;color:var(--text2);">â Sync to GitHub</div>
+        <div style="font-size:11px;font-weight:700;color:var(--text2);">☁ Sync to GitHub</div>
         <button onclick="toggleGHSetup()" id="gh-setup-toggle"
           style="font-size:10px;color:var(--accent);background:none;border:none;cursor:pointer;padding:0;">
-          Configure â¾
+          Configure ▾
         </button>
       </div>
 
@@ -584,11 +584,11 @@ input[type=range]{accent-color:var(--accent);}
       <div id="gh-setup-fields" style="display:none;background:var(--bg3);border-radius:6px;padding:10px;margin-bottom:8px;">
         <div style="font-size:10px;color:var(--text3);margin-bottom:8px;line-height:1.5;">
           Enter your GitHub repo and a fine-grained Personal Access Token with <strong>Contents: Read &amp; Write</strong> permission scoped to this repo only.
-          <a href="https://github.com/settings/tokens?type=beta" target="_blank" style="color:var(--accent);">Create token â</a>
+          <a href="https://github.com/settings/tokens?type=beta" target="_blank" style="color:var(--accent);">Create token →</a>
         </div>
         <input id="gh-repo" class="modal-input" placeholder="username/pbviewer" style="margin-bottom:6px;font-family:var(--font-mono);font-size:11px;"
                oninput="saveGHConfig()">
-        <input id="gh-token" class="modal-input" type="password" placeholder="github_pat_â¦"
+        <input id="gh-token" class="modal-input" type="password" placeholder="github_pat_…"
                style="font-family:var(--font-mono);font-size:11px;" oninput="saveGHConfig()">
         <div id="gh-config-status" style="font-size:10px;color:var(--text3);margin-top:6px;"></div>
       </div>
@@ -598,12 +598,12 @@ input[type=range]{accent-color:var(--accent);}
         <button id="gh-push-btn" onclick="pushToGitHub()"
           style="flex:1;padding:8px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;
                  background:var(--accent-dim);border:1px solid var(--accent);color:var(--accent);">
-          â¬ Push library to GitHub
+          ⬆ Push library to GitHub
         </button>
         <button onclick="checkGitHubData()" title="Check what's currently in data/games.json on GitHub"
           style="padding:8px 10px;border-radius:6px;font-size:12px;cursor:pointer;
                  background:var(--bg3);border:1px solid var(--border);color:var(--text2);">
-          ð
+          🔍
         </button>
       </div>
       <div id="gh-push-status" style="font-size:11px;color:var(--text3);margin-top:4px;min-height:16px;text-align:center;line-height:1.5;"></div>
@@ -612,7 +612,7 @@ input[type=range]{accent-color:var(--accent);}
     <!-- Re-Augment Library -->
     <div class="divider"></div>
     <div style="margin-bottom:10px;">
-      <div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:6px;">ð Re-Augment Library</div>
+      <div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:6px;">🔄 Re-Augment Library</div>
       <div style="font-size:10px;color:var(--text3);margin-bottom:8px;line-height:1.5;">
         Re-fetch augmented ball tracking data from PBVision API for all games currently in your library. Replaces estimated positions with real tracked coordinates, speed, and trajectory data.
       </div>
@@ -620,7 +620,7 @@ input[type=range]{accent-color:var(--accent);}
         <button id="reaugment-btn" onclick="reAugmentLibrary()"
           style="flex:1;padding:8px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;
                  background:var(--bg3);border:1px solid var(--accent);color:var(--accent);">
-          ð Re-Augment All Games
+          🔄 Re-Augment All Games
         </button>
         <span id="reaugment-count" style="font-size:10px;color:var(--text3);white-space:nowrap;"></span>
       </div>
@@ -636,9 +636,9 @@ input[type=range]{accent-color:var(--accent);}
 <div id="toast">Toast</div>
 
 <script>
-// âââââââââââââââââââââââââââââââââââââââââââ
+// ═══════════════════════════════════════════
 // CONSTANTS & STATE
-// âââââââââââââââââââââââââââââââââââââââââââ
+// ═══════════════════════════════════════════
 const PRIMARY_USER = 'Carlo Badiola';
 const STORAGE_KEY = 'pbv_games_v3';
 const CONFIG_KEY = 'pbv_config_v3';
@@ -672,9 +672,9 @@ let state = {
   shotIndex: [], // flat array of all rendered shots for hover
 };
 
-// âââââââââââââââââââââââââââââââââââââââââââ
+// ═══════════════════════════════════════════
 // STORAGE
-// âââââââââââââââââââââââââââââââââââââââââââ
+// ═══════════════════════════════════════════
 function loadFromStorage() {
   // Returns array of user-imported games from localStorage (empty if none).
   // The base library (data/games.json) is fetched separately by loadAppData().
@@ -691,9 +691,9 @@ function saveToStorage() {
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state.games)); localStorage.setItem(CONFIG_KEY, JSON.stringify(state.config)); } catch(e) {}
 }
 
-// âââââââââââââââââââââââââââââââââââââââââââ
+// ═══════════════════════════════════════════
 // HELPERS
-// âââââââââââââââââââââââââââââââââââââââââââ
+// ═══════════════════════════════════════════
 function getCarloGames(withinDays) { return getActiveGames(withinDays); }
 function getCarloData(g) { return getActiveData(g); }
 
@@ -716,7 +716,7 @@ function avgOf(arr, fn) {
   return vals.length ? vals.reduce((a,b)=>a+b,0)/vals.length : 0;
 }
 function pct(v) { return (v*100).toFixed(0)+'%'; }
-function rating(v) { return v ? v.toFixed(2) : 'â'; }
+function rating(v) { return v ? v.toFixed(2) : '—'; }
 function ratingColor(v) {
   if (!v) return 'var(--text)';
   if (v >= 4.0) return 'var(--good)'; if (v >= 3.5) return 'var(--accent)';
@@ -782,9 +782,9 @@ function exportData() {
   showToast('Exported!','success');
 }
 
-// âââââââââââââââââââââââââââââââââââââââââââ
+// ═══════════════════════════════════════════
 // NAVIGATION
-// âââââââââââââââââââââââââââââââââââââââââââ
+// ═══════════════════════════════════════════
 function showPage(name, event) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
@@ -807,16 +807,16 @@ function toggleTheme() {
   const isLight = document.body.getAttribute('data-theme')==='light';
   const t = isLight ? 'dark' : 'light';
   document.body.setAttribute('data-theme', t);
-  document.querySelector('.theme-toggle').textContent = t==='light' ? 'âï¸' : 'ð';
+  document.querySelector('.theme-toggle').textContent = t==='light' ? '☀️' : '🌙';
   state.config.theme = t; saveToStorage();
   updateCourtView();
   // Re-render legend with hardcoded colors (always readable on dark overlay)
   updateLegend();
 }
 
-// âââââââââââââââââââââââââââââââââââââââââââ
+// ═══════════════════════════════════════════
 // FILE PARSING
-// âââââââââââââââââââââââââââââââââââââââââââ
+// ═══════════════════════════════════════════
 const SHOT_MAP_SHT = {0:'drive',1:'dink',2:'drop',3:'lob',4:'smash'};
 function classifyShot(sh, shidx) {
   const tagKeys = Object.keys(sh.tag||{});
@@ -832,8 +832,8 @@ function classifyShot(sh, shidx) {
     let type = SHOT_MAP_SHT[sh.sht];
     // PBVision's dink/drop classification in regular export is unreliable (~50% accurate).
     // Reclassify using player position (vt): dink=at kitchen, drop=from baseline/transition.
-    if (type === 'dink' && sh.vt === 0) type = 'drop';  // "dink" from baseline â actually a drop
-    else if (type === 'drop' && sh.vt === 3) type = 'dink';  // "drop" from kitchen â actually a dink
+    if (type === 'dink' && sh.vt === 0) type = 'drop';  // "dink" from baseline → actually a drop
+    else if (type === 'drop' && sh.vt === 3) type = 'dink';  // "drop" from kitchen → actually a dink
     return type;
   }
   if (shidx===0) return 'serve';
@@ -950,9 +950,9 @@ function parseSession(ses) {
       players,shots,partnerOf,included:true};
   } catch(e) { console.error(e); return null; }
 }
-// âââââââââââââââââââââââââââââââââââââââââââ
+// ═══════════════════════════════════════════
 // AUGMENTED API FETCH + ADAPTIVE PARSER
-// âââââââââââââââââââââââââââââââââââââââââââ
+// ═══════════════════════════════════════════
 const AUGMENTED_API = 'https://api-2o2klzx4pa-uc.a.run.app/video';
 
 // Extract video IDs from any PBVision JSON structure (regular or augmented)
@@ -1022,7 +1022,7 @@ function classifyAugmentedShot(sh, shidx) {
 
 // Parse augmented API response (full field names: session, rallies, player_data, etc.)
 function parseAugmentedSession(augData) {
-  // ââ Route 1: Regular abbreviated format â parse with overlay ââ
+  // ── Route 1: Regular abbreviated format → parse with overlay ──
   if (augData.ses || augData.ral) {
     const base = parseSession(augData);
     if (!base) return null;
@@ -1040,7 +1040,7 @@ function parseAugmentedSession(augData) {
     return base;
   }
 
-  // ââ Route 2: True augmented format (session, rallies, player_data, ...) ââ
+  // ── Route 2: True augmented format (session, rallies, player_data, ...) ──
   if (!augData.session || !augData.rallies) {
     console.warn('[Augmented] Unexpected format. Top keys:', Object.keys(augData));
     return null;
@@ -1058,7 +1058,7 @@ function parseAugmentedSession(augData) {
     const si = s.session_index != null ? s.session_index : (s.sessionIdx || 0);
     const key = vid + '_' + si;
 
-    // ââ Parse players ââ
+    // ── Parse players ──
     const players = pd.map((p, idx) => {
       if (!p) return null;
       const t = p.trends || {};
@@ -1082,8 +1082,8 @@ function parseAugmentedSession(augData) {
       };
     }).filter(Boolean);
 
-    // ââ Parse shots ââ
-    // ââ Parse rally-level data (team spacing, scoring, kitchen arrivals) ââ
+    // ── Parse shots ──
+    // ── Parse rally-level data (team spacing, scoring, kitchen arrivals) ──
     const rallyData = rallies.map((rally, ridx) => {
       const ts = rally.team_stats || [];
       const si = rally.scoring_info || {};
@@ -1124,7 +1124,7 @@ function parseAugmentedSession(augData) {
       (rally.shots || []).forEach((sh, shidx) => {
         const pid = sh.player_id;
 
-        // ââ Error parsing ââ
+        // ── Error parsing ──
         let outcome = 'in', outDir = null, outSd = null, isUnforced = null;
         const errs = sh.errors;
         if (errs) {
@@ -1144,7 +1144,7 @@ function parseAugmentedSession(augData) {
           else if (errs.unforced === false) isUnforced = false;
         }
 
-        // ââ Movement ââ
+        // ── Movement ──
         const smov = sh.shooter_movement_from_last_shot || null;
         const smovX = smov ? smov.x : 0;
         const smovY = smov ? smov.y : 0;
@@ -1157,16 +1157,16 @@ function parseAugmentedSession(augData) {
           else movecat = 'moving';
         }
 
-        // ââ Shot classification ââ
+        // ── Shot classification ──
         const shotType = classifyAugmentedShot(sh, shidx);
 
-        // ââ Stroke ââ
+        // ── Stroke ──
         const stroke = sh.stroke_type === 'forehand' ? 'fh' : sh.stroke_type === 'backhand' ? 'bh' : null;
 
-        // ââ Side (which side of court player started on in this rally) ââ
+        // ── Side (which side of court player started on in this rally) ──
         const pside = pid != null && pid < rallyPlayers.length && rallyPlayers[pid] ? (rallyPlayers[pid].started_on_left_side ? 1 : 0) : null;
 
-        // ââ Vertical type mapping ââ
+        // ── Vertical type mapping ──
         // Use advantage_scale to determine court position (vt):
         // advantage_scale ~1 = at kitchen (vt=3), ~0 = at baseline (vt=0)
         let vt = null;
@@ -1177,25 +1177,25 @@ function parseAugmentedSession(augData) {
           vt = advScale[pid] >= 0.65 ? 3 : 0;
         }
 
-        // ââ Quality ââ
+        // ── Quality ──
         const q = sh.quality || {};
         const quality = q.execution != null ? Math.round(q.execution * 1000) / 1000 : null;
 
-        // ââ Winner tracking ââ
+        // ── Winner tracking ──
         // augmented uses winner_type: "clean" or "forced_fault"
         let win = null;
         if (sh.winner_type === 'clean') win = 'clean';
         else if (sh.winner_type === 'forced_fault') win = 0; // forced fault on opponent = opponent error
 
-        // ââ Shot timing (ms) ââ
+        // ── Shot timing (ms) ──
         const shotStartMs = sh.start_ms || null;
         const shotEndMs = sh.end_ms || null;
         const shotDurationMs = (shotStartMs != null && shotEndMs != null) ? shotEndMs - shotStartMs : null;
 
-        // ââ Score context (from rally scoring_info) ââ
+        // ── Score context (from rally scoring_info) ──
         const runningScore = scoringInfo.running_score || null;
 
-        // ââ Build shot object ââ
+        // ── Build shot object ──
         const shot = {
           pid, ridx, shidx, shotType, outcome, dir: outDir, sd: outSd,
           quality,
@@ -1224,14 +1224,14 @@ function parseAugmentedSession(augData) {
           isVolleyed: !!(sh.resulting_ball_movement && sh.resulting_ball_movement.is_volleyed)
         };
 
-        // ââ Overlay ball tracking data ââ
+        // ── Overlay ball tracking data ──
         _overlayAugmentedBallData(sh, shot);
 
         shots.push(shot);
       });
     });
 
-    // ââ Tag highlight shots ââ
+    // ── Tag highlight shots ──
     hlArr.forEach(hl => {
       const ridx = hl.rally_idx;
       (hl.events || []).forEach(ev => {
@@ -1244,7 +1244,7 @@ function parseAugmentedSession(augData) {
       });
     });
 
-    // ââ Build game object ââ
+    // ── Build game object ──
     const epoch = s.gameEpoch || 0;
     const date = epoch ? new Date(epoch * 1000) : null;
     const partnerOf = {};
@@ -1298,7 +1298,7 @@ function _overlayAugmentedBallData(sh, shot) {
     }
 
     // Trajectory with real coordinates
-    // Coordinate mapping: augmented xâour x, augmented yâour z (court depth), augmented zâheight
+    // Coordinate mapping: augmented x→our x, augmented y→our z (court depth), augmented z→height
     const traj = rbm.trajectory || null;
     if (traj) {
       shot.trajConfidence = traj.confidence || null;
@@ -1399,7 +1399,7 @@ async function reAugmentLibrary() {
 
   btn.disabled = true;
   btn.style.opacity = '0.5';
-  btn.textContent = 'â³ Re-Augmentingâ¦';
+  btn.textContent = '⏳ Re-Augmenting…';
   statusEl.innerHTML = '';
   countEl.textContent = '';
 
@@ -1411,7 +1411,7 @@ async function reAugmentLibrary() {
 
     const line = document.createElement('div');
     line.style.marginBottom = '2px';
-    line.innerHTML = `<span style="color:var(--text3);">â³ ${vid}â¦</span>`;
+    line.innerHTML = `<span style="color:var(--text3);">⟳ ${vid}…</span>`;
     statusEl.appendChild(line);
     statusEl.scrollTop = statusEl.scrollHeight;
 
@@ -1427,18 +1427,18 @@ async function reAugmentLibrary() {
           state.games[idx] = game;
           upgraded++;
           const stats = game._augStats || {};
-          line.innerHTML = `<span style="color:var(--good);">â ${vid}</span> <span style="color:var(--text3);">${stats.realImpacts||0} impacts Â· ${stats.withSpeed||0} speed Â· ${stats.withPositions||0} positions</span>`;
+          line.innerHTML = `<span style="color:var(--good);">✓ ${vid}</span> <span style="color:var(--text3);">${stats.realImpacts||0} impacts · ${stats.withSpeed||0} speed · ${stats.withPositions||0} positions</span>`;
         } else {
           unchanged++;
-          line.innerHTML = `<span style="color:var(--text3);">â ${vid}: game not found in library</span>`;
+          line.innerHTML = `<span style="color:var(--text3);">— ${vid}: game not found in library</span>`;
         }
       } else {
         failed++;
-        line.innerHTML = `<span style="color:var(--warn);">â  ${vid}: parse failed</span>`;
+        line.innerHTML = `<span style="color:var(--warn);">⚠ ${vid}: parse failed</span>`;
       }
     } catch (err) {
       failed++;
-      line.innerHTML = `<span style="color:var(--warn);">â ${vid}: ${err.message}</span>`;
+      line.innerHTML = `<span style="color:var(--warn);">✗ ${vid}: ${err.message}</span>`;
     }
     statusEl.scrollTop = statusEl.scrollHeight;
   }
@@ -1451,7 +1451,7 @@ async function reAugmentLibrary() {
 
   btn.disabled = false;
   btn.style.opacity = '1';
-  btn.textContent = 'ð Re-Augment All Games';
+  btn.textContent = '🔄 Re-Augment All Games';
 
   const summary = document.createElement('div');
   summary.style.cssText = 'margin-top:6px;padding:6px;background:var(--bg2);border-radius:4px;font-weight:600;';
@@ -1459,7 +1459,7 @@ async function reAugmentLibrary() {
   if (upgraded > 0) parts.push(`<span style="color:var(--good);">${upgraded} upgraded</span>`);
   if (failed > 0) parts.push(`<span style="color:var(--warn);">${failed} failed</span>`);
   if (unchanged > 0) parts.push(`<span style="color:var(--text3);">${unchanged} unchanged</span>`);
-  summary.innerHTML = parts.join(' Â· ') || 'Done';
+  summary.innerHTML = parts.join(' · ') || 'Done';
   statusEl.appendChild(summary);
   statusEl.scrollTop = statusEl.scrollHeight;
 
@@ -1474,7 +1474,7 @@ async function processFiles(files) {
   let added=0, dupes=[], failed=[];
   const toReplace = [];  // sessions that are dupes but could be replaced
   const allVideoIDs = [];  // collect video IDs for augmented fetch
-  const fallbackSessions = new Map(); // vid_si â parsed session (used if augmented fails)
+  const fallbackSessions = new Map(); // vid_si → parsed session (used if augmented fails)
 
   for (const file of files) {
     if (!file.name.endsWith('.json')) continue;
@@ -1498,10 +1498,10 @@ async function processFiles(files) {
   const statusEl = document.getElementById('upload-result');
 
   if (allVideoIDs.length > 0 && statusEl) {
-    // ââ AUGMENTED FETCH PHASE ââ
+    // ── AUGMENTED FETCH PHASE ──
     statusEl.style.display = 'block';
     statusEl.innerHTML = `<div style="color:var(--accent);font-weight:600;margin-bottom:6px;">
-      â³ Fetching augmented data for ${allVideoIDs.length} game${allVideoIDs.length!==1?'s':''}â¦
+      ⏳ Fetching augmented data for ${allVideoIDs.length} game${allVideoIDs.length!==1?'s':''}…
     </div>
     <div id="aug-fetch-log" style="font-size:10px;color:var(--text3);max-height:100px;overflow-y:auto;font-family:var(--font-mono);"></div>`;
 
@@ -1510,7 +1510,7 @@ async function processFiles(files) {
       const line = document.createElement('div');
       line.style.marginBottom = '2px';
       if (status === 'fetching') {
-        line.innerHTML = `<span style="color:var(--text3);">â³ ${vid}â¦</span>`;
+        line.innerHTML = `<span style="color:var(--text3);">⟳ ${vid}…</span>`;
       } else if (status === 'success') {
         const stats = extra || {};
         const badges = [];
@@ -1518,11 +1518,11 @@ async function processFiles(files) {
         if (stats.withSpeed > 0) badges.push(`${stats.withSpeed} w/ speed`);
         if (stats.withHeight > 0) badges.push(`${stats.withHeight} w/ height`);
         if (stats.augFields?.length > 0) badges.push(`+${stats.augFields.length} new fields`);
-        line.innerHTML = `<span style="color:var(--good);">â ${vid}</span> <span style="color:var(--text3);">${badges.join(' Â· ') || 'parsed'}</span>`;
+        line.innerHTML = `<span style="color:var(--good);">✓ ${vid}</span> <span style="color:var(--text3);">${badges.join(' · ') || 'parsed'}</span>`;
       } else if (status === 'error') {
-        line.innerHTML = `<span style="color:var(--warn);">â ${vid}: ${extra||'failed'}</span>`;
+        line.innerHTML = `<span style="color:var(--warn);">✗ ${vid}: ${extra||'failed'}</span>`;
       } else {
-        line.innerHTML = `<span style="color:var(--warn);">â  ${vid}: ${status}</span>`;
+        line.innerHTML = `<span style="color:var(--warn);">⚠ ${vid}: ${status}</span>`;
       }
       if (logEl) logEl.appendChild(line);
     });
@@ -1554,19 +1554,19 @@ async function processFiles(files) {
     const augCount = augResults.filter(r => r.game?._augmented).length;
     const fallbackCount = allVideoIDs.length - augCount;
     let html = '';
-    if (augCount > 0) html += `<div style="color:var(--good);font-weight:600;margin-bottom:4px;">â ${augCount} game${augCount!==1?'s':''} fetched with augmented data</div>`;
-    if (fallbackCount > 0) html += `<div style="color:var(--warn);margin-bottom:4px;">â  ${fallbackCount} game${fallbackCount!==1?'s':''} using uploaded data (API unavailable)</div>`;
-    if (added > 0) html += `<div style="color:var(--good);font-weight:600;margin-bottom:6px;">â Added ${added} new game${added!==1?'s':''}</div>`;
-    if (failed.length) html += `<div style="color:var(--danger);margin-bottom:6px;">â ${failed.join('<br>')}</div>`;
+    if (augCount > 0) html += `<div style="color:var(--good);font-weight:600;margin-bottom:4px;">✓ ${augCount} game${augCount!==1?'s':''} fetched with augmented data</div>`;
+    if (fallbackCount > 0) html += `<div style="color:var(--warn);margin-bottom:4px;">⚠ ${fallbackCount} game${fallbackCount!==1?'s':''} using uploaded data (API unavailable)</div>`;
+    if (added > 0) html += `<div style="color:var(--good);font-weight:600;margin-bottom:6px;">✓ Added ${added} new game${added!==1?'s':''}</div>`;
+    if (failed.length) html += `<div style="color:var(--danger);margin-bottom:6px;">✗ ${failed.join('<br>')}</div>`;
     if (toReplace.length) {
-      html += `<div style="color:var(--warn);font-weight:600;margin-bottom:6px;">â  ${toReplace.length} game${toReplace.length!==1?'s':''} already in library:</div>`;
+      html += `<div style="color:var(--warn);font-weight:600;margin-bottom:6px;">⚠ ${toReplace.length} game${toReplace.length!==1?'s':''} already in library:</div>`;
       toReplace.forEach(({ses, existing, scoreChanged, isNewer, isAugmented}) => {
         const badges = [];
         if (isAugmented) badges.push('<span style="color:var(--accent)">augmented</span>');
         if (scoreChanged) badges.push('<span style="color:var(--warn)">score changed</span>');
         else if (isNewer) badges.push('<span style="color:var(--accent)">newer</span>');
         html += `<div style="font-size:11px;color:var(--text2);margin-bottom:3px;display:flex;align-items:center;gap:6px;">
-          <span>${ses.dateLabel} Â· ${existing.game_outcome.join('â')} â ${ses.game_outcome.join('â')} ${badges.join(' ')}</span>
+          <span>${ses.dateLabel} · ${existing.game_outcome.join('–')} → ${ses.game_outcome.join('–')} ${badges.join(' ')}</span>
         </div>`;
       });
       html += `<div style="display:flex;gap:6px;margin-top:8px;">
@@ -1590,7 +1590,7 @@ async function processFiles(files) {
     return;
   }
 
-  // ââ FALLBACK: no video IDs found (e.g., importing a games.json library)
+  // ── FALLBACK: no video IDs found (e.g., importing a games.json library)
   for (const [key, ses] of fallbackSessions) {
     const existing = state.games.find(g=>g.key===key);
     if (existing) {
@@ -1606,14 +1606,14 @@ async function processFiles(files) {
 
   if (statusEl) {
     let html = '';
-    if (added > 0) html += `<div style="color:var(--good);font-weight:600;margin-bottom:6px;">â Added ${added} new game${added!==1?'s':''}</div>`;
-    if (failed.length) html += `<div style="color:var(--danger);margin-bottom:6px;">â ${failed.join('<br>')}</div>`;
+    if (added > 0) html += `<div style="color:var(--good);font-weight:600;margin-bottom:6px;">✓ Added ${added} new game${added!==1?'s':''}</div>`;
+    if (failed.length) html += `<div style="color:var(--danger);margin-bottom:6px;">✗ ${failed.join('<br>')}</div>`;
     if (toReplace.length) {
-      html += `<div style="color:var(--warn);font-weight:600;margin-bottom:6px;">â  ${toReplace.length} game${toReplace.length!==1?'s':''} already in library:</div>`;
+      html += `<div style="color:var(--warn);font-weight:600;margin-bottom:6px;">⚠ ${toReplace.length} game${toReplace.length!==1?'s':''} already in library:</div>`;
       toReplace.forEach(({ses, existing, scoreChanged, isNewer}) => {
         const badge = scoreChanged ? ' <span style="color:var(--warn)">score changed</span>' : isNewer ? ' <span style="color:var(--accent)">newer</span>' : '';
         html += `<div style="font-size:11px;color:var(--text2);margin-bottom:3px;display:flex;align-items:center;gap:6px;">
-          <span>${ses.dateLabel} Â· ${existing.game_outcome.join('â')} â ${ses.game_outcome.join('â')}${badge}</span>
+          <span>${ses.dateLabel} · ${existing.game_outcome.join('–')} → ${ses.game_outcome.join('–')}${badge}</span>
         </div>`;
       });
       html += `<div style="display:flex;gap:6px;margin-top:8px;">
@@ -1641,7 +1641,7 @@ async function processFiles(files) {
   // Fallback if statusEl missing
   saveToStorage(); refreshAll();
   if (added>0) showToast('Added '+added+(dupes.length?' ('+dupes.length+' dupes)':''), 'success');
-  else if (dupes.length) showToast(dupes.length+' game'+(dupes.length!==1?'s already':'s already')+' in library â use Replace to update', 'warn');
+  else if (dupes.length) showToast(dupes.length+' game'+(dupes.length!==1?'s already':'s already')+' in library — use Replace to update', 'warn');
   closeUploadModal();
 }
 
@@ -1665,9 +1665,9 @@ function refreshAll() {
   }
 }
 
-// âââââââââââââââââââââââââââââââââââââââââââ
+// ═══════════════════════════════════════════
 // DASHBOARD
-// âââââââââââââââââââââââââââââââââââââââââââ
+// ═══════════════════════════════════════════
 function updateDashboard() {
   const days = state.dashPeriod==='2w'?14:state.dashPeriod==='1m'?30:null;
   const games = getActiveGames(days);
@@ -1675,10 +1675,10 @@ function updateDashboard() {
   const dp = document.getElementById('dash-player-select');
   if (dp && dp.value !== state.activePlayer) dp.value = state.activePlayer;
   document.getElementById('dash-subtitle').textContent =
-    games.length+' game'+(games.length!==1?'s':'')+' Â· '+(state.dashPeriod==='2w'?'Last 2 weeks':state.dashPeriod==='1m'?'Last month':'All time');
+    games.length+' game'+(games.length!==1?'s':'')+' · '+(state.dashPeriod==='2w'?'Last 2 weeks':state.dashPeriod==='1m'?'Last month':'All time');
 
   if (!games.length) {
-    ['kpi-wr','kpi-rating','kpi-acc','kpi-net','kpi-kitchen','kpi-wue'].forEach(id=>{const el=document.getElementById(id);if(el){el.textContent='â';el.className='kpi-val';}});
+    ['kpi-wr','kpi-rating','kpi-acc','kpi-net','kpi-kitchen','kpi-wue'].forEach(id=>{const el=document.getElementById(id);if(el){el.textContent='—';el.className='kpi-val';}});
     ['kpi-wr-sub','kpi-wue-sub'].forEach(id=>{const el=document.getElementById(id);if(el) el.textContent='';});
     const coachEl=document.getElementById('coaching-list');
     if(coachEl) coachEl.innerHTML='<div style="font-size:12px;color:var(--text3);padding:8px 0;">No games in selected period. Try "All Time".</div>';
@@ -1691,7 +1691,7 @@ function updateDashboard() {
   const wr = (wins/games.length*100).toFixed(0);
   const wrEl = document.getElementById('kpi-wr');
   wrEl.textContent = wr+'%'; wrEl.className='kpi-val '+(wr>=50?'good':'bad');
-  document.getElementById('kpi-wr-sub').textContent = wins+'W â '+(cd.length-wins)+'L';
+  document.getElementById('kpi-wr-sub').textContent = wins+'W – '+(cd.length-wins)+'L';
   const avgR = avgOf(cd, d=>d.ratings.overall);
   const rEl = document.getElementById('kpi-rating');
   rEl.textContent = avgR.toFixed(2); rEl.style.color = ratingColor(avgR);
@@ -1716,12 +1716,12 @@ function updateDashboard() {
   const wueEl = document.getElementById('kpi-wue');
   const wueSub = document.getElementById('kpi-wue-sub');
   if (totalWinners+totalUF > 0) {
-    const ratio = totalUF>0?(totalWinners/totalUF).toFixed(2):'â';
+    const ratio = totalUF>0?(totalWinners/totalUF).toFixed(2):'∞';
     wueEl.textContent = ratio;
     wueEl.className = 'kpi-val '+(parseFloat(ratio)>=1.0?'good':parseFloat(ratio)>=0.7?'warn':'bad');
     wueSub.textContent = totalWinners+'W / '+totalUF+'UE';
   } else {
-    wueEl.textContent = 'â'; wueEl.className = 'kpi-val';
+    wueEl.textContent = '—'; wueEl.className = 'kpi-val';
     wueSub.textContent = 'Winners vs Unforced';
   }
 
@@ -1745,7 +1745,7 @@ function updateDashboard() {
     const c=getActiveData(g); if(!c) return '';
     return `<div class="recent-game">
       <div class="rg-date">${g.dateLabel?g.dateLabel.slice(0,6):'?'}</div>
-      <div class="rg-info"><div class="rg-score">${g.game_outcome.join(' â ')} <span class="win-badge ${c.won?'w':'l'}">${c.won?'W':'L'}</span></div>
+      <div class="rg-info"><div class="rg-score">${g.game_outcome.join(' – ')} <span class="win-badge ${c.won?'w':'l'}">${c.won?'W':'L'}</span></div>
         ${g.partnerOf[String(c.idx)]?'<div class="rg-partner">w/ '+g.partnerOf[String(c.idx)]+'</div>':''}</div>
       <div class="rg-rating">${rating(c.ratings.overall)}</div></div>`;
   }).join('');
@@ -1865,9 +1865,9 @@ function renderRatingChart() {
   el.innerHTML=svg;
 }
 
-// âââââââââââââââââââââââââââââââââââââââââââ
+// ═══════════════════════════════════════════
 // GAMES TABLE
-// âââââââââââââââââââââââââââââââââââââââââââ
+// ═══════════════════════════════════════════
 function renderGamesTable() {
   const tbody=document.getElementById('games-tbody');
   const empty=document.getElementById('games-empty');
@@ -1892,20 +1892,20 @@ function renderGamesTable() {
   }
   tbody.innerHTML=[...visibleGames].sort((a,b)=>b.epoch-a.epoch).map(g=>{
     const cp=g.players.find(p=>p.name===player);
-    const score=g.game_outcome.join('â');
+    const score=g.game_outcome.join('–');
     const pills=g.players.map(p=>`<span class="player-pill ${p.name===player?'primary':''}">${p.name}</span>`).join('');
     return `<tr class="${g.included===false?'excluded':''} game-summary-row" data-key="${g.key}" style="cursor:pointer;">
       <td onclick="event.stopPropagation()"><input type="checkbox" class="table-checkbox game-cb" data-key="${g.key}" ${g.included!==false?'checked':''}
         onchange="toggleGameIncluded('${g.key}',this.checked)"></td>
-      <td onclick="toggleGameExpand('${g.key}')">${g.dateLabel||'â'}</td>
-      <td onclick="toggleGameExpand('${g.key}')" style="font-family:var(--font-mono);font-size:10px;color:var(--text3)">${g.vid.slice(0,8)}â¦</td>
+      <td onclick="toggleGameExpand('${g.key}')">${g.dateLabel||'—'}</td>
+      <td onclick="toggleGameExpand('${g.key}')" style="font-family:var(--font-mono);font-size:10px;color:var(--text3)">${g.vid.slice(0,8)}…</td>
       <td onclick="toggleGameExpand('${g.key}')" style="font-weight:600">${score}</td>
-      <td onclick="toggleGameExpand('${g.key}')">${cp?`<span class="win-badge ${cp.won?'w':'l'}">${cp.won?'W':'L'}</span>`:'â'}</td>
+      <td onclick="toggleGameExpand('${g.key}')">${cp?`<span class="win-badge ${cp.won?'w':'l'}">${cp.won?'W':'L'}</span>`:'—'}</td>
       <td onclick="toggleGameExpand('${g.key}')">${pills}</td>
       <td onclick="toggleGameExpand('${g.key}')" style="font-family:var(--font-mono);color:${ratingColor(cp?.ratings.overall)}">${rating(cp?.ratings.overall)}</td>
-      <td onclick="toggleGameExpand('${g.key}')" style="font-family:var(--font-mono)">${cp?pct(cp.shot_accuracy.in):'â'}</td>
-      <td onclick="toggleGameExpand('${g.key}')" style="font-family:var(--font-mono)">${cp?pct(cp.kitchen_arrivals.serving_side||0):'â'}</td>
-      <td onclick="toggleGameExpand('${g.key}')" style="font-size:11px;color:var(--text3)">${cp?g.partnerOf[String(cp.idx)]||'â':'â'}</td>
+      <td onclick="toggleGameExpand('${g.key}')" style="font-family:var(--font-mono)">${cp?pct(cp.shot_accuracy.in):'—'}</td>
+      <td onclick="toggleGameExpand('${g.key}')" style="font-family:var(--font-mono)">${cp?pct(cp.kitchen_arrivals.serving_side||0):'—'}</td>
+      <td onclick="toggleGameExpand('${g.key}')" style="font-size:11px;color:var(--text3)">${cp?g.partnerOf[String(cp.idx)]||'—':'—'}</td>
     </tr>
     <tr class="game-detail-row" id="detail-${g.key}" style="display:none;">
       <td colspan="10" style="padding:0;background:var(--bg2);">
@@ -2005,7 +2005,7 @@ function renderGameDetail(key, el) {
 
   el.innerHTML = `<div style="padding:12px 16px;">
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px;">${teamCards}</div>
-    <div style="font-size:10px;color:var(--text3);text-align:center;">${g.avg_shots?`Avg ${g.avg_shots.toFixed(1)} shots/rally Â· `:''} ${g.kitchen_rallies||0} kitchen rallies Â· ${g.players.length} players</div>
+    <div style="font-size:10px;color:var(--text3);text-align:center;">${g.avg_shots?`Avg ${g.avg_shots.toFixed(1)} shots/rally · `:''} ${g.kitchen_rallies||0} kitchen rallies · ${g.players.length} players</div>
   </div>`;
 }
 function toggleGameIncluded(key,included) {
@@ -2021,11 +2021,11 @@ function deleteSelectedGames() {
   saveToStorage(); refreshAll(); showToast('Deleted '+keys.length,'success');
 }
 
-// âââââââââââââââââââââââââââââââââââââââââââ
-// VIEWER â SIDEBAR
-// âââââââââââââââââââââââââââââââââââââââââââ
+// ═══════════════════════════════════════════
+// VIEWER — SIDEBAR
+// ═══════════════════════════════════════════
 function buildViewerSidebar() {
-  // ââ Player selector
+  // ── Player selector
   const playerMap = new Map();
   state.games.forEach(g => g.players.forEach(p => {
     if (!playerMap.has(p.name)) playerMap.set(p.name, []);
@@ -2033,7 +2033,7 @@ function buildViewerSidebar() {
   }));
   const sel = document.getElementById('player-select');
   const cur = sel.value;
-  sel.innerHTML = '<option value="">â Select player â</option>';
+  sel.innerHTML = '<option value="">— Select player —</option>';
   [...playerMap.entries()]
     .sort((a,b)=>a[0]===PRIMARY_USER?-1:b[0]===PRIMARY_USER?1:b[1].length-a[1].length)
     .forEach(([name,gs])=>{
@@ -2046,7 +2046,7 @@ function buildViewerSidebar() {
 
   const player = sel.value;
 
-  // ââ Partner chips
+  // ── Partner chips
   const partnerChips = document.getElementById('partner-chips');
   const clearBtn     = document.getElementById('partner-clear-btn');
   if (partnerChips) {
@@ -2078,7 +2078,7 @@ function buildViewerSidebar() {
     if (clearBtn) clearBtn.style.display = state.viewer.partnerFilter ? 'block' : 'none';
   }
 
-  // ââ Determine eligible games
+  // ── Determine eligible games
   const allEligible = state.games
     .filter(g => g.players.find(p=>p.name===player))
     .filter(g => {
@@ -2097,10 +2097,10 @@ function buildViewerSidebar() {
     state.viewer._lastPartner = state.viewer.partnerFilter;
   }
 
-  // ââ Date bar chart
+  // ── Date bar chart
   renderDateBarChart(allEligible, player);
 
-  // ââ Game list
+  // ── Game list
   const gl = document.getElementById('viewer-game-list');
   const countLabel = document.getElementById('game-count-label');
   const selectedCount = allEligible.filter(g=>state.viewer.selectedGames.has(g.key)).length;
@@ -2112,7 +2112,7 @@ function buildViewerSidebar() {
     const augBadge = g._augmented ? '<span style="font-size:8px;color:var(--accent);font-weight:600;margin-left:2px;" title="Augmented: real ball tracking data">AUG</span>' : '';
     return `<div class="game-list-item">
       <input type="checkbox" ${checked?'checked':''} onchange="toggleViewerGame('${g.key}',this.checked)">
-      <div class="game-list-label">${g.dateLabel?g.dateLabel.slice(0,6):'?'} â ${g.game_outcome.join('â')}${augBadge}</div>
+      <div class="game-list-label">${g.dateLabel?g.dateLabel.slice(0,6):'?'} — ${g.game_outcome.join('–')}${augBadge}</div>
       <span style="font-size:10px;font-weight:700;color:${cp?.won?'var(--good)':'var(--danger)'}">${cp?.won?'W':'L'}</span>
     </div>`;
   }).join('') || '<div style="font-size:11px;color:var(--text3);padding:4px 0">No games</div>';
@@ -2170,7 +2170,7 @@ function renderDateBarChart(games, player) {
     const isPartial = label === currentMonthKey;
 
     svg += `<g onclick="toggleMonthGames([${keys}])" style="cursor:pointer;">
-      <title>${label}: ${data.games.length} games (${wins}W-${data.games.length-wins}L)${isPartial?' Â· partial month':''}</title>
+      <title>${label}: ${data.games.length} games (${wins}W-${data.games.length-wins}L)${isPartial?' · partial month':''}</title>
       <rect x="${x}" y="${barH-totalBarH}" width="${barW}" height="${totalBarH}" 
             fill="${isPartial?'var(--warn)':'var(--accent2)'}" opacity="${opacity}" rx="1"/>
       <rect x="${x}" y="${barH-winH}" width="${barW}" height="${winH}" 
@@ -2301,10 +2301,10 @@ function qualityColor(q) {
   return `rgb(${Math.round((1-(t-0.5)*2)*245)},214,${Math.round(35+(t-0.5)*2*105)})`;
 }
 
-// âââââââââââââââââââââââââââââââââââââââââââ
-// COURT DRAWING â 2D FULL COURT
-// âââââââââââââââââââââââââââââââââââââââââââ
-// Court: 20ft wide Ã 44ft long. Net at z=22 (midpoint).
+// ═══════════════════════════════════════════
+// COURT DRAWING — 2D FULL COURT
+// ═══════════════════════════════════════════
+// Court: 20ft wide × 44ft long. Net at z=22 (midpoint).
 // BOTTOM HALF = player's side (z=0 to z=22 mapped to bottom)
 // TOP HALF    = opponent's side (z=22 to z=44 mapped to top)
 // SVG: y=0 is TOP of screen = far baseline (z=44)
@@ -2325,8 +2325,8 @@ function courtCoords(layout) {
     const mL=80, mR=36, mT=52, mB=80;  // wider margins for 6ft out-zone bands
     const dW=W-mL-mR, dH=H-mT-mB;
     const scX=dW/20, scZ=dH/44;
-    // z=0 (near baseline) â SVG y = mT+dH (bottom)
-    // z=44 (far baseline) â SVG y = mT (top)
+    // z=0 (near baseline) → SVG y = mT+dH (bottom)
+    // z=44 (far baseline) → SVG y = mT (top)
     return {
       landscape:false, W, H, mL, mR, mT, mB, dW, dH, scX, scZ,
       px: (x)=> mL + x*scX,
@@ -2339,20 +2339,20 @@ function courtCoords(layout) {
       centerX: mL+10*scX,
     };
   } else {
-    // Landscape: court rotated 90Â°. Net is a VERTICAL line in the center.
+    // Landscape: court rotated 90°. Net is a VERTICAL line in the center.
     // "z" (depth) maps to horizontal (x-axis in SVG)
     // "x" (width) maps to vertical (y-axis in SVG)
     const mT=80, mB=56, mL=80, mR=60;  // wider margins for 6ft out-zone bands
     const dH=H-mT-mB, dW=W-mL-mR;
     const scX=dH/20, scZ=dW/44;
-    // z=0 (near baseline) â SVG x = mL (left)
-    // z=44 (far baseline) â SVG x = mL+dW (right)
-    // x=0 (left sideline) â SVG y = mT (top)
-    // x=20 (right sideline) â SVG y = mT+dH (bottom)
+    // z=0 (near baseline) → SVG x = mL (left)
+    // z=44 (far baseline) → SVG x = mL+dW (right)
+    // x=0 (left sideline) → SVG y = mT (top)
+    // x=20 (right sideline) → SVG y = mT+dH (bottom)
     return {
       landscape:true, W, H, mL, mR, mT, mB, dH, dW, scX, scZ,
-      px: (x)=> mT + x*scX,      // court x â SVG y (vertical)
-      py: (z)=> mL + z*scZ,      // court z â SVG x (horizontal)
+      px: (x)=> mT + x*scX,      // court x → SVG y (vertical)
+      py: (z)=> mL + z*scZ,      // court z → SVG x (horizontal)
       courtLeft: mL, courtRight: mL+dW,
       courtTop: mT, courtBottom: mT+dH,
       netY: mL+22*scZ,
@@ -2387,13 +2387,13 @@ function drawCourt(cc) {
   if (!landscape) {
     // Portrait court
     s += `<rect x="${courtLeft}" y="${courtTop}" width="${cc.dW}" height="${cc.dH}" fill="${courtFill}" rx="2"/>`;
-    // Out-zone bands (faint red â where out balls land)
+    // Out-zone bands (faint red — where out balls land)
     const outBandColor = 'rgba(232,68,90,0.13)';
     const outLabelColor = 'rgba(232,68,90,0.35)';
     const outBand = cc.scZ * 6;  // wider bands to clearly contain out markers
     // Past far baseline (top)
     s += `<rect x="${courtLeft}" y="${courtTop - outBand}" width="${cc.dW}" height="${outBand}" fill="${outBandColor}" rx="2"/>`;
-    s += `<text x="${centerX}" y="${courtTop - outBand/2 + 4}" text-anchor="middle" font-size="8" fill="${outLabelColor}" font-family="var(--font-mono)">OUT â LONG</text>`;
+    s += `<text x="${centerX}" y="${courtTop - outBand/2 + 4}" text-anchor="middle" font-size="8" fill="${outLabelColor}" font-family="var(--font-mono)">OUT — LONG</text>`;
     // Past left sideline
     s += `<rect x="${courtLeft - outBand}" y="${courtTop}" width="${outBand}" height="${cc.dH}" fill="${outBandColor}" rx="2"/>`;
     s += `<text x="${courtLeft - outBand/2}" y="${(courtTop+courtBottom)/2 + 4}" text-anchor="middle" font-size="8" fill="${outLabelColor}" font-family="var(--font-mono)" transform="rotate(-90,${courtLeft-outBand/2},${(courtTop+courtBottom)/2})">OUT LEFT</text>`;
@@ -2415,12 +2415,12 @@ function drawCourt(cc) {
     // Labels
     s += `<text x="${centerX}" y="${kitFarY-6}" text-anchor="middle" font-size="8" fill="${kitCol}" font-family="var(--font-mono)" opacity="0.8">KITCHEN</text>`;
     s += `<text x="${centerX}" y="${kitNearY-6}" text-anchor="middle" font-size="8" fill="${kitCol}" font-family="var(--font-mono)" opacity="0.8">KITCHEN</text>`;
-    s += `<text x="${centerX}" y="${(netY+courtBottom)/2+4}" text-anchor="middle" font-size="9" fill="${textCol}" font-family="var(--font-mono)">YOUR SIDE â</text>`;
+    s += `<text x="${centerX}" y="${(netY+courtBottom)/2+4}" text-anchor="middle" font-size="9" fill="${textCol}" font-family="var(--font-mono)">YOUR SIDE ↑</text>`;
     s += `<text x="${centerX}" y="${(netY+courtTop)/2+4}" text-anchor="middle" font-size="9" fill="${textCol}" font-family="var(--font-mono)">OPPONENT'S SIDE</text>`;
-    s += `<text x="${centerX}" y="${(netY+courtTop)/2+16}" text-anchor="middle" font-size="8" fill="rgba(245,166,35,0.35)" font-family="var(--font-mono)" font-style="italic">â  impacts estimated</text>`;
+    s += `<text x="${centerX}" y="${(netY+courtTop)/2+16}" text-anchor="middle" font-size="8" fill="rgba(245,166,35,0.35)" font-family="var(--font-mono)" font-style="italic">⚠ impacts estimated</text>`;
     s += `<text x="${courtLeft-4}" y="${netY+4}" text-anchor="end" font-size="9" fill="rgba(255,255,255,.5)" font-family="var(--font-mono)">NET</text>`;
   } else {
-    // Landscape court (rotated 90Â°)
+    // Landscape court (rotated 90°)
     const cL=cc.mL,cR=cc.mL+cc.dW,cT=cc.mT,cB=cc.mT+cc.dH;
     s += `<rect x="${cL}" y="${cT}" width="${cc.dW}" height="${cc.dH}" fill="${courtFill}" rx="2"/>`;
     // Out-zone bands (landscape)
@@ -2440,9 +2440,9 @@ function drawCourt(cc) {
     s += `<rect x="${kitNearY}" y="${cT}" width="${kitFarY-kitNearY}" height="${cc.dH}" fill="${kitFill}"/>`;
     // Boundary
     s += `<rect x="${cL}" y="${cT}" width="${cc.dW}" height="${cc.dH}" fill="none" stroke="${lineCol}" stroke-width="1.8"/>`;
-    // Net â vertical line
+    // Net — vertical line
     s += `<line x1="${netY}" y1="${cT-4}" x2="${netY}" y2="${cB+4}" stroke="${netCol}" stroke-width="3.5" stroke-linecap="round"/>`;
-    // Kitchen lines â vertical dashed
+    // Kitchen lines — vertical dashed
     s += `<line x1="${kitNearY}" y1="${cT}" x2="${kitNearY}" y2="${cB}" stroke="${kitCol}" stroke-width="1.2" stroke-dasharray="5,3" opacity="0.8"/>`;
     s += `<line x1="${kitFarY}" y1="${cT}" x2="${kitFarY}" y2="${cB}" stroke="${kitCol}" stroke-width="1.2" stroke-dasharray="5,3" opacity="0.8"/>`;
     // Center lines
@@ -2450,22 +2450,22 @@ function drawCourt(cc) {
     s += `<line x1="${kitFarY}" y1="${centerX}" x2="${cR}" y2="${centerX}" stroke="${lineCol}" stroke-width="1" opacity="0.5"/>`;
     // Labels
     s += `<text x="${(kitNearY+kitFarY)/2}" y="${cT-8}" text-anchor="middle" font-size="8" fill="${kitCol}" font-family="var(--font-mono)" opacity="0.8">KITCHEN</text>`;
-    s += `<text x="${(cL+netY)/2}" y="${centerX-6}" text-anchor="middle" font-size="9" fill="${textCol}" font-family="var(--font-mono)">â YOUR SIDE</text>`;
-    s += `<text x="${(netY+cR)/2}" y="${centerX-6}" text-anchor="middle" font-size="9" fill="${textCol}" font-family="var(--font-mono)">OPPONENT'S SIDE â</text>`;
-    s += `<text x="${(netY+cR)/2}" y="${centerX+8}" text-anchor="middle" font-size="8" fill="rgba(245,166,35,0.35)" font-family="var(--font-mono)" font-style="italic">â  impacts estimated</text>`;
+    s += `<text x="${(cL+netY)/2}" y="${centerX-6}" text-anchor="middle" font-size="9" fill="${textCol}" font-family="var(--font-mono)">← YOUR SIDE</text>`;
+    s += `<text x="${(netY+cR)/2}" y="${centerX-6}" text-anchor="middle" font-size="9" fill="${textCol}" font-family="var(--font-mono)">OPPONENT'S SIDE →</text>`;
+    s += `<text x="${(netY+cR)/2}" y="${centerX+8}" text-anchor="middle" font-size="8" fill="rgba(245,166,35,0.35)" font-family="var(--font-mono)" font-style="italic">⚠ impacts estimated</text>`;
     s += `<text x="${netY}" y="${cT-8}" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.5)" font-family="var(--font-mono)">NET</text>`;
   }
   return s;
 }
 
-// âââââââââââââââââââââââââââââââââââââââââââ
-// SHOT SHAPES â 9 distinct symbols
-// âââââââââââââââââââââââââââââââââââââââââââ
-// Group A (back court): serve=â drive=â lob=â smash=â¬
-// Group B (kitchen):    dink=â  drop=âª reset=â¬
-// Group C (mid court):  volley=â² speedup=â³
-// Group D (highlights): atp=â¬¡ erne=â¬¡(outline)
-// other=Ã
+// ═══════════════════════════════════════════
+// SHOT SHAPES — 9 distinct symbols
+// ═══════════════════════════════════════════
+// Group A (back court): serve=⊙ drive=● lob=◎ smash=⬟
+// Group B (kitchen):    dink=■ drop=▪ reset=⬜
+// Group C (mid court):  volley=▲ speedup=△
+// Group D (highlights): atp=⬡ erne=⬡(outline)
+// other=×
 
 function shotSymbolPath(type, cx, cy, r) {
   switch(type) {
@@ -2479,7 +2479,7 @@ function shotSymbolPath(type, cx, cy, r) {
     case 'volley':  return `<polygon points="${cx},${cy-r*1.35} ${cx+r*1.2},${cy+r*0.85} ${cx-r*1.2},${cy+r*0.85}" />`; // filled triangle
     case 'speedup': return `<polygon points="${cx},${cy-r*1.35} ${cx+r*1.2},${cy+r*0.85} ${cx-r*1.2},${cy+r*0.85}" fill="none" stroke-width="1.5" />`; // outline triangle
     case 'return':  return `<circle cx="${cx}" cy="${cy}" r="${r*0.9}" fill="none" stroke-width="1.8"/><line x1="${cx}" y1="${cy-r*0.5}" x2="${cx}" y2="${cy+r*0.5}" stroke-width="1.5"/>`; // circle with tick = return
-    // ATP: 6-point star (hexagram) â highlight shots
+    // ATP: 6-point star (hexagram) — highlight shots
     case 'atp': {
       const pts = [];
       for (let k=0;k<6;k++) { const a=Math.PI/2+k*Math.PI/3, R=k%2===0?r*1.4:r*0.7; pts.push(`${cx+R*Math.cos(a)},${cy-R*Math.sin(a)}`); }
@@ -2495,9 +2495,9 @@ function shotSymbolPath(type, cx, cy, r) {
   }
 }
 
-// âââââââââââââââââââââââââââââââââââââââââââ
+// ═══════════════════════════════════════════
 // POSITION COMPUTATION
-// âââââââââââââââââââââââââââââââââââââââââââ
+// ═══════════════════════════════════════════
 function getImpactCoords(sh) {
   // If augmented data has real ball landing coordinates, use them directly
   if (sh.hasRealImpact && sh.impactX != null && sh.impactZ != null) {
@@ -2520,8 +2520,8 @@ function getImpactCoords(sh) {
   // Impact coords on opponent's half. z=22=net, z=44=far baseline.
   // kitchen/NVZ line at z=29. All zones verified against pickleball rules.
   // For out shots: dir (long/right/left) and sd (near/far) come from PBVision raw data.
-  // vt field refines zones: vt=3 â player at kitchen (dink/reset territory),
-  //   vt=0 â baseline shots, vt='overhead' â smash/overhead.
+  // vt field refines zones: vt=3 → player at kitchen (dink/reset territory),
+  //   vt=0 → baseline shots, vt='overhead' → smash/overhead.
   const seed = (sh.ridx||0)*997 + (sh.shidx||0)*31 + 7;
   function sr(n) { const v=Math.sin(seed+n)*43758.5453; return v-Math.floor(v); }
   function sc(n,s) { return (sr(n)*2-1)*s; }
@@ -2529,7 +2529,7 @@ function getImpactCoords(sh) {
 
   if (sh.outcome === 'net') {
     // Net shot: ball hit the net and DIDN'T reach opponent's side.
-    // Place on hitter's side of the net (z=21â21.8) â physically accurate
+    // Place on hitter's side of the net (z=21–21.8) — physically accurate
     // and visually separates from 'in' shots which start at z=22.1+
     z = 20.3 + sr(1)*0.9;  // z=20.3-21.2: clearly hitter's side, separated from origins
     x = 1.5 + sr(2)*17;
@@ -2541,25 +2541,25 @@ function getImpactCoords(sh) {
     const zNear = sd==='near' ? [24, 31] : sd==='far' ? [34, 43] : [24, 43];
 
     if (dir === 'right') {
-      // Past right sideline â realistic spread: most land within 1-2ft of line
+      // Past right sideline — realistic spread: most land within 1-2ft of line
       x = 20.3 + sr(1)*1.2 + sr(3)*0.8;  // 0.3-2.3ft past right sideline (20)
       z = zNear[0] + sr(2)*(zNear[1]-zNear[0]);
     } else if (dir === 'left') {
-      // Past left sideline â realistic spread
+      // Past left sideline — realistic spread
       x = -0.3 - sr(1)*1.2 - sr(3)*0.8;  // 0.3-2.3ft past left sideline (0)
       z = zNear[0] + sr(2)*(zNear[1]-zNear[0]);
     } else {
-      // 'long' or no dir â past far baseline, most within 1-3ft
+      // 'long' or no dir — past far baseline, most within 1-3ft
       z = 44.3 + sr(1)*2.0 + sr(3)*0.8;
       x = 2 + sr(2)*16;
     }
 
   } else {
-    // 'in' â zone by shot type, verified against pickleball rules.
+    // 'in' — zone by shot type, verified against pickleball rules.
     // vt (volley type) from PBVision refines zone selection:
-    //   vt=3 â hitter at kitchen â ball likely lands in kitchen zone on opponent side
-    //   vt=0 â hitter at baseline â ball lands deeper on opponent side
-    //   vt='overhead' â overhead smash â mid-to-deep on opponent side
+    //   vt=3 → hitter at kitchen → ball likely lands in kitchen zone on opponent side
+    //   vt=0 → hitter at baseline → ball lands deeper on opponent side
+    //   vt='overhead' → overhead smash → mid-to-deep on opponent side
     const zones = {
       serve:   {x0:0.5,  x1:19.5, z0:29.2, z1:43},
       drive:   {x0:1,    x1:19,   z0:29,   z1:43},
@@ -2584,9 +2584,9 @@ function getImpactCoords(sh) {
     if (sh.vt === 3 && (sh.shotType==='volley'||sh.shotType==='speedup'||sh.shotType==='other')) {
       zn = {x0:1.5, x1:18.5, z0:22.5, z1:34};  // kitchen-to-mid exchange
     } else if (sh.vt === 0 && sh.shotType==='volley') {
-      zn = {x0:1, x1:19, z0:32, z1:43};   // baseline volley â deeper
+      zn = {x0:1, x1:19, z0:32, z1:43};   // baseline volley → deeper
     } else if (sh.vt === 'overhead') {
-      zn = {x0:2, x1:18, z0:28, z1:42};   // overhead â mid-to-deep
+      zn = {x0:2, x1:18, z0:28, z1:42};   // overhead → mid-to-deep
     }
 
     x = zn.x0 + sr(1)*(zn.x1-zn.x0) + sc(3,0.6);
@@ -2608,17 +2608,17 @@ function getOriginCoords(sh) {
 
   // ESTIMATED origin position. No absolute position data in PBVision exports.
   // pls[pid].left gives court side per rally (0=right half, 1=left half).
-  // smovX is lateral movement before the shot â used for directional drift.
-  // vt field constrains depth: vt=3 â at kitchen line, vt=0 â at baseline.
+  // smovX is lateral movement before the shot — used for directional drift.
+  // vt field constrains depth: vt=3 → at kitchen line, vt=0 → at baseline.
   // Scatter widened so distribution matches real court usage width.
   const seed = (sh.ridx||0)*613 + (sh.shidx||0)*17 + 3;
   function sr(n) { const v=Math.sin(seed+n)*31415.9265; return v-Math.floor(v); }
 
-  // Depth zones: z=0 own baseline â z=22 net
+  // Depth zones: z=0 own baseline → z=22 net
   // vt=3 (at kitchen) constrains to z=17-22, vt=0 (baseline) constrains to z=0-14
   let zones = {
     serve:   {z0:-3.5, z1:-0.5},
-    return:  {z0:0.5,  z1:4},    // return of serve â near own baseline
+    return:  {z0:0.5,  z1:4},    // return of serve — near own baseline
     other:   {z0:0.5,  z1:6},
     drive:   {z0:3,    z1:14},
     lob:     {z0:12,   z1:19},
@@ -2639,7 +2639,7 @@ function getOriginCoords(sh) {
   } else if (sh.vt === 0 && ['dink','reset','speedup'].includes(sh.shotType)) {
     zn = {z0:4, z1:13};   // rare: dink/reset from baseline
   } else if (sh.vt === 'overhead') {
-    zn = {z0:13, z1:20};  // overhead position â between mid and kitchen
+    zn = {z0:13, z1:20};  // overhead position — between mid and kitchen
   }
 
   const z = zn.z0 + sr(1)*(zn.z1-zn.z0);
@@ -2647,7 +2647,7 @@ function getOriginCoords(sh) {
   // X position: side-biased but with enough scatter to fill the court width.
   // sideBase: right-side player starts center-right (13), left-side at center-left (7).
   // smovX scaled 0.6 adds real lateral movement signal.
-  // Scatter Â±4.5 gives realistic coverage â right-side player still x>10 ~80% of shots.
+  // Scatter ±4.5 gives realistic coverage — right-side player still x>10 ~80% of shots.
   const sideBase = sh.side===1 ? 7 : sh.side===0 ? 13 : 10;
   const x = Math.max(0.5, Math.min(19.5,
     sideBase + (sh.smovX||0)*0.6 + (sr(2)*2 - 1)*4.5
@@ -2655,9 +2655,9 @@ function getOriginCoords(sh) {
   return { x, z };
 }
 
-// âââââââââââââââââââââââââââââââââââââââââââ
+// ═══════════════════════════════════════════
 // MAIN COURT VIEW
-// âââââââââââââââââââââââââââââââââââââââââââ
+// ═══════════════════════════════════════════
 function updateCourtView() {
   hideShotHover();
   state.shotIndex = [];  // reset before rebuild
@@ -2700,12 +2700,12 @@ function updateCourtView() {
     return { x: 20 - coords.x, z: 44 - coords.z };
   }
 
-  // Convert court coords â SVG coords based on layout
+  // Convert court coords → SVG coords based on layout
   function toSVG(courtX, courtZ) {
     if (!landscape) {
       return { svgX: px(courtX), svgY: py(courtZ) };
     } else {
-      // In landscape: court xâsvg y, court zâsvg x
+      // In landscape: court x→svg y, court z→svg x
       return { svgX: py(courtZ), svgY: px(courtX) };
     }
   }
@@ -2713,7 +2713,7 @@ function updateCourtView() {
   let svgContent = drawCourt(cc);
   svgContent += '<g id="shot-traces"></g>';
 
-  // ââ LAYER FLAGS
+  // ── LAYER FLAGS
   const showImpact    = state.viewer.layers.has('impact');
   const showOrigin    = state.viewer.layers.has('origin');
   const showTraces    = state.viewer.layers.has('traces');
@@ -2731,14 +2731,14 @@ function updateCourtView() {
   const STROKE_COLORS  = { fh:'#00d4aa', bh:'#9b7fe8' };
   const ORIGIN_BASE    = 'rgba(180,200,255,0.32)';
 
-  // ââ PRE-DRAW TRACE LINES (behind markers)
-  // Only draw traces for in-court shots (skip out balls â they go off-court and look like ghosts)
+  // ── PRE-DRAW TRACE LINES (behind markers)
+  // Only draw traces for in-court shots (skip out balls — they go off-court and look like ghosts)
   if (showTraces) {
     shots.forEach(sh => {
-      if (sh.outcome !== 'in') return;  // skip out/net â off-court impacts look like ghosts
+      if (sh.outcome !== 'in') return;  // skip out/net — off-court impacts look like ghosts
       const imp = mirrorIfNeeded(getImpactCoords(sh), sh);
       const ori = mirrorIfNeeded(getOriginCoords(sh), sh);
-      // Skip if origin is behind baseline (serves) â those traces span the whole court
+      // Skip if origin is behind baseline (serves) — those traces span the whole court
       if (ori.z < 0) return;
       const impS = toSVG(imp.x, imp.z);
       const oriS = toSVG(ori.x, ori.z);
@@ -2749,7 +2749,7 @@ function updateCourtView() {
     });
   }
 
-  // ââ SHOT MARKERS
+  // ── SHOT MARKERS
   shots.forEach((sh, i) => {
     const imp = mirrorIfNeeded(getImpactCoords(sh), sh);
     const ori = mirrorIfNeeded(getOriginCoords(sh), sh);
@@ -2804,7 +2804,7 @@ function updateCourtView() {
       // ATP/Erne ring: bright orange highlight
       if (showATP && isATPerneShot)
         svgContent += `<circle cx="0" cy="0" r="${r*2.3}" fill="none" stroke="#ff6b35" stroke-width="2.5" opacity="0.95" filter="url(#glow)"/><circle cx="0" cy="0" r="${r*2.8}" fill="none" stroke="#ff6b35" stroke-width="1" opacity="0.4"/>`;
-      // Movement category rings (shown on ORIGIN markers only â but impact gets dim if not matching)
+      // Movement category rings (shown on ORIGIN markers only — but impact gets dim if not matching)
       if (showRetreating && sh.movecat==='retreating')
         svgContent += `<circle cx="0" cy="0" r="${r*1.85}" fill="none" stroke="#e8445a" stroke-width="2" opacity="0.9" stroke-dasharray="3,2"/>`;
       if (showAdvancing && sh.movecat==='advancing')
@@ -2814,7 +2814,7 @@ function updateCourtView() {
       svgContent += '</g>';
     }
 
-    // ORIGIN marker (player's half â where player stood)
+    // ORIGIN marker (player's half — where player stood)
     // Renders as open dashed circle (not a shot shape) to distinguish from ball impacts
     if (showOrigin) {
       const originStroke = colorMode==='stroke' ? strokeColor
@@ -2837,7 +2837,7 @@ function updateCourtView() {
   });
 
   svg.innerHTML = svgContent;
-  badge.textContent = shots.length+' shot'+(shots.length!==1?'s':'')+' Â· '+selGames.length+' game'+(selGames.length!==1?'s':'');
+  badge.textContent = shots.length+' shot'+(shots.length!==1?'s':'')+' · '+selGames.length+' game'+(selGames.length!==1?'s':'');
   if (!shots.length) badge.textContent = 'No shots match filters';
 
   // Attach hover events
@@ -2856,9 +2856,9 @@ function updateCourtView() {
   updateLegend();
 }
 
-// âââââââââââââââââââââââââââââââââââââââââââ
+// ═══════════════════════════════════════════
 // HOVER TOOLTIP + TRACE
-// âââââââââââââââââââââââââââââââââââââââââââ
+// ═══════════════════════════════════════════
 function showShotHover(e, idx, cc, toSVG) {
   const entry = state.shotIndex[idx]; if (!entry) return;
   const {sh, impSVG, oriSVG} = entry;
@@ -2885,9 +2885,9 @@ function showShotHover(e, idx, cc, toSVG) {
 
   // Tooltip content
   const shotLabel = sh.shotType==='atp'?'ATP':sh.shotType==='erne'?'Erne':sh.shotType.charAt(0).toUpperCase()+sh.shotType.slice(1);
-  document.getElementById('tt-title').textContent = shotLabel+' â '+sh.outcome.toUpperCase();
+  document.getElementById('tt-title').textContent = shotLabel+' — '+sh.outcome.toUpperCase();
   // Winner/error classification
-  let resultLabel = 'â';
+  let resultLabel = '—';
   if (sh.win==='clean') resultLabel = 'Clean Winner';
   else if (sh.isFinal && sh.outcome!=='in') {
     resultLabel = sh.isUnforced===true ? 'Unforced Error' : sh.isUnforced===false ? 'Forced Error' : 'Error';
@@ -2895,20 +2895,20 @@ function showShotHover(e, idx, cc, toSVG) {
     resultLabel = sh.win===0 ? 'Won Point (opp error)' : 'Rally End';
   }
   // Court position from vt
-  const posLabel = sh.vt===3?'Kitchen':sh.vt===0?'Baseline':sh.vt==='overhead'?'Overhead':'â';
+  const posLabel = sh.vt===3?'Kitchen':sh.vt===0?'Baseline':sh.vt==='overhead'?'Overhead':'—';
   const rows = [
-    ['Stroke', sh.stroke ? sh.stroke.toUpperCase() : 'â'],
-    ['Quality', sh.quality!=null ? (sh.quality*100).toFixed(0)+'%' : 'â'],
+    ['Stroke', sh.stroke ? sh.stroke.toUpperCase() : '—'],
+    ['Quality', sh.quality!=null ? (sh.quality*100).toFixed(0)+'%' : '—'],
     ['Position', posLabel],
-    ['Movement', sh.stress ? (sh.stress.toFixed(1)+'ft Â· '+(sh.movecat||'moving')) : 'â'],
-    ['Direction', sh.outcome==='net' ? 'hit net' : sh.smovY!=null ? (sh.smovY>1?'â net':sh.smovY<-1?'â baseline':'holding') + (sh.smovX>1?' + right':sh.smovX<-1?' + left':'') : 'â'],
+    ['Movement', sh.stress ? (sh.stress.toFixed(1)+'ft · '+(sh.movecat||'moving')) : '—'],
+    ['Direction', sh.outcome==='net' ? 'hit net' : sh.smovY!=null ? (sh.smovY>1?'→ net':sh.smovY<-1?'← baseline':'holding') + (sh.smovX>1?' + right':sh.smovX<-1?' + left':'') : '—'],
     ['Result', resultLabel],
-    ['Flags', [sh.isVolley?'VOL':'',sh.isPoach?'PCH':'',sh.isPutaway?'PUT':'',sh.isSpeedup?'SPD':'',sh.isATP?'ATP':'',sh.isErne?'ERNE':''].filter(Boolean).join(' ')||'â'],
+    ['Flags', [sh.isVolley?'VOL':'',sh.isPoach?'PCH':'',sh.isPutaway?'PUT':'',sh.isSpeedup?'SPD':'',sh.isATP?'ATP':'',sh.isErne?'ERNE':''].filter(Boolean).join(' ')||'—'],
   ];
   // Augmented data rows (only show if present)
   if (sh.ballSpeed != null) rows.push(['Speed', sh.ballSpeed.toFixed(1)+' mph']);
   if (sh.heightOverNet != null) rows.push(['Net Clear', sh.heightOverNet.toFixed(1)+' ft']);
-  if (sh.spinType) rows.push(['Spin', sh.spinType + (sh.spinRPM ? ' Â· '+sh.spinRPM+' RPM' : '')]);
+  if (sh.spinType) rows.push(['Spin', sh.spinType + (sh.spinRPM ? ' · '+sh.spinRPM+' RPM' : '')]);
   if (sh.shotDirection) rows.push(['Direction', sh.shotDirection]);
   if (sh.distFromBaseline != null) rows.push(['Depth', sh.distFromBaseline.toFixed(1)+'ft from baseline']);
   if (sh.playerAdvantage != null) rows.push(['Court Pos', (sh.playerAdvantage*100).toFixed(0)+'% to kitchen']);
@@ -2918,7 +2918,7 @@ function showShotHover(e, idx, cc, toSVG) {
   if (sh.verticalTraj) rows.push(['V-Type', sh.verticalTraj]);
   if (sh.impactZone) rows.push(['Landing', sh.impactZone]);
   if (sh.highlight) rows.push(['Highlight', (sh.highlightDesc||sh.highlight)]);
-  if (sh.hasRealImpact) rows.push(['ð', 'Tracked ball position']);
+  if (sh.hasRealImpact) rows.push(['📍', 'Tracked ball position']);
   document.getElementById('tt-body').innerHTML = rows.map(([l,v])=>
     `<div class="tt-row"><span>${l}</span><span class="tt-val">${v}</span></div>`).join('');
 
@@ -2953,9 +2953,9 @@ function hideShotHover() {
   const tg=document.getElementById('shot-traces'); if(tg) tg.innerHTML='';
 }
 
-// âââââââââââââââââââââââââââââââââââââââââââ
+// ═══════════════════════════════════════════
 // STATS BAR + LEGEND
-// âââââââââââââââââââââââââââââââââââââââââââ
+// ═══════════════════════════════════════════
 function updateViewerStatsBar(player, selGames, filteredShots) {
   const el=document.getElementById('viewer-stats-inner'); if(!el) return;
   // Filtered shot stats (based on current outcome/type/game filters)
@@ -2984,7 +2984,7 @@ function updateViewerStatsBar(player, selGames, filteredShots) {
       if(s.stress>0){totalStress++; if(s.stress>6) rushed++;}
     });
   });
-  const tot=fh+bh||1, rPct=totalStress?(rushed/totalStress*100).toFixed(0):'â';
+  const tot=fh+bh||1, rPct=totalStress?(rushed/totalStress*100).toFixed(0):'—';
   const wins=pd.filter(d=>d.won).length;
   const avgR=avgOf(pd,d=>d.ratings.overall);
   const avgIn=avgOf(pd,d=>d.shot_accuracy.in);
@@ -3032,14 +3032,14 @@ function updateViewerStatsBar(player, selGames, filteredShots) {
     ${(() => {
       const tracked = fs.filter(s=>s.hasRealImpact).length;
       const estimated = fs.length - tracked;
-      if (tracked === 0) return `<div style="font-size:8px;color:var(--text3);margin-top:3px;opacity:0.7;">â  All positions estimated Â· Re-augment for real tracking</div>`;
-      if (estimated === 0) return `<div style="font-size:8px;color:var(--accent);margin-top:3px;">ð 100% tracked ball positions</div>`;
-      return `<div style="font-size:8px;color:var(--accent);margin-top:3px;">ð ${tracked} tracked Â· ${estimated} estimated</div>`;
+      if (tracked === 0) return `<div style="font-size:8px;color:var(--text3);margin-top:3px;opacity:0.7;">⚠ All positions estimated · Re-augment for real tracking</div>`;
+      if (estimated === 0) return `<div style="font-size:8px;color:var(--accent);margin-top:3px;">📍 100% tracked ball positions</div>`;
+      return `<div style="font-size:8px;color:var(--accent);margin-top:3px;">📍 ${tracked} tracked · ${estimated} estimated</div>`;
     })()}
   </div>` : '';
 
   el.innerHTML = filteredTile +
-    tile('Record',wins+'Wâ'+(pd.length-wins)+'L',wins/pd.length>=0.5?'var(--good)':'var(--danger)') +
+    tile('Record',wins+'W–'+(pd.length-wins)+'L',wins/pd.length>=0.5?'var(--good)':'var(--danger)') +
     tile('Avg Rating',avgR.toFixed(2),ratingColor(avgR)) +
     tile('Accuracy',pct(avgIn),avgIn>=0.82?'var(--good)':avgIn>=0.75?'var(--warn)':'var(--danger)') +
     tile('Kitchen %',pct(avgKit),avgKit>=0.85?'var(--good)':avgKit>=0.70?'var(--warn)':'var(--danger)') +
@@ -3047,7 +3047,7 @@ function updateViewerStatsBar(player, selGames, filteredShots) {
     tile('Rushed %',rPct+'%',rPct>20?'var(--danger)':rPct>12?'var(--warn)':'var(--good)') +
     selHtml;
 
-  // Generate coaching insight â pass allShots (unfiltered for this player/game combo)
+  // Generate coaching insight — pass allShots (unfiltered for this player/game combo)
   const _allShotsForInsight = [];
   selGames.forEach(g=>{
     const _pd=g.players.find(p=>p.name===player); if(!_pd) return;
@@ -3066,7 +3066,7 @@ function updateViewerStatsBar(player, selGames, filteredShots) {
       : activeTypes.length <= 2 ? activeTypes.join('+')
       : activeTypes.length + ' types';
     const outcomeLabel = [...state.viewer.activeOutcomes].join('+');
-    fb.textContent = fsN + ' shot' + (fsN!==1?'s':'') + ' Â· ' + typeLabel + ' Â· ' + outcomeLabel;
+    fb.textContent = fsN + ' shot' + (fsN!==1?'s':'') + ' · ' + typeLabel + ' · ' + outcomeLabel;
 
     const fsIn  = fs.filter(s=>s.outcome==='in').length;
     const fsNet = fs.filter(s=>s.outcome==='net').length;
@@ -3088,44 +3088,44 @@ function updateViewerStatsBar(player, selGames, filteredShots) {
     const el_win    = document.getElementById('fstat-win');
     const el_rating = document.getElementById('fstat-rating');
 
-    if (el_win)    el_win.textContent    = wins+'Wâ'+(pd.length-wins)+'L';
+    if (el_win)    el_win.textContent    = wins+'W–'+(pd.length-wins)+'L';
     if (el_rating) { el_rating.textContent = avgR>0?avgR.toFixed(2)+' avg':''; el_rating.style.color=ratingColor(avgR); }
-    if (el_in)     el_in.textContent     = fsN ? 'â '+pct(fsIn/fsN)+' in'  : '';
+    if (el_in)     el_in.textContent     = fsN ? '✓ '+pct(fsIn/fsN)+' in'  : '';
     if (el_net)    el_net.textContent    = fsN ? '~ '+pct(fsNet/fsN)+' net' : '';
-    if (el_out)    el_out.textContent    = fsN ? 'â '+pct(fsOut/fsN)+' out' : '';
+    if (el_out)    el_out.textContent    = fsN ? '✗ '+pct(fsOut/fsN)+' out' : '';
     if (el_fhbh && fsStr>1) el_fhbh.textContent = 'FH '+pct(fsFH/fsStr)+' / BH '+pct(fsBH/fsStr);
-    if (el_rushed && fsStressN>5) el_rushed.textContent = 'â¡ '+pct(fsRush/fsStressN)+' rushed';
+    if (el_rushed && fsStressN>5) el_rushed.textContent = '⚡ '+pct(fsRush/fsStressN)+' rushed';
     if (el_qual && fsAvgQ!=null) el_qual.textContent = 'Q: '+(fsAvgQ*100).toFixed(0)+'%';
   }
 
-  // ââ BOTTOM BAR: filtered shot summary (left)
+  // ── BOTTOM BAR: filtered shot summary (left)
   const fbFiltered = document.getElementById('fbar-filtered');
   if (fbFiltered && fs.length > 0) {
     fbFiltered.innerHTML = `
       <div style="font-size:15px;font-weight:800;font-family:var(--font-head);color:var(--text)">${fs.length}</div>
       <div style="display:flex;flex-direction:column;gap:1px;margin-left:6px;">
-        <div style="font-size:9px;color:var(--good);">â ${fsInPct}%</div>
+        <div style="font-size:9px;color:var(--good);">✓ ${fsInPct}%</div>
         <div style="font-size:9px;color:var(--net);">~ ${fsNetPct}%</div>
-        <div style="font-size:9px;color:var(--danger);">â ${fsOutPct}%</div>
+        <div style="font-size:9px;color:var(--danger);">✗ ${fsOutPct}%</div>
       </div>`;
   } else if (fbFiltered) {
-    fbFiltered.innerHTML = `<div style="font-size:11px;color:var(--text3);">â</div>`;
+    fbFiltered.innerHTML = `<div style="font-size:11px;color:var(--text3);">—</div>`;
   }
 
-  // ââ BOTTOM BAR: overall record (right)
+  // ── BOTTOM BAR: overall record (right)
   const fbOverall = document.getElementById('fbar-overall');
   if (fbOverall && pd.length > 0) {
     fbOverall.innerHTML = `
-      <div style="font-size:11px;font-weight:700;color:${wins/pd.length>=0.5?'var(--good)':'var(--danger)'};">${wins}Wâ${pd.length-wins}L</div>
+      <div style="font-size:11px;font-weight:700;color:${wins/pd.length>=0.5?'var(--good)':'var(--danger)'};">${wins}W–${pd.length-wins}L</div>
       <div style="font-size:11px;font-family:var(--font-mono);color:${ratingColor(avgR)};">${avgR.toFixed(2)}</div>
       <div style="font-size:9px;color:var(--text3);">${pd.length} games</div>`;
   }
 
 }
 
-// âââââââââââââââââââââââââââââââââââââââââââ
+// ═══════════════════════════════════════════
 // DINK ARC SIDE VIEW
-// âââââââââââââââââââââââââââââââââââââââââââ
+// ═══════════════════════════════════════════
 function toggleDinkArcs() {
   const btn = document.getElementById('btn-dink-arcs');
   const svgEl = document.getElementById('dink-arcs-svg');
@@ -3256,7 +3256,7 @@ function renderDinkArcs() {
     // Draw parabolic arc using quadratic bezier
     const x1 = xScale(oZ), y1 = yScale(oH);
     const x3 = xScale(iZ), y3 = yScale(iH);
-    // Control point at the peak â midpoint horizontally, peak vertically
+    // Control point at the peak — midpoint horizontally, peak vertically
     const midZ = (oZ + iZ) / 2;
     // For quadratic bezier, control point needs to be above to create correct arc
     // Bezier peak = (start + 2*control + end)/4, so control = (4*peak - start - end) / 2
@@ -3272,8 +3272,8 @@ function renderDinkArcs() {
   });
 
   // Title and legend
-  svg += `<text x="${W/2}" y="18" text-anchor="middle" fill="var(--text)" font-size="13" font-weight="700" font-family="var(--font-head)">Dink & Drop Arcs â Side View</text>`;
-  svg += `<text x="${W/2}" y="${H-6}" text-anchor="middle" fill="var(--text3)" font-size="10">${dinkCount} dinks Â· ${dropCount} drops</text>`;
+  svg += `<text x="${W/2}" y="18" text-anchor="middle" fill="var(--text)" font-size="13" font-weight="700" font-family="var(--font-head)">Dink & Drop Arcs — Side View</text>`;
+  svg += `<text x="${W/2}" y="${H-6}" text-anchor="middle" fill="var(--text3)" font-size="10">${dinkCount} dinks · ${dropCount} drops</text>`;
 
   // Color legend
   const legX = W - PAD.right - 100, legY = PAD.top + 10;
@@ -3317,7 +3317,7 @@ function updateLegend() {
     h += sec('Shot Quality');
     h += `<div style="display:flex;align-items:center;gap:4px;margin-bottom:3px;">
       <div style="width:64px;height:6px;border-radius:3px;background:linear-gradient(to right,#e8445a,#f5a623,#3dd68c);flex-shrink:0;"></div>
-      <span style="font-size:9px;color:${DIM};">LowâHigh</span></div>`;
+      <span style="font-size:9px;color:${DIM};">Low→High</span></div>`;
   }
 
   const hl = [];
@@ -3336,12 +3336,12 @@ function updateLegend() {
 
   h += sec('Shapes');
   h += `<div style="font-size:10px;color:${MED};line-height:1.8;">
-    â Serve &nbsp; â Return &nbsp; â Lob<br>
-    â Drive &nbsp; â¬ Smash<br>
-    â  Dink &nbsp; â¬ Drop &nbsp; âª Reset<br>
-    â² Volley &nbsp; â³ Speed-up<br>
-    <span style="color:#ff6b35;font-weight:700;">â¡ ATP</span> &nbsp; <span style="color:#ff6b35;">â¡ Erne</span> (outline)<br>
-    <span style="color:#ffd700;">â Gold fill</span> = Clean Winner<br>
+    ● Serve &nbsp; ◉ Return &nbsp; ✛ Lob<br>
+    ◆ Drive &nbsp; ⬟ Smash<br>
+    ■ Dink &nbsp; ⬜ Drop &nbsp; ▪ Reset<br>
+    ▲ Volley &nbsp; △ Speed-up<br>
+    <span style="color:#ff6b35;font-weight:700;">✡ ATP</span> &nbsp; <span style="color:#ff6b35;">✡ Erne</span> (outline)<br>
+    <span style="color:#ffd700;">● Gold fill</span> = Clean Winner<br>
     <span style="font-size:9px;color:${DIM};">Muted/smaller = origin position</span>
   </div>`;
 
@@ -3349,7 +3349,7 @@ function updateLegend() {
   const augGames = state.games.filter(g => g._augmented && g.included);
   if (augGames.length > 0) {
     h += `<div style="font-size:9px;color:var(--accent);margin-top:6px;padding:4px 6px;background:var(--accent-dim);border-radius:4px;">
-      ð ${augGames.length} game${augGames.length!==1?'s':''} with tracked ball data
+      📍 ${augGames.length} game${augGames.length!==1?'s':''} with tracked ball data
     </div>`;
   }
 
@@ -3358,21 +3358,21 @@ function updateLegend() {
 
 
 
-// âââââââââââââââââââââââââââââââââââââââââââ
+// ═══════════════════════════════════════════
 // INIT
-// âââââââââââââââââââââââââââââââââââââââââââ
+// ═══════════════════════════════════════════
 // Restore theme immediately before any rendering (must be synchronous)
 try {
   const _cfg = JSON.parse(localStorage.getItem(CONFIG_KEY) || '{}');
   if (_cfg.theme === 'light') {
     document.body.setAttribute('data-theme', 'light');
     const _btn = document.querySelector('.theme-toggle');
-    if (_btn) _btn.textContent = 'âï¸';
+    if (_btn) _btn.textContent = '☀️';
     state.config.theme = 'light';
   }
 } catch(e) {}
-// NOTE: Do NOT call updateDashboard() here â DOM elements don't exist yet at
-// script-parse time. All rendering happens in loadAppData() â DOMContentLoaded.
+// NOTE: Do NOT call updateDashboard() here — DOM elements don't exist yet at
+// script-parse time. All rendering happens in loadAppData() → DOMContentLoaded.
 const gamesZone = document.getElementById('games-upload-zone');
 if(gamesZone) { gamesZone.addEventListener('dragover',onDragOver); gamesZone.addEventListener('dragleave',onDragLeave); gamesZone.addEventListener('drop',onDrop); }
 if(typeof ResizeObserver!=='undefined') {
@@ -3382,7 +3382,7 @@ if(typeof ResizeObserver!=='undefined') {
 let _rafResize=null;
 function debouncedCourtUpdate(){if(_rafResize)cancelAnimationFrame(_rafResize);_rafResize=requestAnimationFrame(()=>{if(document.getElementById('page-viewer').classList.contains('active'))updateCourtView();});}
 window.addEventListener('resize',debouncedCourtUpdate);
-// ââ PAN/ZOOM
+// ── PAN/ZOOM
 function applyViewBox(svg,W,H){if(!svg._vz)return;const{x,y,scale}=svg._vz;svg.setAttribute('viewBox',`${x} ${y} ${W/scale} ${H/scale}`);}
 function initPanZoom(svg){
   let drag=false,ds={x:0,y:0},vs={x:0,y:0};
@@ -3405,9 +3405,9 @@ function initPanZoom(svg){
 }
 function resetZoom(){const svg=document.getElementById('court-svg');if(!svg)return;svg._vz={x:0,y:0,scale:1};const{W,H}=getCourtLayout();applyViewBox(svg,W,H);const zl=document.getElementById('zoom-level');if(zl)zl.textContent='100%';}
 
-// âââââââââââââââââââââââââââââââââââââââââââââââââââââââ
-// COACHING INSIGHT ENGINE â Computed, contextual, ranked
-// âââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+// ═══════════════════════════════════════════════════════
+// COACHING INSIGHT ENGINE — Computed, contextual, ranked
+// ═══════════════════════════════════════════════════════
 
 // Compute all insights from shot data. Returns array ranked by coaching impact.
 // allShots = complete Carlo shot set, filteredShots = current filter view
@@ -3415,7 +3415,7 @@ function computeInsights(filteredShots, allShots) {
   if (!allShots.length) return [];
   const insights = [];
 
-  // ââ Helper
+  // ── Helper
   const inPct = arr => arr.length ? Math.round(100*arr.filter(s=>s.outcome==='in').length/arr.length) : null;
   const avgQ  = arr => {
     const qs = arr.filter(s=>s.quality!=null).map(s=>s.quality);
@@ -3428,7 +3428,7 @@ function computeInsights(filteredShots, allShots) {
     return m;
   }
 
-  // ââ INSIGHT: 3rd Shot Selection
+  // ── INSIGHT: 3rd Shot Selection
   const third = allShots.filter(s=>s.shidx===2);
   const tDrives = third.filter(s=>s.shotType==='drive');
   const tDrops  = third.filter(s=>s.shotType==='drop');
@@ -3440,16 +3440,16 @@ function computeInsights(filteredShots, allShots) {
     if (gap > 5) {
       insights.push({
         id:'3rd-shot', priority: gap * (drivePct-dropPct)/10,
-        icon:'ð¯', title:'3rd Shot Selection',
-        stat:`Drive: ${driveIn}% in (${drivePct}% of 3rds) Â· Drop: ${dropIn}% in (${dropPct}% of 3rds)`,
-        pattern:`You choose drives ${drivePct-dropPct}pp more often despite drops being ${gap}pp more accurate. Over ${tDrives.length+tDrops.length} third shots, that's roughly ${Math.round((tDrives.length*gap/100))} extra errors from shot selection alone. Note: deep opponent returns may force some third-shot drives â filter to \'Retreating\' to see which third shots are driven from a pushed-back position.`,
-        drill:`Drill: third-shot drop from baseline. Serve â 2 steps â soft drop into the kitchen. Target: increase drops to 40â50% of third shots. Current: ${dropPct}%.`,
+        icon:'🎯', title:'3rd Shot Selection',
+        stat:`Drive: ${driveIn}% in (${drivePct}% of 3rds) · Drop: ${dropIn}% in (${dropPct}% of 3rds)`,
+        pattern:`You choose drives ${drivePct-dropPct}pp more often despite drops being ${gap}pp more accurate. Over ${tDrives.length+tDrops.length} third shots, that's roughly ${Math.round((tDrives.length*gap/100))} extra errors from shot selection alone. Note: deep opponent returns may force some third-shot drives — filter to \'Retreating\' to see which third shots are driven from a pushed-back position.`,
+        drill:`Drill: third-shot drop from baseline. Serve → 2 steps → soft drop into the kitchen. Target: increase drops to 40–50% of third shots. Current: ${dropPct}%.`,
         category:'shot-selection',
       });
     }
   }
 
-  // ââ INSIGHT: Rally Degradation
+  // ── INSIGHT: Rally Degradation
   const early = allShots.filter(s=>s.shidx<=2);
   const mid   = allShots.filter(s=>s.shidx>=3&&s.shidx<=5);
   const late  = allShots.filter(s=>s.shidx>=6);
@@ -3459,17 +3459,17 @@ function computeInsights(filteredShots, allShots) {
     if (drop >= 5) {
       insights.push({
         id:'rally-drop', priority: drop * 1.5,
-        icon:'ð', title:'Kitchen Transition Gap',
-        stat:`Shots 1â3: ${eIn}% in â Shots 4â6: ${mIn}% in${lIn?` â Shots 7+: ${lIn}% in`:''}`,
-        pattern:`Your accuracy drops ${drop}pp between the opening and transition phases. This is the kitchen approach window â shots 4â6 â where most points are decided. You're not getting to the kitchen cleanly.`,
+        icon:'📉', title:'Kitchen Transition Gap',
+        stat:`Shots 1–3: ${eIn}% in → Shots 4–6: ${mIn}% in${lIn?` → Shots 7+: ${lIn}% in`:''}`,
+        pattern:`Your accuracy drops ${drop}pp between the opening and transition phases. This is the kitchen approach window — shots 4–6 — where most points are decided. You're not getting to the kitchen cleanly.`,
         drill:`Drill: skinny singles transition. After the third shot, force yourself to advance before shot 5. Practice "drop-and-move" sequences until the transition is automatic. The goal: maintain ${eIn}% accuracy through shot 6.`,
         category:'movement',
       });
     }
   }
 
-  // ââ INSIGHT: Mid-rally retreating (EXCLUDES returns of serve â those are expected to retreat)
-  // si=1 (return of serve) naturally involves backward movement from a deep serve â expected.
+  // ── INSIGHT: Mid-rally retreating (EXCLUDES returns of serve — those are expected to retreat)
+  // si=1 (return of serve) naturally involves backward movement from a deep serve — expected.
   // The real coaching signal is si>=2: Carlo was pushed BACK during an active rally.
   const retreatingAll    = allShots.filter(s=>s.movecat==='retreating');
   const retreating       = retreatingAll.filter(s=>s.shidx >= 2);  // exclude returns
@@ -3490,22 +3490,22 @@ function computeInsights(filteredShots, allShots) {
       retreating.reduce((acc,s)=>{acc[s.shotType]=(acc[s.shotType]||0)+1;return acc;},{})
     ).sort((a,b)=>b[1]-a[1])[0];
     const driveNote = retDrives.length>5 && setIn_drv && retIn_drv
-      ? ` Retreating drives land in ${retIn_drv}% vs ${setIn_drv}% when settled â a ${setIn_drv-retIn_drv}pp gap from attacking while off-balance.`
+      ? ` Retreating drives land in ${retIn_drv}% vs ${setIn_drv}% when settled — a ${setIn_drv-retIn_drv}pp gap from attacking while off-balance.`
       : '';
     const kitNote = retDinks.length>=3 && setIn_dnk && retIn_dnk
       ? ` When pushed off the kitchen (${retKitchen.length} times), your dink accuracy drops to ${retIn_dnk}% vs ${setIn_dnk}% when settled.`
       : '';
     insights.push({
       id:'retreating', priority: Math.max(0, allIn-retIn)*2 + retreating.length/10,
-      icon:'â¬', title:'Position Loss Under Pressure',
-      stat:`${retreating.length} mid-rally retreats (${Math.round(100*retreating.length/allShots.length)}% of shots) Â· ${retIn}% in Â· ${retTransition.length} in transition, ${retKitchen.length} pushed off kitchen`,
-      pattern:`These are shots where you were moving backward during an active rally â not returns of serve (which naturally require backing up). ${retTransition.length} happen in the transition zone (shots 3â6), meaning deep returns from your opponents are preventing your kitchen approach.${driveNote}${kitNote}`,
-      drill:`Two drills: (1) "Transition reset" â when a return pushes you back on the 3rd/4th shot, resist the urge to drive. Hit a high defensive reset, recover position, then re-attack. (2) "Kitchen hold" â practice holding your kitchen position against a partner feeding hard drives at your feet. The goal is to absorb and reset, not retreat.`,
+      icon:'⬅', title:'Position Loss Under Pressure',
+      stat:`${retreating.length} mid-rally retreats (${Math.round(100*retreating.length/allShots.length)}% of shots) · ${retIn}% in · ${retTransition.length} in transition, ${retKitchen.length} pushed off kitchen`,
+      pattern:`These are shots where you were moving backward during an active rally — not returns of serve (which naturally require backing up). ${retTransition.length} happen in the transition zone (shots 3–6), meaning deep returns from your opponents are preventing your kitchen approach.${driveNote}${kitNote}`,
+      drill:`Two drills: (1) "Transition reset" — when a return pushes you back on the 3rd/4th shot, resist the urge to drive. Hit a high defensive reset, recover position, then re-attack. (2) "Kitchen hold" — practice holding your kitchen position against a partner feeding hard drives at your feet. The goal is to absorb and reset, not retreat.`,
       category:'movement',
     });
   }
 
-  // ââ INSIGHT: Movement vs quality
+  // ── INSIGHT: Movement vs quality
   const set = allShots.filter(s=>s.movecat==='set');
   const adv = allShots.filter(s=>s.movecat==='advancing');
   if (set.length>=20 && adv.length>=10) {
@@ -3513,16 +3513,16 @@ function computeInsights(filteredShots, allShots) {
     if (setQ && advQ && advQ > setQ+3) {
       insights.push({
         id:'flow-state', priority: (advQ-setQ)/2,
-        icon:'â¡', title:'You Play Better Moving',
-        stat:`Moving toward net: q=${advQ}% Â· Stationary: q=${setQ}% Â· ${advQ-setQ}pp quality advantage when advancing`,
-        pattern:`Your shot quality is higher when you're moving forward than when you're waiting. This suggests you play better with momentum than from a static set position â you're a transition player, not a camp-and-wait player.`,
-        drill:`Drill: "continuous movement" â never stand completely still at the kitchen. Maintain a gentle split-step or weight transfer between shots. Staying dynamic improves your readiness and shot quality.`,
+        icon:'⚡', title:'You Play Better Moving',
+        stat:`Moving toward net: q=${advQ}% · Stationary: q=${setQ}% · ${advQ-setQ}pp quality advantage when advancing`,
+        pattern:`Your shot quality is higher when you're moving forward than when you're waiting. This suggests you play better with momentum than from a static set position — you're a transition player, not a camp-and-wait player.`,
+        drill:`Drill: "continuous movement" – never stand completely still at the kitchen. Maintain a gentle split-step or weight transfer between shots. Staying dynamic improves your readiness and shot quality.`,
         category:'movement',
       });
     }
   }
 
-  // ââ INSIGHT: Return quality
+  // ── INSIGHT: Return quality
   const returns = allShots.filter(s=>s.shotType==='return');
   if (returns.length >= 20) {
     const retIn   = inPct(returns);
@@ -3544,16 +3544,16 @@ function computeInsights(filteredShots, allShots) {
     if (retAdvPct < 35 || strokeNote) {
       insights.push({
         id:'return-quality', priority: 8,
-        icon:'â©', title:'Return Patterns',
-        stat:`${returns.length} returns Â· ${retIn}% in Â· ${bhPct}% BH / ${fhPct}% FH Â· ${retAdvPct}% hit while advancing`,
+        icon:'↩', title:'Return Patterns',
+        stat:`${returns.length} returns · ${retIn}% in · ${bhPct}% BH / ${fhPct}% FH · ${retAdvPct}% hit while advancing`,
         pattern:`Your returns split ${bhPct}% backhand / ${fhPct}% forehand. Only ${retAdvPct}% of your returns are hit while moving forward toward the kitchen.${strokeNote} A return that doesn't advance your position hands the initiative back to the serving team.`,
-        drill:`Drill: "return and go" â every return should trigger forward movement. After contact, take 2 steps toward the kitchen. You're aiming to reach the transition zone (halfway to kitchen) before your opponent hits the 3rd shot. Depth and direction matter less than getting your feet moving forward immediately after contact.`,
+        drill:`Drill: "return and go" — every return should trigger forward movement. After contact, take 2 steps toward the kitchen. You're aiming to reach the transition zone (halfway to kitchen) before your opponent hits the 3rd shot. Depth and direction matter less than getting your feet moving forward immediately after contact.`,
         category:'return',
       });
     }
   }
 
-  // ââ INSIGHT: Poach accuracy
+  // ── INSIGHT: Poach accuracy
   const poach    = allShots.filter(s=>s.isPoach);
   const nonPoach = allShots.filter(s=>!s.isPoach);
   if (poach.length >= 8) {
@@ -3562,16 +3562,16 @@ function computeInsights(filteredShots, allShots) {
     if (gap2 > 5) {
       insights.push({
         id:'poach', priority: gap2,
-        icon:'ð', title:'Poach Discipline',
-        stat:`${poach.length} poaches Â· ${pIn}% in vs ${npIn}% non-poach Â· ${gap2}pp accuracy cost`,
+        icon:'🔀', title:'Poach Discipline',
+        stat:`${poach.length} poaches · ${pIn}% in vs ${npIn}% non-poach · ${gap2}pp accuracy cost`,
         pattern:`You're losing ${gap2} percentage points of accuracy on poaches vs your regular shots. Poaching is a gamble that's not paying off statistically. You leave your side open AND hit at a lower rate.`,
-        drill:`Drill: poach discipline â only poach when the ball is clearly on your forehand AND you can see the opponent is off-balance. Practice reading the setup, not just reacting to the opportunity.`,
+        drill:`Drill: poach discipline — only poach when the ball is clearly on your forehand AND you can see the opponent is off-balance. Practice reading the setup, not just reacting to the opportunity.`,
         category:'tactical',
       });
     }
   }
 
-  // ââ INSIGHT: Dink consistency
+  // ── INSIGHT: Dink consistency
   const dinks = allShots.filter(s=>s.shotType==='dink');
   if (dinks.length>=15) {
     const dIn = inPct(dinks);
@@ -3580,16 +3580,16 @@ function computeInsights(filteredShots, allShots) {
     if (netPct > 10) {
       insights.push({
         id:'dink-net', priority: netPct,
-        icon:'ð½', title:'Dink Net Errors',
-        stat:`${dinks.length} dinks Â· ${dIn}% in Â· ${netPct}% hit net`,
+        icon:'🍽', title:'Dink Net Errors',
+        stat:`${dinks.length} dinks · ${dIn}% in · ${netPct}% hit net`,
         pattern:`${netPct}% of your dinks hit the net. Dink errors are almost always net errors (too low) rather than long (too high). This suggests paddle angle at contact is too closed, or you're not generating enough lift.`,
-        drill:`Drill: dink with a slight upward brush â finish with paddle face open. The ball should clear the net by 4â6 inches consistently. Do 50 cross-court dinks focusing on a gentle arc, not a flat trajectory.`,
+        drill:`Drill: dink with a slight upward brush — finish with paddle face open. The ball should clear the net by 4–6 inches consistently. Do 50 cross-court dinks focusing on a gentle arc, not a flat trajectory.`,
         category:'shot-quality',
       });
     }
   }
 
-  // ââ INSIGHT: Kitchen Dominance (via vt field)
+  // ── INSIGHT: Kitchen Dominance (via vt field)
   const kitchenShots = allShots.filter(s=>s.vt===3);
   const baselineShots = allShots.filter(s=>s.vt===0);
   const vtTotal = kitchenShots.length + baselineShots.length;
@@ -3604,25 +3604,25 @@ function computeInsights(filteredShots, allShots) {
     if (kitPct < 45 || (qGap > 0 && kitPct < 55)) {
       insights.push({
         id:'kitchen-dom', priority: Math.max(0, 50-kitPct) + Math.abs(qGap)/5,
-        icon:'ð ', title:'Kitchen Dominance',
-        stat:`${kitPct}% of shots from kitchen (${kitchenShots.length}/${vtTotal}) Â· Kitchen: ${kitIn}% in, q=${kitQ||'â'}% Â· Baseline: ${baseIn}% in, q=${baseQ||'â'}%`,
-        pattern:`You hit ${kitPct}% of your shots from the kitchen position. ${qGap>0?`Your quality is ${qGap}pp higher at the kitchen â you\'re a better player when you get there, but you\'re not getting there enough.`:`Your quality gap between kitchen and baseline is minimal â focus on getting to the kitchen faster to leverage the positional advantage.`}`,
-        drill:`Drill: "5-shot kitchen rule" â after any return or 3rd shot, you must be at the kitchen by shot 5. Practice the drop-and-advance sequence until it's automatic. Goal: increase kitchen shot % from ${kitPct}% to 55%+.`,
+        icon:'🏠', title:'Kitchen Dominance',
+        stat:`${kitPct}% of shots from kitchen (${kitchenShots.length}/${vtTotal}) · Kitchen: ${kitIn}% in, q=${kitQ||'—'}% · Baseline: ${baseIn}% in, q=${baseQ||'—'}%`,
+        pattern:`You hit ${kitPct}% of your shots from the kitchen position. ${qGap>0?`Your quality is ${qGap}pp higher at the kitchen — you\'re a better player when you get there, but you\'re not getting there enough.`:`Your quality gap between kitchen and baseline is minimal — focus on getting to the kitchen faster to leverage the positional advantage.`}`,
+        drill:`Drill: "5-shot kitchen rule" — after any return or 3rd shot, you must be at the kitchen by shot 5. Practice the drop-and-advance sequence until it's automatic. Goal: increase kitchen shot % from ${kitPct}% to 55%+.`,
         category:'movement',
       });
     } else if (kitPct >= 55 && qGap < -5) {
       insights.push({
         id:'kitchen-dom', priority: Math.abs(qGap),
-        icon:'ð ', title:'Kitchen Quality Gap',
-        stat:`${kitPct}% of shots from kitchen Â· Kitchen: q=${kitQ}% Â· Baseline: q=${baseQ}% Â· ${Math.abs(qGap)}pp quality drop at kitchen`,
+        icon:'🏠', title:'Kitchen Quality Gap',
+        stat:`${kitPct}% of shots from kitchen · Kitchen: q=${kitQ}% · Baseline: q=${baseQ}% · ${Math.abs(qGap)}pp quality drop at kitchen`,
         pattern:`You're getting to the kitchen effectively (${kitPct}%), but your shot quality actually drops ${Math.abs(qGap)}pp when you're there. This suggests you may be too static at the kitchen or not reading the ball well at close range.`,
-        drill:`Drill: "active feet at kitchen" â split-step before every shot at the kitchen line. Focus on paddle preparation and soft hands. The kitchen game is about touch and positioning, not power.`,
+        drill:`Drill: "active feet at kitchen" — split-step before every shot at the kitchen line. Focus on paddle preparation and soft hands. The kitchen game is about touch and positioning, not power.`,
         category:'shot-quality',
       });
     }
   }
 
-  // ââ INSIGHT: Clean Winners vs Unforced Errors
+  // ── INSIGHT: Clean Winners vs Unforced Errors
   const winners = allShots.filter(s=>s.win==='clean');
   const unforced = allShots.filter(s=>s.isUnforced===true);
   const forced = allShots.filter(s=>s.isUnforced===false);
@@ -3640,38 +3640,38 @@ function computeInsights(filteredShots, allShots) {
     if (ufPct > winPct || ufPct > 15) {
       insights.push({
         id:'winner-error', priority: (ufPct-winPct)*1.5 + ufPct/3,
-        icon:'â', title:'Winner/Error Balance',
-        stat:`${winners.length} winners (${winPct}%) Â· ${unforced.length} unforced errors (${ufPct}%) Â· ${forced.length} forced (${fPct}%) Â· W/UE ratio: ${ratio}`,
-        pattern:`Your unforced error rate (${ufPct}%) exceeds your clean winner rate (${winPct}%). Top unforced error shots: ${topUfStr}. A positive winner/UE ratio (above 1.0) is the hallmark of controlled, aggressive play â yours is ${ratio}.`,
-        drill:`Drill: target the top unforced error shot types (${topUfStr}). For each, do 30-rep drills focusing on margin of error â aim 6 inches inside the lines and 4 inches above the net. The goal is not fewer attacks, it's higher-percentage attacks.`,
+        icon:'⚖', title:'Winner/Error Balance',
+        stat:`${winners.length} winners (${winPct}%) · ${unforced.length} unforced errors (${ufPct}%) · ${forced.length} forced (${fPct}%) · W/UE ratio: ${ratio}`,
+        pattern:`Your unforced error rate (${ufPct}%) exceeds your clean winner rate (${winPct}%). Top unforced error shots: ${topUfStr}. A positive winner/UE ratio (above 1.0) is the hallmark of controlled, aggressive play — yours is ${ratio}.`,
+        drill:`Drill: target the top unforced error shot types (${topUfStr}). For each, do 30-rep drills focusing on margin of error — aim 6 inches inside the lines and 4 inches above the net. The goal is not fewer attacks, it's higher-percentage attacks.`,
         category:'tactical',
       });
     }
   }
 
-  // ââ INSIGHT: ATP/Erne highlights
+  // ── INSIGHT: ATP/Erne highlights
   const atpShots = allShots.filter(s=>s.isATP||s.isErne);
   if (atpShots.length >= 2) {
     const atpIn = inPct(atpShots);
     const atpQ = avgQ(atpShots);
     insights.push({
       id:'atp-highlights', priority: 5 + atpShots.length*2,
-      icon:'â¨', title:'Highlight Shots: ATP/Erne',
-      stat:`${atpShots.length} ATP/Erne shots detected Â· ${atpIn}% successful Â· Avg quality: ${atpQ||'â'}%`,
-      pattern:`You've hit ${atpShots.length} around-the-post or erne shots across your selected games. These are high-skill highlight plays that show court awareness and agility. ${atpIn>=80?'Your success rate is excellent â these are calculated risks paying off.':'Consider being more selective â lower success rate suggests some forced ATPs.'}`,
-      drill:`These are instinct plays, not drillable in the traditional sense. To create more ATP opportunities: push your dinks wider cross-court. When the opponent's reply goes wide, you'll have the angle. For ernes: watch your opponent's paddle angle â when they telegraph a cross-court dink, jump early.`,
+      icon:'✨', title:'Highlight Shots: ATP/Erne',
+      stat:`${atpShots.length} ATP/Erne shots detected · ${atpIn}% successful · Avg quality: ${atpQ||'—'}%`,
+      pattern:`You've hit ${atpShots.length} around-the-post or erne shots across your selected games. These are high-skill highlight plays that show court awareness and agility. ${atpIn>=80?'Your success rate is excellent — these are calculated risks paying off.':'Consider being more selective — lower success rate suggests some forced ATPs.'}`,
+      drill:`These are instinct plays, not drillable in the traditional sense. To create more ATP opportunities: push your dinks wider cross-court. When the opponent's reply goes wide, you'll have the angle. For ernes: watch your opponent's paddle angle — when they telegraph a cross-court dink, jump early.`,
       category:'highlights',
     });
   }
 
-  // ââ INSIGHT: Partner performance split (if partner filter active)
+  // ── INSIGHT: Partner performance split (if partner filter active)
   // Computed in partner context if enough games
 
-  // ââââââââââââââââââââââââââââââââââââââ
+  // ══════════════════════════════════════
   // AUGMENTED DATA INSIGHTS (real tracking)
-  // ââââââââââââââââââââââââââââââââââââââ
+  // ══════════════════════════════════════
 
-  // ââ INSIGHT: Dink Net Clearance (requires augmented heightOverNet)
+  // ── INSIGHT: Dink Net Clearance (requires augmented heightOverNet)
   const dinksWithHeight = allShots.filter(s => s.shotType === 'dink' && s.heightOverNet != null);
   if (dinksWithHeight.length >= 10) {
     const heights = dinksWithHeight.map(s => s.heightOverNet);
@@ -3690,15 +3690,15 @@ function computeInsights(filteredShots, allShots) {
     const declining = secondAvg > firstAvg + 0.3;
     insights.push({
       id: 'dink-net-clearance', priority: highPct > 30 ? 15 : 8,
-      icon: 'ð', title: 'Dink Net Clearance',
-      stat: `Avg: ${avgHeight.toFixed(1)}ft over net Â· ${lowPct}% tight (<1.5ft) Â· ${highPct}% high (>4ft) Â· Tracked: ${dinksWithHeight.length} dinks`,
-      pattern: `Your dinks clear the net by ${avgHeight.toFixed(1)}ft on average. ${highPct > 30 ? `${highPct}% are floating over 4ft â these are attackable pops.` : lowPct > 40 ? `${lowPct}% are tight under 1.5ft â excellent net clearance, keep it tight.` : 'Your clearance distribution is balanced.'} ${improving ? 'Trend: improving â your recent dinks are tighter.' : declining ? 'Trend: dinks getting higher recently â watch for fatigue.' : ''}`,
-      drill: `Target: 1-2ft net clearance on every dink. Practice "net tape" dinks â aim to clear by just the width of your paddle face. Do 50 cross-court dinks counting how many stay under 2ft. Current avg: ${avgHeight.toFixed(1)}ft.`,
+      icon: '📏', title: 'Dink Net Clearance',
+      stat: `Avg: ${avgHeight.toFixed(1)}ft over net · ${lowPct}% tight (<1.5ft) · ${highPct}% high (>4ft) · Tracked: ${dinksWithHeight.length} dinks`,
+      pattern: `Your dinks clear the net by ${avgHeight.toFixed(1)}ft on average. ${highPct > 30 ? `${highPct}% are floating over 4ft — these are attackable pops.` : lowPct > 40 ? `${lowPct}% are tight under 1.5ft — excellent net clearance, keep it tight.` : 'Your clearance distribution is balanced.'} ${improving ? 'Trend: improving — your recent dinks are tighter.' : declining ? 'Trend: dinks getting higher recently — watch for fatigue.' : ''}`,
+      drill: `Target: 1-2ft net clearance on every dink. Practice "net tape" dinks — aim to clear by just the width of your paddle face. Do 50 cross-court dinks counting how many stay under 2ft. Current avg: ${avgHeight.toFixed(1)}ft.`,
       category: 'shot-quality',
     });
   }
 
-  // ââ INSIGHT: Drive/Speedup Ball Speed
+  // ── INSIGHT: Drive/Speedup Ball Speed
   const drivesWithSpeed = allShots.filter(s => (s.shotType === 'drive' || s.shotType === 'speedup') && s.ballSpeed != null);
   if (drivesWithSpeed.length >= 8) {
     const speeds = drivesWithSpeed.map(s => s.ballSpeed);
@@ -3715,15 +3715,15 @@ function computeInsights(filteredShots, allShots) {
     const secondSpeed = sum(drivesWithSpeed.slice(half2).map(s => s.ballSpeed)) / (drivesWithSpeed.length - half2);
     insights.push({
       id: 'drive-speed', priority: speedGap > 3 ? 12 : 6,
-      icon: 'ð¨', title: 'Drive & Speedup Velocity',
-      stat: `Avg: ${avgSpeed.toFixed(1)} mph Â· Max: ${maxSpeed.toFixed(1)} mph Â· In: ${avgInSpeed.toFixed(1)} mph Â· Errors: ${avgErrSpeed.toFixed(1)} mph`,
-      pattern: `${speedGap > 3 ? `Your errors are ${speedGap.toFixed(1)} mph faster than successful drives â you're over-hitting on errors. Dial back 10-15% for better control.` : speedGap > 0 ? 'Your error drives are slightly faster but within acceptable range.' : 'Your speed control is excellent â errors aren\'t from overhitting.'} ${secondSpeed > firstSpeed + 1 ? 'Trend: getting faster over time.' : secondSpeed < firstSpeed - 1 ? 'Trend: slowing down â could indicate fatigue or better control.' : ''}`,
-      drill: `Drill: "80% drives" â practice driving at 80% power with focus on placement. Your sweet spot appears to be around ${avgInSpeed.toFixed(0)} mph. Save max power (${maxSpeed.toFixed(0)} mph) for put-aways only.`,
+      icon: '💨', title: 'Drive & Speedup Velocity',
+      stat: `Avg: ${avgSpeed.toFixed(1)} mph · Max: ${maxSpeed.toFixed(1)} mph · In: ${avgInSpeed.toFixed(1)} mph · Errors: ${avgErrSpeed.toFixed(1)} mph`,
+      pattern: `${speedGap > 3 ? `Your errors are ${speedGap.toFixed(1)} mph faster than successful drives — you're over-hitting on errors. Dial back 10-15% for better control.` : speedGap > 0 ? 'Your error drives are slightly faster but within acceptable range.' : 'Your speed control is excellent — errors aren\'t from overhitting.'} ${secondSpeed > firstSpeed + 1 ? 'Trend: getting faster over time.' : secondSpeed < firstSpeed - 1 ? 'Trend: slowing down — could indicate fatigue or better control.' : ''}`,
+      drill: `Drill: "80% drives" — practice driving at 80% power with focus on placement. Your sweet spot appears to be around ${avgInSpeed.toFixed(0)} mph. Save max power (${maxSpeed.toFixed(0)} mph) for put-aways only.`,
       category: 'shot-quality',
     });
   }
 
-  // ââ INSIGHT: Serve Depth (using real landing coordinates)
+  // ── INSIGHT: Serve Depth (using real landing coordinates)
   const servesWithImpact = allShots.filter(s => s.shotType === 'serve' && s.hasRealImpact && s.impactZ != null);
   if (servesWithImpact.length >= 8) {
     // Distance from net = absolute |impactZ - 22|. Serves land on opponent's half.
@@ -3737,15 +3737,15 @@ function computeInsights(filteredShots, allShots) {
     const avgDistFromBaseline = 22 - avgDistNet; // 22ft is half-court = baseline distance from net
     insights.push({
       id: 'serve-depth-real', priority: deepPct < 50 ? 10 : 5,
-      icon: 'ð¾', title: 'Serve Depth (Tracked)',
-      stat: `${deepPct}% deep Â· ${Math.round(100*midServes.length/servesWithImpact.length)}% mid Â· ${Math.round(100*shortServes.length/servesWithImpact.length)}% short Â· Avg: ${avgDistFromBaseline.toFixed(1)}ft from baseline`,
-      pattern: `Based on real ball tracking: your serves land an average of ${avgDistFromBaseline.toFixed(1)}ft from the opponent's baseline. ${deepPct >= 60 ? 'Excellent depth â this forces weak returns.' : deepPct >= 40 ? 'Decent depth, but more deep serves would pressure the return game.' : 'Too many short serves giving opponents easy returns.'}`,
+      icon: '🎾', title: 'Serve Depth (Tracked)',
+      stat: `${deepPct}% deep · ${Math.round(100*midServes.length/servesWithImpact.length)}% mid · ${Math.round(100*shortServes.length/servesWithImpact.length)}% short · Avg: ${avgDistFromBaseline.toFixed(1)}ft from baseline`,
+      pattern: `Based on real ball tracking: your serves land an average of ${avgDistFromBaseline.toFixed(1)}ft from the opponent's baseline. ${deepPct >= 60 ? 'Excellent depth — this forces weak returns.' : deepPct >= 40 ? 'Decent depth, but more deep serves would pressure the return game.' : 'Too many short serves giving opponents easy returns.'}`,
       drill: `Target: 60%+ deep serves. Aim for the back 6ft of the service box. Current: ${deepPct}%.`,
       category: 'shot-quality',
     });
   }
 
-  // ââ INSIGHT: Shot Placement Accuracy (using real coordinates)
+  // ── INSIGHT: Shot Placement Accuracy (using real coordinates)
   const shotsWithRealPos = allShots.filter(s => s.hasRealImpact && s.impactX != null);
   if (shotsWithRealPos.length >= 20) {
     // Check how often balls land in the middle third vs wide
@@ -3758,16 +3758,16 @@ function computeInsights(filteredShots, allShots) {
     if (midPct > 50) {
       insights.push({
         id: 'placement-spread', priority: midPct - 40,
-        icon: 'ð¯', title: 'Shot Placement Spread',
-        stat: `Left: ${leftPct}% Â· Center: ${midPct}% Â· Right: ${rightPct}% Â· Tracked: ${shotsWithRealPos.length} shots`,
+        icon: '🎯', title: 'Shot Placement Spread',
+        stat: `Left: ${leftPct}% · Center: ${midPct}% · Right: ${rightPct}% · Tracked: ${shotsWithRealPos.length} shots`,
         pattern: `${midPct}% of your tracked shots land in the center third of the court. Balls to the middle give opponents easy reaches. Top players target the sideline thirds to create angles and reach problems.`,
-        drill: `Drill: "target cones" â place targets 2ft inside each sideline and practice hitting 70% of shots to those zones. Emphasize cross-court angles for dinks and down-the-line drives.`,
+        drill: `Drill: "target cones" — place targets 2ft inside each sideline and practice hitting 70% of shots to those zones. Emphasize cross-court angles for dinks and down-the-line drives.`,
         category: 'tactical',
       });
     }
   }
 
-  // ââ INSIGHT: Drop Shot Landing Zone (using real coordinates)
+  // ── INSIGHT: Drop Shot Landing Zone (using real coordinates)
   const dropsWithImpact = allShots.filter(s => s.shotType === 'drop' && s.hasRealImpact && s.impactZ != null);
   if (dropsWithImpact.length >= 6) {
     // Kitchen zones: z=22-29 (team 0's target) or z=15-22 (team 1's target)
@@ -3779,19 +3779,19 @@ function computeInsights(filteredShots, allShots) {
     const avgDist = sum(dropsWithImpact.map(s => distFromNet(s))) / dropsWithImpact.length;
     insights.push({
       id: 'drop-accuracy', priority: kitchenPct < 60 ? 12 : 5,
-      icon: 'â¬', title: 'Drop Shot Accuracy (Tracked)',
-      stat: `${kitchenPct}% land in kitchen Â· ${Math.round(100*longDrops.length/dropsWithImpact.length)}% too deep Â· Avg landing: ${avgDist.toFixed(1)}ft from net Â· ${dropsWithImpact.length} tracked drops`,
-      pattern: `${kitchenPct >= 70 ? 'Your drops are consistently reaching the kitchen â this is setting up good transitions.' : kitchenPct >= 50 ? 'About half your drops make it to the kitchen. The ones that land deep give opponents time to attack.' : 'Most drops are landing too deep, giving opponents comfortable returns.'} Average landing is ${avgDist.toFixed(1)}ft from the net (target: under 7ft for kitchen).`,
-      drill: `Drill: "drop to the line" â practice third-shot drops from baseline aiming to land within 3ft of the net. Track what percentage reach the kitchen. Target: 70%+. Current: ${kitchenPct}%.`,
+      icon: '⬇', title: 'Drop Shot Accuracy (Tracked)',
+      stat: `${kitchenPct}% land in kitchen · ${Math.round(100*longDrops.length/dropsWithImpact.length)}% too deep · Avg landing: ${avgDist.toFixed(1)}ft from net · ${dropsWithImpact.length} tracked drops`,
+      pattern: `${kitchenPct >= 70 ? 'Your drops are consistently reaching the kitchen — this is setting up good transitions.' : kitchenPct >= 50 ? 'About half your drops make it to the kitchen. The ones that land deep give opponents time to attack.' : 'Most drops are landing too deep, giving opponents comfortable returns.'} Average landing is ${avgDist.toFixed(1)}ft from the net (target: under 7ft for kitchen).`,
+      drill: `Drill: "drop to the line" — practice third-shot drops from baseline aiming to land within 3ft of the net. Track what percentage reach the kitchen. Target: 70%+. Current: ${kitchenPct}%.`,
       category: 'shot-quality',
     });
   }
 
-  // ââââââââââââââââââââââââââââââââââââââ
+  // ══════════════════════════════════════
   // NEW AUGMENTED INSIGHTS (Phase 4)
-  // ââââââââââââââââââââââââââââââââââââââ
+  // ══════════════════════════════════════
 
-  // ââ INSIGHT: Score-Situation Performance ââ
+  // ── INSIGHT: Score-Situation Performance ──
   // How do you perform at critical scores (close games, when trailing, when leading)?
   const shotsWithScore = allShots.filter(s => s.runningScore && Array.isArray(s.runningScore));
   if (shotsWithScore.length >= 30) {
@@ -3833,9 +3833,9 @@ function computeInsights(filteredShots, allShots) {
       if (Math.abs(clutchGap) >= 3) {
         insights.push({
           id: 'score-pressure', priority: Math.abs(clutchGap) * 1.5,
-          icon: 'ð²', title: 'Clutch Performance',
-          stat: `Pressure (close & 8+): ${pressIn}% in, q=${pressQ||'â'}% (${pressureShots.length} shots) Â· Normal: ${normIn}% in, q=${normQ||'â'}%`,
-          pattern: `${clutchGap > 0 ? `Your accuracy drops ${clutchGap}pp in pressure situations (close score at 8+). This suggests tightening up in crunch time â possibly forcing shots or playing too cautious.` : `You actually perform ${Math.abs(clutchGap)}pp BETTER under pressure â you're a clutch player who raises your game when it counts.`}${trailNote}`,
+          icon: '🎲', title: 'Clutch Performance',
+          stat: `Pressure (close & 8+): ${pressIn}% in, q=${pressQ||'—'}% (${pressureShots.length} shots) · Normal: ${normIn}% in, q=${normQ||'—'}%`,
+          pattern: `${clutchGap > 0 ? `Your accuracy drops ${clutchGap}pp in pressure situations (close score at 8+). This suggests tightening up in crunch time — possibly forcing shots or playing too cautious.` : `You actually perform ${Math.abs(clutchGap)}pp BETTER under pressure — you're a clutch player who raises your game when it counts.`}${trailNote}`,
           drill: clutchGap > 0 ? `Drill: simulate pressure points in practice. Play "first to 3" mini-games where every point is match point. Get comfortable with the feeling so it doesn't affect your mechanics.` : `Your mental game is strong under pressure. Keep it up.`,
           category: 'mental',
         });
@@ -3843,7 +3843,7 @@ function computeInsights(filteredShots, allShots) {
     }
   }
 
-  // ââ INSIGHT: Shot Selection by Court Position (advantage_scale) ââ
+  // ── INSIGHT: Shot Selection by Court Position (advantage_scale) ──
   const shotsWithAdv = allShots.filter(s => s.playerAdvantage != null);
   if (shotsWithAdv.length >= 30) {
     const atKitchen = shotsWithAdv.filter(s => s.playerAdvantage >= 0.7);
@@ -3867,16 +3867,16 @@ function computeInsights(filteredShots, allShots) {
       const transResets = inTransition.filter(s => s.shotType === 'reset' || s.shotType === 'drop');
       insights.push({
         id: 'position-selection', priority: 9,
-        icon: 'ð', title: 'Shot Selection by Position',
-        stat: `Kitchen (${atKitchen.length}): ${kitDrivePct}% drives Â· Baseline (${atBaseline.length}): ${baseDrivePct}% drives Â· Transition (${inTransition.length}): ${transIn != null ? transIn + '% in' : 'â'}`,
-        pattern: `At the kitchen (${atKitchen.length} shots): ${kitDrivePct > 15 ? `you drive ${kitDrivePct}% â that's aggressive from the kitchen line. Drives from here have ${kitDriveIn}% accuracy.` : 'good dink-heavy selection.'} From baseline (${atBaseline.length} shots): ${baseDrivePct}% are drives${baseDrops.length > 0 ? `, ${Math.round(100*baseDrops.length/atBaseline.length)}% drops` : ''}. ${inTransition.length >= 5 ? `In the transition zone (${inTransition.length} shots): ${transDrives.length} drives vs ${transResets.length} resets/drops â ${transResets.length > transDrives.length ? 'good patience, you\'re resetting.' : 'you\'re attacking from no-man\'s land, which is high risk.'}` : ''}`,
-        drill: `Match your shot to your position: kitchen = soft touch (dinks, volleys), transition = resets and drops, baseline = controlled drives or drops. Review the transition zone shots â that's where most errors come from choosing the wrong shot.`,
+        icon: '📊', title: 'Shot Selection by Position',
+        stat: `Kitchen (${atKitchen.length}): ${kitDrivePct}% drives · Baseline (${atBaseline.length}): ${baseDrivePct}% drives · Transition (${inTransition.length}): ${transIn != null ? transIn + '% in' : '—'}`,
+        pattern: `At the kitchen (${atKitchen.length} shots): ${kitDrivePct > 15 ? `you drive ${kitDrivePct}% — that's aggressive from the kitchen line. Drives from here have ${kitDriveIn}% accuracy.` : 'good dink-heavy selection.'} From baseline (${atBaseline.length} shots): ${baseDrivePct}% are drives${baseDrops.length > 0 ? `, ${Math.round(100*baseDrops.length/atBaseline.length)}% drops` : ''}. ${inTransition.length >= 5 ? `In the transition zone (${inTransition.length} shots): ${transDrives.length} drives vs ${transResets.length} resets/drops — ${transResets.length > transDrives.length ? 'good patience, you\'re resetting.' : 'you\'re attacking from no-man\'s land, which is high risk.'}` : ''}`,
+        drill: `Match your shot to your position: kitchen = soft touch (dinks, volleys), transition = resets and drops, baseline = controlled drives or drops. Review the transition zone shots — that's where most errors come from choosing the wrong shot.`,
         category: 'shot-selection',
       });
     }
   }
 
-  // ââ INSIGHT: Pitch/Loft Analysis (spin proxy for dinks) ââ
+  // ── INSIGHT: Pitch/Loft Analysis (spin proxy for dinks) ──
   const dinksWithPitch = allShots.filter(s => s.shotType === 'dink' && s.shotPitch != null);
   if (dinksWithPitch.length >= 10) {
     const pitches = dinksWithPitch.map(s => s.shotPitch);
@@ -3895,15 +3895,15 @@ function computeInsights(filteredShots, allShots) {
     const improving = secondPitch < firstPitch - 2;
     insights.push({
       id: 'dink-loft', priority: loopyPct > 25 ? 11 : 6,
-      icon: 'ð', title: 'Dink Loft & Arc (Spin Proxy)',
-      stat: `Avg pitch: ${avgPitch.toFixed(1)}Â° Â· Flat (<10Â°): ${flatPct}% Â· Loopy (>25Â°): ${loopyPct}%${loopyAvgHeight ? ` Â· Loopy avg height: ${loopyAvgHeight.toFixed(1)}ft` : ''}`,
-      pattern: `Your dink launch angle averages ${avgPitch.toFixed(1)}Â°. ${loopyPct > 30 ? `${loopyPct}% of dinks are high-arc (>25Â°) â these pop up and are attackable.${loopyAvgHeight && loopyAvgHeight > 3 ? ` They clear the net by ${loopyAvgHeight.toFixed(1)}ft on average â too high.` : ''}` : flatPct > 50 ? `${flatPct}% are flat (<10Â°) â great low trajectory, but watch for net errors.` : 'Good mix of flat and arced dinks.'} ${improving ? 'Trend: getting flatter over time â your dinks are improving.' : ''}`,
-      drill: `Target: 10-18Â° launch angle for dinks. Flat enough to be unattackable, high enough to clear the net. Practice: hit 30 dinks focusing on a low, tight arc. If you pop up more than 25%, slow down your paddle speed.`,
+      icon: '🌀', title: 'Dink Loft & Arc (Spin Proxy)',
+      stat: `Avg pitch: ${avgPitch.toFixed(1)}° · Flat (<10°): ${flatPct}% · Loopy (>25°): ${loopyPct}%${loopyAvgHeight ? ` · Loopy avg height: ${loopyAvgHeight.toFixed(1)}ft` : ''}`,
+      pattern: `Your dink launch angle averages ${avgPitch.toFixed(1)}°. ${loopyPct > 30 ? `${loopyPct}% of dinks are high-arc (>25°) — these pop up and are attackable.${loopyAvgHeight && loopyAvgHeight > 3 ? ` They clear the net by ${loopyAvgHeight.toFixed(1)}ft on average — too high.` : ''}` : flatPct > 50 ? `${flatPct}% are flat (<10°) — great low trajectory, but watch for net errors.` : 'Good mix of flat and arced dinks.'} ${improving ? 'Trend: getting flatter over time — your dinks are improving.' : ''}`,
+      drill: `Target: 10-18° launch angle for dinks. Flat enough to be unattackable, high enough to clear the net. Practice: hit 30 dinks focusing on a low, tight arc. If you pop up more than 25%, slow down your paddle speed.`,
       category: 'shot-quality',
     });
   }
 
-  // ââ INSIGHT: Drop Shot Height Over Net ââ
+  // ── INSIGHT: Drop Shot Height Over Net ──
   const dropsWithHeight = allShots.filter(s => s.shotType === 'drop' && s.heightOverNet != null);
   if (dropsWithHeight.length >= 6) {
     const dropHeights = dropsWithHeight.map(s => s.heightOverNet);
@@ -3917,15 +3917,15 @@ function computeInsights(filteredShots, allShots) {
     const secondDropH = sum(dropsWithHeight.slice(half3).map(s => s.heightOverNet)) / (dropsWithHeight.length - half3);
     insights.push({
       id: 'drop-net-height', priority: highPct2 > 30 ? 10 : 5,
-      icon: 'ð', title: 'Drop Shot Net Clearance',
-      stat: `Avg: ${avgDropHeight.toFixed(1)}ft Â· Tight (<2ft): ${lowPct2}% Â· High (>4ft): ${highPct2}% Â· Tracked: ${dropsWithHeight.length}`,
-      pattern: `Your drops clear the net by ${avgDropHeight.toFixed(1)}ft on average. ${highPct2 > 30 ? `${highPct2}% are floating above 4ft â these give opponents time to set up and attack.` : lowPct2 > 40 ? 'Excellent low clearance â these are hard to attack.' : 'Clearance is in a reasonable range.'} ${secondDropH < firstDropH - 0.5 ? 'Trend: improving â drops are getting tighter.' : secondDropH > firstDropH + 0.5 ? 'Trend: drops getting higher recently.' : ''}`,
+      icon: '📐', title: 'Drop Shot Net Clearance',
+      stat: `Avg: ${avgDropHeight.toFixed(1)}ft · Tight (<2ft): ${lowPct2}% · High (>4ft): ${highPct2}% · Tracked: ${dropsWithHeight.length}`,
+      pattern: `Your drops clear the net by ${avgDropHeight.toFixed(1)}ft on average. ${highPct2 > 30 ? `${highPct2}% are floating above 4ft — these give opponents time to set up and attack.` : lowPct2 > 40 ? 'Excellent low clearance — these are hard to attack.' : 'Clearance is in a reasonable range.'} ${secondDropH < firstDropH - 0.5 ? 'Trend: improving — drops are getting tighter.' : secondDropH > firstDropH + 0.5 ? 'Trend: drops getting higher recently.' : ''}`,
       drill: `Ideal drop net clearance: 1.5-3ft. Enough to get over safely but low enough to force an upward return. Practice from the baseline: 20 drop shots targeting under 3ft clearance. Current avg: ${avgDropHeight.toFixed(1)}ft.`,
       category: 'shot-quality',
     });
   }
 
-  // ââ INSIGHT: Shot Timing / Reaction Speed ââ
+  // ── INSIGHT: Shot Timing / Reaction Speed ──
   const shotsWithTiming = allShots.filter(s => s.shotDurationMs != null && s.shotDurationMs > 0 && s.shidx >= 2);
   if (shotsWithTiming.length >= 15) {
     const durations = shotsWithTiming.map(s => s.shotDurationMs);
@@ -3946,15 +3946,15 @@ function computeInsights(filteredShots, allShots) {
     const kitBaseGap = kitAvg && baseAvg ? Math.round(baseAvg - kitAvg) : null;
     insights.push({
       id: 'shot-timing', priority: isRushing || isHesitating ? 9 : 5,
-      icon: 'â±', title: 'Shot Timing',
-      stat: `${shotsWithTiming.length} shots tracked${kitAvg && baseAvg ? ` Â· Net ${kitBaseGap > 0 ? kitBaseGap + 'ms faster' : Math.abs(kitBaseGap) + 'ms slower'} than baseline` : ''}${timingGap != null ? ` Â· Errors are ${Math.abs(timingGap)}ms ${timingGap < 0 ? 'quicker' : 'slower'} than good shots` : ''}`,
-      pattern: `${isRushing ? `Your errors happen ${Math.abs(timingGap)}ms faster than your successful shots â a sign of rushing. You may be swinging before your body is set, especially under pressure. Focus on "see the ball, set your feet, then swing."` : isHesitating ? `Your errors happen ${timingGap}ms slower than your successful shots â a sign of hesitation. Late decisions lead to off-balance contact. Trust your first read and commit to the shot earlier.` : 'Your shot timing is fairly consistent between errors and good shots â no clear rushing or hesitation pattern.'}${kitAvg && baseAvg && kitBaseGap > 80 ? ` At the kitchen, you react ${kitBaseGap}ms faster than from the baseline, which is normal for the faster exchanges at the net.` : ''}`,
-      drill: `${isRushing ? 'Drill: "pause and play" â in kitchen exchanges, practice holding your paddle still for a split second after reading the ball before swinging. Build the habit of controlled, deliberate shots under pressure.' : isHesitating ? 'Drill: "first read" â during drills, commit to your shot choice the moment the ball crosses the net. Speed up your decision-making, not your swing.' : 'Drill: "speed hands" â have a partner feed fast balls at the kitchen. Focus on compact swing and quick paddle reset.'}`,
+      icon: '⏱', title: 'Shot Timing',
+      stat: `${shotsWithTiming.length} shots tracked${kitAvg && baseAvg ? ` · Net ${kitBaseGap > 0 ? kitBaseGap + 'ms faster' : Math.abs(kitBaseGap) + 'ms slower'} than baseline` : ''}${timingGap != null ? ` · Errors are ${Math.abs(timingGap)}ms ${timingGap < 0 ? 'quicker' : 'slower'} than good shots` : ''}`,
+      pattern: `${isRushing ? `Your errors happen ${Math.abs(timingGap)}ms faster than your successful shots — a sign of rushing. You may be swinging before your body is set, especially under pressure. Focus on "see the ball, set your feet, then swing."` : isHesitating ? `Your errors happen ${timingGap}ms slower than your successful shots — a sign of hesitation. Late decisions lead to off-balance contact. Trust your first read and commit to the shot earlier.` : 'Your shot timing is fairly consistent between errors and good shots — no clear rushing or hesitation pattern.'}${kitAvg && baseAvg && kitBaseGap > 80 ? ` At the kitchen, you react ${kitBaseGap}ms faster than from the baseline, which is normal for the faster exchanges at the net.` : ''}`,
+      drill: `${isRushing ? 'Drill: "pause and play" — in kitchen exchanges, practice holding your paddle still for a split second after reading the ball before swinging. Build the habit of controlled, deliberate shots under pressure.' : isHesitating ? 'Drill: "first read" — during drills, commit to your shot choice the moment the ball crosses the net. Speed up your decision-making, not your swing.' : 'Drill: "speed hands" — have a partner feed fast balls at the kitchen. Focus on compact swing and quick paddle reset.'}`,
       category: 'reflexes',
     });
   }
 
-  // ââ INSIGHT: Partner Spacing (from rally data) ââ
+  // ── INSIGHT: Partner Spacing (from rally data) ──
   // Access game-level rallyData through closure if available
   const gamesWithRallyData = (typeof state !== 'undefined' && state.games) ? state.games.filter(g => g.rallyData && g.rallyData.length > 0 && g.included) : [];
   if (gamesWithRallyData.length > 0) {
@@ -3979,16 +3979,16 @@ function computeInsights(filteredShots, allShots) {
       const poorPct = Math.round(100 * poor / allSpacings.length);
       insights.push({
         id: 'partner-spacing', priority: poorPct > 30 ? 10 : 5,
-        icon: 'ð«', title: 'Partner Spacing',
-        stat: `Avg optimality: ${(avgOpt * 100).toFixed(0)}%${wonAvg ? ` Â· Won rallies: ${(wonAvg * 100).toFixed(0)}%` : ''}${lostAvg ? ` Â· Lost rallies: ${(lostAvg * 100).toFixed(0)}%` : ''} Â· Poor (<40%): ${poorPct}%`,
-        pattern: `Your team's lateral spacing is ${(avgOpt * 100).toFixed(0)}% optimal on average. ${wonAvg && lostAvg && wonAvg > lostAvg + 0.05 ? `When you win rallies, spacing is ${((wonAvg - lostAvg) * 100).toFixed(0)}pp better â good positioning correlates with winning.` : 'Spacing is similar in won vs lost rallies.'} ${poorPct > 25 ? `${poorPct}% of rallies have poor spacing â too close together or too far apart, leaving court gaps.` : 'Your spacing is generally solid.'}`,
-        drill: `Drill: "shadow movement" â during dink rallies, practice moving in sync with your partner. If they shift left, you shift left to maintain 8-10ft spacing. Communicate: call "switch" or "stay" on every wide ball.`,
+        icon: '👫', title: 'Partner Spacing',
+        stat: `Avg optimality: ${(avgOpt * 100).toFixed(0)}%${wonAvg ? ` · Won rallies: ${(wonAvg * 100).toFixed(0)}%` : ''}${lostAvg ? ` · Lost rallies: ${(lostAvg * 100).toFixed(0)}%` : ''} · Poor (<40%): ${poorPct}%`,
+        pattern: `Your team's lateral spacing is ${(avgOpt * 100).toFixed(0)}% optimal on average. ${wonAvg && lostAvg && wonAvg > lostAvg + 0.05 ? `When you win rallies, spacing is ${((wonAvg - lostAvg) * 100).toFixed(0)}pp better — good positioning correlates with winning.` : 'Spacing is similar in won vs lost rallies.'} ${poorPct > 25 ? `${poorPct}% of rallies have poor spacing — too close together or too far apart, leaving court gaps.` : 'Your spacing is generally solid.'}`,
+        drill: `Drill: "shadow movement" — during dink rallies, practice moving in sync with your partner. If they shift left, you shift left to maintain 8-10ft spacing. Communicate: call "switch" or "stay" on every wide ball.`,
         category: 'teamwork',
       });
     }
   }
 
-  // ââ INSIGHT: Serving vs Receiving Performance ââ
+  // ── INSIGHT: Serving vs Receiving Performance ──
   // Use player_data role_data if available through the games
   if (gamesWithRallyData.length > 0) {
     let servingWon = 0, servingTotal = 0, receivingWon = 0, receivingTotal = 0;
@@ -4022,9 +4022,9 @@ function computeInsights(filteredShots, allShots) {
       if (Math.abs(gap) >= 3) {
         insights.push({
           id: 'serve-recv-split', priority: Math.abs(gap),
-          icon: 'ð', title: 'Serving vs Receiving',
-          stat: `Serving side: ${serveIn}% in, q=${serveQ||'â'}%${servKitPct ? ` Â· Kitchen arr: ${servKitPct}%` : ''} Â· Receiving side: ${recvIn}% in, q=${recvQ||'â'}%${recvKitPct ? ` Â· Kitchen arr: ${recvKitPct}%` : ''}`,
-          pattern: `${gap > 0 ? `You're ${gap}pp more accurate on the serving side. Your return game may need work â ${recvKitPct && servKitPct ? `kitchen arrival is ${recvKitPct}% returning vs ${servKitPct}% serving.` : 'consider your 3rd shot transitions.'}` : `You're ${Math.abs(gap)}pp more accurate on the receiving side. You play better with the return advantage.`}`,
+          icon: '🔄', title: 'Serving vs Receiving',
+          stat: `Serving side: ${serveIn}% in, q=${serveQ||'—'}%${servKitPct ? ` · Kitchen arr: ${servKitPct}%` : ''} · Receiving side: ${recvIn}% in, q=${recvQ||'—'}%${recvKitPct ? ` · Kitchen arr: ${recvKitPct}%` : ''}`,
+          pattern: `${gap > 0 ? `You're ${gap}pp more accurate on the serving side. Your return game may need work — ${recvKitPct && servKitPct ? `kitchen arrival is ${recvKitPct}% returning vs ${servKitPct}% serving.` : 'consider your 3rd shot transitions.'}` : `You're ${Math.abs(gap)}pp more accurate on the receiving side. You play better with the return advantage.`}`,
           drill: gap > 0 ? `Focus: return-and-advance sequences. Practice deep returns followed by 2-3 steps toward the kitchen. The return side disadvantage comes from not converting the return into court position.` : `Your return game is strong. Focus on improving 3rd shot consistency to close the gap on the serving side.`,
           category: 'strategic',
         });
@@ -4032,7 +4032,7 @@ function computeInsights(filteredShots, allShots) {
     }
   }
 
-  // ââ INSIGHT: Forehand/Backhand Imbalance ââ
+  // ── INSIGHT: Forehand/Backhand Imbalance ──
   const fhShots = allShots.filter(s => s.stroke === 'fh' && s.shidx >= 2);
   const bhShots = allShots.filter(s => s.stroke === 'bh' && s.shidx >= 2);
   if (fhShots.length >= 15 && bhShots.length >= 15) {
@@ -4049,16 +4049,16 @@ function computeInsights(filteredShots, allShots) {
     if (Math.abs(gap3) >= 5) {
       insights.push({
         id: 'fh-bh-balance', priority: Math.abs(gap3) * 1.2,
-        icon: 'ð', title: 'Forehand vs Backhand',
-        stat: `FH: ${fhIn}% in, q=${fhQ||'â'}% (${fhShots.length}) Â· BH: ${bhIn}% in, q=${bhQ||'â'}% (${bhShots.length})${fhAvgSpd && bhAvgSpd ? ` Â· Drive speed: FH ${fhAvgSpd.toFixed(0)}mph / BH ${bhAvgSpd.toFixed(0)}mph` : ''}`,
-        pattern: `${gap3 > 0 ? `Your forehand is ${gap3}pp more accurate than your backhand.` : `Your backhand is ${Math.abs(gap3)}pp more accurate than your forehand.`} ${fhAvgSpd && bhAvgSpd && Math.abs(fhAvgSpd - bhAvgSpd) > 3 ? `Drive speed differs by ${Math.abs(fhAvgSpd - bhAvgSpd).toFixed(0)}mph between sides.` : ''} ${Math.round(100*fhShots.length/(fhShots.length+bhShots.length))}% of your mid-rally shots are forehand â ${fhShots.length > bhShots.length * 1.5 ? 'you\'re running around your backhand.' : 'balanced side selection.'}`,
-        drill: gap3 > 0 ? `Focus: backhand drills. Do 50 cross-court BH dinks and 20 BH drives. Your BH is ${Math.abs(gap3)}pp behind â closing that gap removes a weakness opponents can exploit.` : `Focus: forehand consistency. Your FH accuracy is lagging â possibly from over-hitting. Do 30 FH dinks focusing on touch, not power.`,
+        icon: '🏓', title: 'Forehand vs Backhand',
+        stat: `FH: ${fhIn}% in, q=${fhQ||'—'}% (${fhShots.length}) · BH: ${bhIn}% in, q=${bhQ||'—'}% (${bhShots.length})${fhAvgSpd && bhAvgSpd ? ` · Drive speed: FH ${fhAvgSpd.toFixed(0)}mph / BH ${bhAvgSpd.toFixed(0)}mph` : ''}`,
+        pattern: `${gap3 > 0 ? `Your forehand is ${gap3}pp more accurate than your backhand.` : `Your backhand is ${Math.abs(gap3)}pp more accurate than your forehand.`} ${fhAvgSpd && bhAvgSpd && Math.abs(fhAvgSpd - bhAvgSpd) > 3 ? `Drive speed differs by ${Math.abs(fhAvgSpd - bhAvgSpd).toFixed(0)}mph between sides.` : ''} ${Math.round(100*fhShots.length/(fhShots.length+bhShots.length))}% of your mid-rally shots are forehand — ${fhShots.length > bhShots.length * 1.5 ? 'you\'re running around your backhand.' : 'balanced side selection.'}`,
+        drill: gap3 > 0 ? `Focus: backhand drills. Do 50 cross-court BH dinks and 20 BH drives. Your BH is ${Math.abs(gap3)}pp behind — closing that gap removes a weakness opponents can exploit.` : `Focus: forehand consistency. Your FH accuracy is lagging — possibly from over-hitting. Do 30 FH dinks focusing on touch, not power.`,
         category: 'shot-quality',
       });
     }
   }
 
-  // ââ INSIGHT: Pre-Shot Movement (are you scrambling?) ââ
+  // ── INSIGHT: Pre-Shot Movement (are you scrambling?) ──
   const shotsWithStress = allShots.filter(s => s.stress > 0 && s.shidx >= 2);
   if (shotsWithStress.length >= 20) {
     const avgStress = sum(shotsWithStress.map(s => s.stress)) / shotsWithStress.length;
@@ -4070,10 +4070,10 @@ function computeInsights(filteredShots, allShots) {
     if (highStress.length >= 5 && lowStress.length >= 10 && lowStressIn - highStressIn > 5) {
       insights.push({
         id: 'scramble-cost', priority: (lowStressIn - highStressIn) * 0.8,
-        icon: 'ð', title: 'Scramble Cost',
-        stat: `Avg pre-shot movement: ${avgStress.toFixed(1)}ft Â· High scramble (>4ft): ${highStressPct}% â ${highStressIn}% in Â· Low scramble (<2ft): ${lowStressIn}% in`,
-        pattern: `When you have to move more than 4ft before your shot (${highStress.length} times, ${highStressPct}% of shots), your accuracy drops to ${highStressIn}% vs ${lowStressIn}% when settled â a ${lowStressIn - highStressIn}pp penalty. These scramble shots often come from poor recovery or being out-positioned.`,
-        drill: `Drill: "split-step recovery" â after every shot, immediately return to ready position with a split-step. The goal is to reduce how far you need to move for the next shot. Good positioning = less scrambling = more accuracy.`,
+        icon: '🏃', title: 'Scramble Cost',
+        stat: `Avg pre-shot movement: ${avgStress.toFixed(1)}ft · High scramble (>4ft): ${highStressPct}% → ${highStressIn}% in · Low scramble (<2ft): ${lowStressIn}% in`,
+        pattern: `When you have to move more than 4ft before your shot (${highStress.length} times, ${highStressPct}% of shots), your accuracy drops to ${highStressIn}% vs ${lowStressIn}% when settled — a ${lowStressIn - highStressIn}pp penalty. These scramble shots often come from poor recovery or being out-positioned.`,
+        drill: `Drill: "split-step recovery" — after every shot, immediately return to ready position with a split-step. The goal is to reduce how far you need to move for the next shot. Good positioning = less scrambling = more accuracy.`,
         category: 'movement',
       });
     }
@@ -4095,7 +4095,7 @@ function toggleInsightExpand() {
   const body = document.getElementById('insight-float-body');
   const btn  = document.getElementById('ins-toggle');
   if (body) body.style.maxHeight = _insightExpanded ? '300px' : '0px';
-  if (btn)  btn.textContent = _insightExpanded ? 'â¬' : 'â¬';
+  if (btn)  btn.textContent = _insightExpanded ? '⬇' : '⬆';
 }
 
 function generateInsight(filteredShots, allShots, activeTypes, activeOutcomes, activeLayers) {
@@ -4157,7 +4157,7 @@ function cycleInsight(dir) {
 }
 
 
-// ââ RESIZABLE BOTTOM BAR
+// ── RESIZABLE BOTTOM BAR
 function startStatsResize(e) {
   e.preventDefault();
   const bar = document.getElementById('viewer-stats-bar');
@@ -4177,9 +4177,9 @@ function startStatsResize(e) {
   window.addEventListener('mouseup', onUp);
 }
 
-// âââââââââââââââââââââââââââââââââââââââââââ
-// DATA LOADER â fetches from data/ directory
-// âââââââââââââââââââââââââââââââââââââââââââ
+// ═══════════════════════════════════════════
+// DATA LOADER — fetches from data/ directory
+// ═══════════════════════════════════════════
 async function loadAppData() {
   const overlay  = document.getElementById('app-loading');
   const statusEl = document.getElementById('load-status');
@@ -4192,23 +4192,23 @@ async function loadAppData() {
 
   try {
     // Try fetching from repo data/ directory first
-    setStatus('Fetching game libraryâ¦', 20);
+    setStatus('Fetching game library…', 20);
     // Cache-bust so fresh data is always loaded after a push
     const cacheBust = '?v=' + Date.now();
     const gamesResp = await fetch('./data/games.json' + cacheBust);
     if (!gamesResp.ok) {
-      if (gamesResp.status === 404) throw new Error('data/games.json not found â check your repo has a data/ folder with games.json inside it');
+      if (gamesResp.status === 404) throw new Error('data/games.json not found — check your repo has a data/ folder with games.json inside it');
       throw new Error('HTTP ' + gamesResp.status + ' fetching games.json');
     }
-    setStatus('Parsing game dataâ¦', 55);
+    setStatus('Parsing game data…', 55);
     const games = await gamesResp.json();
     console.log('Loaded', games.length, 'games from data/games.json');
 
-    setStatus('Fetching ratingsâ¦', 70);
+    setStatus('Fetching ratings…', 70);
     const ratingsResp = await fetch('./data/ratings.json' + cacheBust);
     const ratings = ratingsResp.ok ? await ratingsResp.json() : [];
 
-    setStatus('Building libraryâ¦', 90);
+    setStatus('Building library…', 90);
     // Merge: GitHub games.json is the source of truth.
     // localStorage only contributes games NOT already in games.json.
     // This means a corrected push to GitHub will always win over stale local imports.
@@ -4227,7 +4227,7 @@ async function loadAppData() {
     // Populate game selections
     state.games.forEach(g => state.viewer.selectedGames.add(g.key));
 
-    // These renders don't need layout dimensions â run them synchronously
+    // These renders don't need layout dimensions — run them synchronously
     // so the dashboard is populated before the first paint
     buildDashPlayerSelect();
     updateDashboard();
@@ -4241,7 +4241,7 @@ async function loadAppData() {
       buildViewerSidebar();
       updateCourtView();
       updateLegend();
-      // Chart needs clientWidth â defer slightly after layout settles
+      // Chart needs clientWidth — defer slightly after layout settles
       setTimeout(renderRatingChart, 50);
     });
 
@@ -4297,9 +4297,9 @@ document.addEventListener('DOMContentLoaded', () => {
   loadAppData();
 });
 
-// âââââââââââââââââââââââââââââââââââââââââââ
+// ═══════════════════════════════════════════
 // GITHUB SYNC
-// âââââââââââââââââââââââââââââââââââââââââââ
+// ═══════════════════════════════════════════
 const GH_REPO_KEY  = 'pbv_gh_repo';
 const GH_TOKEN_KEY = 'pbv_gh_token';
 
@@ -4316,7 +4316,7 @@ function loadGHConfig() {
     const fields = document.getElementById('gh-setup-fields');
     if (fields) fields.style.display = 'block';
     const toggle = document.getElementById('gh-setup-toggle');
-    if (toggle) toggle.textContent = 'Configure â´';
+    if (toggle) toggle.textContent = 'Configure ▴';
   }
 }
 
@@ -4334,7 +4334,7 @@ function updateGHStatus() {
   const el = document.getElementById('gh-config-status');
   if (!el) return;
   if (repo && token) {
-    el.textContent = 'â Configured: ' + repo;
+    el.textContent = '✓ Configured: ' + repo;
     el.style.color = 'var(--good)';
   } else {
     el.textContent = repo ? 'Token missing' : 'Repo not set';
@@ -4348,7 +4348,7 @@ function toggleGHSetup() {
   if (!fields) return;
   const open = fields.style.display !== 'none';
   fields.style.display = open ? 'none' : 'block';
-  if (toggle) toggle.textContent = open ? 'Configure â¾' : 'Configure â´';
+  if (toggle) toggle.textContent = open ? 'Configure ▾' : 'Configure ▴';
   if (!open) loadGHConfig();
 }
 
@@ -4362,7 +4362,7 @@ async function pushToGitHub() {
   const token = localStorage.getItem(GH_TOKEN_KEY);
 
   if (!repo || !token) {
-    setGHPushStatus('â  Configure GitHub repo and token first', 'var(--warn)');
+    setGHPushStatus('⚠ Configure GitHub repo and token first', 'var(--warn)');
     const fields = document.getElementById('gh-setup-fields');
     if (fields) fields.style.display = 'block';
     loadGHConfig();
@@ -4371,7 +4371,7 @@ async function pushToGitHub() {
 
   const btn = document.getElementById('gh-push-btn');
   if (btn) btn.disabled = true;
-  setGHPushStatus('Fetching current file SHAâ¦', 'var(--text3)');
+  setGHPushStatus('Fetching current file SHA…', 'var(--text3)');
 
   try {
     // Step 1: GET current games.json to get its SHA
@@ -4385,27 +4385,27 @@ async function pushToGitHub() {
       const meta = await getResp.json();
       sha = meta.sha;
     } else if (getResp.status === 404) {
-      // File doesn't exist yet â will create it
+      // File doesn't exist yet — will create it
       sha = null;
     } else if (getResp.status === 401) {
-      setGHPushStatus('â Token invalid or expired. Check your Personal Access Token.', 'var(--danger)');
+      setGHPushStatus('✗ Token invalid or expired. Check your Personal Access Token.', 'var(--danger)');
       if (btn) btn.disabled = false;
       return;
     } else {
       throw new Error(`GitHub API error: ${getResp.status}`);
     }
 
-    setGHPushStatus('Encoding game libraryâ¦', 'var(--text3)');
+    setGHPushStatus('Encoding game library…', 'var(--text3)');
 
     // Step 2: Encode games array as base64
     const gamesJSON = JSON.stringify(state.games, null, 0);
     const encoded   = btoa(unescape(encodeURIComponent(gamesJSON)));
 
-    setGHPushStatus(`Pushing ${state.games.length} games to GitHubâ¦`, 'var(--text3)');
+    setGHPushStatus(`Pushing ${state.games.length} games to GitHub…`, 'var(--text3)');
 
     // Step 3: PUT to GitHub Contents API
     const body = {
-      message: `Update games.json â ${state.games.length} games (via PB Viewer ${new Date().toLocaleDateString()})`,
+      message: `Update games.json — ${state.games.length} games (via PB Viewer ${new Date().toLocaleDateString()})`,
       content: encoded,
     };
     if (sha) body.sha = sha;  // required when updating existing file
@@ -4427,24 +4427,24 @@ async function pushToGitHub() {
       const result = await putResp.json();
       const commitUrl = result.commit?.html_url || `https://github.com/${repo}/commits/main`;
       setGHPushStatus(
-        `â Pushed ${state.games.length} games. Pages updates in ~60s. Reload other devices after that.`,
+        `✓ Pushed ${state.games.length} games. Pages updates in ~60s. Reload other devices after that.`,
         'var(--good)'
       );
-      showToast(`â ${state.games.length} games pushed to GitHub`, 'success');
+      showToast(`✓ ${state.games.length} games pushed to GitHub`, 'success');
       console.log('Push commit:', commitUrl);
     } else {
       const err = await putResp.json().catch(() => ({}));
       const msg = err.message || putResp.status;
       if (putResp.status === 409) {
-        setGHPushStatus('â Conflict â file was modified elsewhere. Reload and try again.', 'var(--danger)');
+        setGHPushStatus('✗ Conflict — file was modified elsewhere. Reload and try again.', 'var(--danger)');
       } else if (putResp.status === 403) {
-        setGHPushStatus('â Permission denied. Check token has Contents: Write permission.', 'var(--danger)');
+        setGHPushStatus('✗ Permission denied. Check token has Contents: Write permission.', 'var(--danger)');
       } else {
-        setGHPushStatus(`â Push failed: ${msg}`, 'var(--danger)');
+        setGHPushStatus(`✗ Push failed: ${msg}`, 'var(--danger)');
       }
     }
   } catch (err) {
-    setGHPushStatus(`â Error: ${err.message}`, 'var(--danger)');
+    setGHPushStatus(`✗ Error: ${err.message}`, 'var(--danger)');
     console.error('GitHub push failed:', err);
   } finally {
     if (btn) btn.disabled = false;
@@ -4470,18 +4470,18 @@ async function checkGitHubData() {
     setGHPushStatus('Configure repo and token first', 'var(--warn)');
     return;
   }
-  setGHPushStatus('Checking GitHubâ¦', 'var(--text3)');
+  setGHPushStatus('Checking GitHub…', 'var(--text3)');
   try {
     const resp = await fetch(
       `https://api.github.com/repos/${repo}/contents/data/games.json`,
       { headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' } }
     );
     if (resp.status === 404) {
-      setGHPushStatus('â  data/games.json not found in repo. Upload the data/ folder first.', 'var(--warn)');
+      setGHPushStatus('⚠ data/games.json not found in repo. Upload the data/ folder first.', 'var(--warn)');
       return;
     }
     if (!resp.ok) {
-      setGHPushStatus(`â API error ${resp.status} â check token permissions`, 'var(--danger)');
+      setGHPushStatus(`✗ API error ${resp.status} — check token permissions`, 'var(--danger)');
       return;
     }
     const meta = await resp.json();
@@ -4490,16 +4490,16 @@ async function checkGitHubData() {
     const games = JSON.parse(decoded);
     const lastCommit = meta.sha.slice(0,7);
     setGHPushStatus(
-      `â GitHub has ${games.length} games Â· SHA ${lastCommit} Â· ${(meta.size/1024).toFixed(0)}KB`,
+      `✓ GitHub has ${games.length} games · SHA ${lastCommit} · ${(meta.size/1024).toFixed(0)}KB`,
       'var(--good)'
     );
   } catch(e) {
-    setGHPushStatus(`â Check failed: ${e.message}`, 'var(--danger)');
+    setGHPushStatus(`✗ Check failed: ${e.message}`, 'var(--danger)');
   }
 }
 
 
-console.log('PB Viewer initializingâ¦');
+console.log('PB Viewer initializing…');
 </script>
 </body>
 </html>
