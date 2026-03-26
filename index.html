@@ -2676,8 +2676,18 @@ function updateCourtView() {
   selGames.forEach(g=>{
     const pd=g.players.find(p=>p.name===player);
     if(!pd) return;
-    // Mirror flag: team 1 players need coordinates flipped so they appear on the near (bottom) side
-    const needsMirror = pd.team === 1;
+    // Determine mirror by ACTUAL court position, not pd.team (which is unreliable).
+    // Use median origin-Z of the player's real-tracked shots in this game:
+    // if median > 22 (net), player was on the far side and needs mirroring.
+    const realOrigins = g.shots.filter(s => s.pid === pd.idx && s.originZ != null).map(s => s.originZ);
+    let needsMirror = false;
+    if (realOrigins.length > 0) {
+      realOrigins.sort((a,b) => a - b);
+      const medianZ = realOrigins[Math.floor(realOrigins.length / 2)];
+      needsMirror = medianZ > 22;
+    } else {
+      needsMirror = pd.team === 1;
+    }
     g.shots.forEach(sh=>{
       if(sh.pid!==pd.idx) return;
       if(!state.viewer.activeShotTypes.has(sh.shotType)) return;
@@ -3160,7 +3170,15 @@ function renderDinkArcs() {
   selGames.forEach(g => {
     const pd = g.players.find(p => p.name === player);
     if (!pd) return;
-    const needsMirror = pd.team === 1;
+    // Use median origin-Z to determine mirror (same logic as main court view)
+    const realOrigins2 = g.shots.filter(s => s.pid === pd.idx && s.originZ != null).map(s => s.originZ);
+    let needsMirror = false;
+    if (realOrigins2.length > 0) {
+      realOrigins2.sort((a,b) => a - b);
+      needsMirror = realOrigins2[Math.floor(realOrigins2.length / 2)] > 22;
+    } else {
+      needsMirror = pd.team === 1;
+    }
     g.shots.forEach(sh => {
       if (sh.pid !== pd.idx) return;
       if (sh.shotType !== 'dink' && sh.shotType !== 'drop') return;
