@@ -719,8 +719,8 @@ input[type=range]{accent-color:var(--accent);}
     </div>
 
     <div id="matchup-heatmap-container" style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:20px;display:none;">
-      <div class="card-title">Shot Placement \u2014 Your POV</div>
-      <p style="font-size:11px;color:var(--text3);margin:4px 0 12px;">Normalized to your team's perspective \u2014 you always play from the bottom</p>
+      <div class="card-title">Shot Placement — Your POV</div>
+      <p style="font-size:11px;color:var(--text3);margin:4px 0 12px;">Normalized to your team's perspective — you always play from the bottom</p>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
         <div>
           <div style="font-size:10px;font-weight:600;text-transform:uppercase;color:var(--text3);margin-bottom:6px;text-align:center;" id="matchup-heatmap-yours-label">Where Your Shots Land</div>
@@ -732,7 +732,7 @@ input[type=range]{accent-color:var(--accent);}
         </div>
       </div>
       <div style="margin-top:8px;font-size:10px;color:var(--text3);text-align:center;">
-        <span style="color:#3dd68c;">\u25cf</span> Green = rally won \u00a0\u00a0 <span style="color:#e8445a;">\u25cf</span> Red = rally lost \u00a0\u00a0 Number = shot count in zone
+        <span style="color:#3dd68c;">●</span> Green = rally won    <span style="color:#e8445a;">●</span> Red = rally lost    Number = shot count in zone
       </div>
     </div>
 
@@ -2078,7 +2078,7 @@ function buildMatchupPage() {
   const playerMap = new Set();
   state.games.forEach(g => g.players.forEach(p => playerMap.add(p.name)));
   const players = [...playerMap].sort((a, b) => a === PRIMARY_USER ? -1 : b === PRIMARY_USER ? 1 : 0);
-  playerSel.innerHTML = '<option value="">\u2014 Select player \u2014</option>' + players.map(p =>
+  playerSel.innerHTML = '<option value="">— Select player —</option>' + players.map(p =>
     `<option value="${p}">${p}</option>`).join('');
   if (!playerSel.value && players.length) playerSel.value = PRIMARY_USER || players[0];
   onMatchupPlayerChange();
@@ -2125,7 +2125,7 @@ function buildMatchupOpponents() {
   const me = document.getElementById('matchup-player-select').value;
   const partnerFilter = document.getElementById('matchup-partner-select').value;
   const opponentSel = document.getElementById('matchup-opponent-select');
-  if (!me) { opponentSel.innerHTML = '<option value="">\u2014 Select opposing team \u2014</option>'; return; }
+  if (!me) { opponentSel.innerHTML = '<option value="">— Select opposing team —</option>'; return; }
   const teamMap = {};
   state.games.forEach(g => {
     const myP = g.players.find(p => p.name === me);
@@ -2141,7 +2141,7 @@ function buildMatchupOpponents() {
     teamMap[key].count++;
   });
   const teams = Object.entries(teamMap).sort((a, b) => b[1].count - a[1].count);
-  opponentSel.innerHTML = '<option value="">\u2014 Select opposing team \u2014</option>' + teams.map(([key, t]) =>
+  opponentSel.innerHTML = '<option value="">— Select opposing team —</option>' + teams.map(([key, t]) =>
     `<option value="${key}">${key} (${t.count}g)</option>`
   ).join('');
 }
@@ -2355,7 +2355,7 @@ function generateScoutingReport(myShots, theirShots, myName, oppNames, games) {
   }
   if (myStats.worstShot) {
     tips.push({ icon: '\uD83D\uDEE0\uFE0F', title: 'Practice your ' + myStats.worstShot + ' before the rematch',
-      detail: 'Your team only lands ' + myStats.worstAcc + '% of ' + myStats.worstShot + 's in this matchup. Drill this shot \u2014 it could flip close games.' });
+      detail: 'Your team only lands ' + myStats.worstAcc + '% of ' + myStats.worstShot + 's in this matchup. Drill this shot — it could flip close games.' });
   }
   if (myStats.bestShot) {
     tips.push({ icon: '\u2705', title: 'Keep using your ' + myStats.bestShot,
@@ -4082,7 +4082,7 @@ function renderDinkArcs() {
   });
 
   ctx.fillStyle = isDark3D ? '#e8edf4' : '#1f2937'; ctx.font = 'bold 13px Inter,system-ui'; ctx.textAlign = 'center';
-  ctx.fillText('Dink & Drop Arcs \u2014 3D View', W/2, 22);
+  ctx.fillText('Dink & Drop Arcs — 3D View', W/2, 22);
 
   const info = document.getElementById('dink-arcs-info');
   if (info) {
@@ -4350,7 +4350,7 @@ function computeInsights(filteredShots, allShots) {
         icon: '\ud83d\udcc8', title: 'Rally Patterns',
         stat: top3.map(p => p.pattern + ' (' + p.count + 'x, ' + p.winRate + '% win)').join(' | '),
         pattern: 'Your top rally opening is "' + top3[0].pattern + '" (' + top3[0].count + ' rallies, ' + top3[0].winRate + '% win rate). Best win rate: "' + bestWR.pattern + '" at ' + bestWR.winRate + '%. Weakest: "' + worstWR.pattern + '" at ' + worstWR.winRate + '%.',
-        drill: 'Practice the "' + bestWR.pattern + '" sequence \u2014 it\'s your highest win-rate opening. Run 10 rallies starting with this pattern and track if the rally stays on script.',
+        drill: 'Practice the "' + bestWR.pattern + '" sequence — it\'s your highest win-rate opening. Run 10 rallies starting with this pattern and track if the rally stays on script.',
         category: 'tactical',
       });
     }
