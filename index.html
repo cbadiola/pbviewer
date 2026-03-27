@@ -16,7 +16,7 @@
   --font-head:'Syne',sans-serif;--font-body:'Inter',sans-serif;--font-mono:'DM Mono',monospace;
   --radius:10px;--radius-sm:6px;--sidebar-w:220px;--nav-h:56px;
 }
-[data-theme="light"]{--bg:#f0f3f7;--bg2:#fff;--bg3:#e8ecf2;--bg4:#dde3ec;--border:rgba(0,0,0,0.07);--border2:rgba(0,0,0,0.12);--text:#111827;--text2:#4b5563;--text3:#9ca3af;--accent-dim:rgba(0,212,170,0.1);}
+[data-theme="light"]{--bg:#f0f3f7;--bg2:#fff;--bg3:#e8ecf2;--bg4:#dde3ec;--border:rgba(0,0,0,0.07);--border2:rgba(0,0,0,0.12);--text:#111827;--text2:#3b4553;--text3:#6b7280;--accent-dim:rgba(0,212,170,0.1);}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html,body{height:100%;overflow:hidden;}
 body{font-family:var(--font-body);background:var(--bg);color:var(--text);font-size:13px;}
@@ -2713,7 +2713,14 @@ function updateCourtView() {
       if(sh.pid!==pd.idx) return;
       if(!state.viewer.activeShotTypes.has(sh.shotType)) return;
       if(!state.viewer.activeOutcomes.has(sh.outcome)) return;
-      shots.push({...sh, _gameKey:g.key, _partnerOf:g.partnerOf, _mirror: needsMirror});
+      // Per-shot mirror correction: if origin still on far side after game-level mirror,
+      // flip this shot so ALL shots appear from the player's POV (near side = bottom).
+      let shotMirror = needsMirror;
+      if (sh.hasRealImpact && sh.originZ != null) {
+        const effOriginZ = needsMirror ? (44 - sh.originZ) : sh.originZ;
+        if (effOriginZ > 24) shotMirror = !needsMirror;
+      }
+      shots.push({...sh, _gameKey:g.key, _partnerOf:g.partnerOf, _mirror: shotMirror});
     });
   });
 
@@ -3258,6 +3265,10 @@ function renderDinkArcs() {
   const mirrored = allDinks.map(d => {
     let { oX, oZ, oH, iX, iZ, iH, pH, shot, _mirror } = d;
     if (_mirror && shot.hasRealImpact) {
+      oX = 20 - oX; oZ = 44 - oZ; iX = 20 - iX; iZ = 44 - iZ;
+    }
+    // Per-shot correction: if origin still on far side, flip this shot
+    if (shot.hasRealImpact && oZ > 24) {
       oX = 20 - oX; oZ = 44 - oZ; iX = 20 - iX; iZ = 44 - iZ;
     }
     return { oX, oZ, oH, iX, iZ, iH, pH, shot };
