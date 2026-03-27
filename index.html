@@ -719,20 +719,22 @@ input[type=range]{accent-color:var(--accent);}
     </div>
 
     <div id="matchup-heatmap-container" style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:20px;display:none;">
-      <div class="card-title">Shot Placement — Your POV</div>
-      <p style="font-size:11px;color:var(--text3);margin:4px 0 12px;">Normalized to your team's perspective — you always play from the bottom</p>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="card-title">Court Placement — Your Team's POV</div>
+      <p style="font-size:11px;color:var(--text3);margin:4px 0 12px;">All colors from your perspective: green = you won, red = you lost</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
         <div>
-          <div style="font-size:10px;font-weight:600;text-transform:uppercase;color:var(--text3);margin-bottom:6px;text-align:center;" id="matchup-heatmap-yours-label">Where Your Shots Land</div>
-          <div id="matchup-heatmap-yours" style="width:100%;height:380px;background:var(--bg3);border-radius:6px;"></div>
+          <div style="font-size:10px;font-weight:600;text-transform:uppercase;color:var(--text3);margin-bottom:6px;text-align:center;" id="matchup-heatmap-yours-label">Your Attack Map</div>
+          <p style="font-size:10px;color:var(--text3);text-align:center;margin:0 0 8px;opacity:0.7;">Where your shots land on their court</p>
+          <div id="matchup-heatmap-yours" style="width:100%;height:320px;background:var(--bg3);border-radius:6px;"></div>
         </div>
         <div>
-          <div style="font-size:10px;font-weight:600;text-transform:uppercase;color:var(--text3);margin-bottom:6px;text-align:center;" id="matchup-heatmap-theirs-label">Where Their Shots Land</div>
-          <div id="matchup-heatmap-theirs" style="width:100%;height:380px;background:var(--bg3);border-radius:6px;"></div>
+          <div style="font-size:10px;font-weight:600;text-transform:uppercase;color:var(--text3);margin-bottom:6px;text-align:center;" id="matchup-heatmap-theirs-label">Your Vulnerability Map</div>
+          <p style="font-size:10px;color:var(--text3);text-align:center;margin:0 0 8px;opacity:0.7;">Where their shots land on your court</p>
+          <div id="matchup-heatmap-theirs" style="width:100%;height:320px;background:var(--bg3);border-radius:6px;"></div>
         </div>
       </div>
-      <div style="margin-top:8px;font-size:10px;color:var(--text3);text-align:center;">
-        <span style="color:#3dd68c;">●</span> Green = rally won    <span style="color:#e8445a;">●</span> Red = rally lost    Number = shot count in zone
+      <div style="margin-top:10px;font-size:10px;color:var(--text3);text-align:center;">
+        <span style="color:#3dd68c;">●</span> Green = you won that rally    <span style="color:#e8445a;">●</span> Red = you lost that rally    Number = shot count
       </div>
     </div>
 
@@ -2237,92 +2239,135 @@ function renderMatchupAnalysis() {
       '</div></div>';
   } else { partnerDiv.style.display = 'none'; }
   const myLabel = partnerFilter ? `${me} & ${partnerFilter}` : 'Your Team';
-  document.getElementById('matchup-heatmap-yours-label').textContent = 'Where ' + myLabel + "'s Shots Land";
-  document.getElementById('matchup-heatmap-theirs-label').textContent = 'Where ' + oppTeamKey + "'s Shots Land";
-  renderMatchupHeatmap('matchup-heatmap-yours', myTeamShots, myLabel, false);
-  renderMatchupHeatmap('matchup-heatmap-theirs', theirTeamShots, oppTeamKey, true);
+  // Render side-by-side heatmaps — both from YOUR team's perspective
+  const myLabel = partnerFilter ? `${me} & ${partnerFilter}` : 'Your Team';
+  document.getElementById('matchup-heatmap-yours-label').textContent = `Your Attack Map`;
+  document.getElementById('matchup-heatmap-theirs-label').textContent = `Your Vulnerability Map`;
+  // Your shots landing on THEIR side (z>22) — your attack zones
+  renderMatchupHeatmap('matchup-heatmap-yours', myTeamShots, myLabel, 'attack');
+  // Their shots landing on YOUR side (z<22) — where they hurt you
+  renderMatchupHeatmap('matchup-heatmap-theirs', theirTeamShots, oppTeamKey, 'defense');
   document.getElementById('matchup-heatmap-container').style.display = 'block';
   generateScoutingReport(myTeamShots, theirTeamShots, me, oppNames, matchupGames);
 }
-function renderMatchupHeatmap(containerId, shots, label, isTheirTeam) {
+function renderMatchupHeatmap(containerId, shots, label, mode) {
+  // mode: 'attack' = your shots landing on THEIR side (z>22 after mirror)
+  //        'defense' = their shots landing on YOUR side (z<22 after mirror)
+  // Colors always from YOUR team's POV: green = you won rally, red = you lost rally
   const container = document.getElementById(containerId);
   const width = container.clientWidth || 240;
-  const height = container.clientHeight || 380;
+  const height = container.clientHeight || 320;
 
-  // Court: 20ft wide x 44ft long. Net at z=22. Kitchen: z=15 to z=29.
-  const courtW = 20, courtH = 44;
-  const padTop = 30, padBot = 30, padLR = 24;
+  // Court half: 20ft wide x 22ft deep (one side of the net)
+  const courtW = 20, halfH = 22;
+  const padTop = 28, padBot = 28, padLR = 24;
   const displayW = width - 2 * padLR;
   const displayH = height - padTop - padBot;
   const scaleX = displayW / courtW;
-  const scaleY = displayH / courtH;
+  const scaleY = displayH / halfH;
 
-  // Convert court coords to SVG. z=0 bottom (near/your side), z=44 top (far/their side).
-  var sx = function(cx) { return padLR + cx * scaleX; };
-  var sy = function(cz) { return padTop + (courtH - cz) * scaleY; };
+  // For 'attack' mode: show their side (z=22 to z=44), net at bottom, their baseline at top
+  // For 'defense' mode: show your side (z=0 to z=22), your baseline at bottom, net at top
+  // In both cases we map to a 0-22 range for binning
+  const isAttack = mode === 'attack';
 
-  var svg = '<svg width="' + width + '" height="' + height + '" xmlns="http://www.w3.org/2000/svg" style="background:var(--bg3);border-radius:6px;">';
+  // Convert half-court coords (0-20 x, 0-22 z) to SVG
+  // z=0 at bottom of SVG, z=22 at top
+  const sx = (cx) => padLR + cx * scaleX;
+  const sy = (cz) => padTop + (halfH - cz) * scaleY;
 
-  // Court surface
-  svg += '<rect x="' + sx(0) + '" y="' + sy(44) + '" width="' + displayW + '" height="' + displayH + '" fill="rgba(0,100,180,0.06)" rx="2"/>';
-  // Kitchen zone fills
-  var kitchenH = 7 * scaleY;
-  svg += '<rect x="' + sx(0) + '" y="' + sy(22) + '" width="' + displayW + '" height="' + kitchenH + '" fill="rgba(0,180,140,0.07)"/>';
-  svg += '<rect x="' + sx(0) + '" y="' + sy(29) + '" width="' + displayW + '" height="' + kitchenH + '" fill="rgba(0,180,140,0.07)"/>';
+  let svg = `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg" style="background:var(--bg3);border-radius:6px;">`;
+
+  // === DRAW HALF-COURT ===
+  svg += `<rect x="${sx(0)}" y="${sy(22)}" width="${displayW}" height="${displayH}" fill="rgba(0,100,180,0.06)" rx="2"/>`;
+
+  // Kitchen zone fill (7ft from net). In attack: net is at z=0, kitchen is z=0..7.
+  // In defense: net is at z=22, kitchen is z=15..22.
+  const kitchenStart = isAttack ? 0 : 15;
+  const kitchenEnd = isAttack ? 7 : 22;
+  const kH = 7 * scaleY;
+  svg += `<rect x="${sx(0)}" y="${sy(kitchenEnd)}" width="${displayW}" height="${kH}" fill="rgba(0,180,140,0.08)"/>`;
+
   // Outer boundary
-  svg += '<rect x="' + sx(0) + '" y="' + sy(44) + '" width="' + displayW + '" height="' + displayH + '" fill="none" stroke="var(--text3)" stroke-width="1.5"/>';
-  // Net line
-  svg += '<line x1="' + sx(0) + '" y1="' + sy(22) + '" x2="' + sx(20) + '" y2="' + sy(22) + '" stroke="var(--text)" stroke-width="2" opacity="0.5"/>';
-  svg += '<text x="' + (sx(20) + 3) + '" y="' + (sy(22) + 3) + '" fill="var(--text3)" font-size="7" opacity="0.6">NET</text>';
-  // Kitchen lines (NVZ)
-  svg += '<line x1="' + sx(0) + '" y1="' + sy(15) + '" x2="' + sx(20) + '" y2="' + sy(15) + '" stroke="var(--accent)" stroke-width="1" opacity="0.5"/>';
-  svg += '<line x1="' + sx(0) + '" y1="' + sy(29) + '" x2="' + sx(20) + '" y2="' + sy(29) + '" stroke="var(--accent)" stroke-width="1" opacity="0.5"/>';
-  // Center lines (baseline to kitchen on each side)
-  svg += '<line x1="' + sx(10) + '" y1="' + sy(0) + '" x2="' + sx(10) + '" y2="' + sy(15) + '" stroke="var(--border)" stroke-width="0.8"/>';
-  svg += '<line x1="' + sx(10) + '" y1="' + sy(29) + '" x2="' + sx(10) + '" y2="' + sy(44) + '" stroke="var(--border)" stroke-width="0.8"/>';
-  // Side labels
-  svg += '<text x="' + sx(10) + '" y="' + sy(-1.5) + '" text-anchor="middle" fill="var(--accent)" font-size="8" font-weight="600" letter-spacing="0.1em">YOUR SIDE</text>';
-  svg += '<text x="' + sx(10) + '" y="' + sy(45.5) + '" text-anchor="middle" fill="var(--text3)" font-size="8" font-weight="600" letter-spacing="0.1em">THEIR SIDE</text>';
-  // NVZ labels
-  svg += '<text x="' + sx(10) + '" y="' + sy(18.5) + '" text-anchor="middle" fill="var(--text3)" font-size="7" opacity="0.4">NVZ</text>';
-  svg += '<text x="' + sx(10) + '" y="' + sy(25.5) + '" text-anchor="middle" fill="var(--text3)" font-size="7" opacity="0.4">NVZ</text>';
-  // L/R labels
-  svg += '<text x="' + sx(5) + '" y="' + sy(-0.3) + '" text-anchor="middle" fill="var(--text3)" font-size="6" opacity="0.4">L</text>';
-  svg += '<text x="' + sx(15) + '" y="' + sy(-0.3) + '" text-anchor="middle" fill="var(--text3)" font-size="6" opacity="0.4">R</text>';
+  svg += `<rect x="${sx(0)}" y="${sy(22)}" width="${displayW}" height="${displayH}" fill="none" stroke="var(--text3)" stroke-width="1.5"/>`;
 
-  // Bin shots with mirror normalization
-  var cols = 6, rows = 8;
-  var bins = {}, winBins = {}, lossBins = {};
-  var maxBin = 0;
-  shots.forEach(function(s) {
-    var x = s.impactX, z = s.impactZ;
+  // Net line (thick) — at z=0 for attack, z=22 for defense
+  const netZ = isAttack ? 0 : 22;
+  svg += `<line x1="${sx(0)}" y1="${sy(netZ)}" x2="${sx(20)}" y2="${sy(netZ)}" stroke="var(--text)" stroke-width="2.5" opacity="0.5"/>`;
+
+  // Kitchen line (NVZ boundary)
+  const nvzZ = isAttack ? 7 : 15;
+  svg += `<line x1="${sx(0)}" y1="${sy(nvzZ)}" x2="${sx(20)}" y2="${sy(nvzZ)}" stroke="var(--accent)" stroke-width="1" opacity="0.5"/>`;
+
+  // Center line from kitchen to baseline
+  const clStart = isAttack ? 7 : 0;
+  const clEnd = isAttack ? 22 : 15;
+  svg += `<line x1="${sx(10)}" y1="${sy(clStart)}" x2="${sx(10)}" y2="${sy(clEnd)}" stroke="var(--border)" stroke-width="0.8"/>`;
+
+  // Labels
+  if (isAttack) {
+    // Attack: net at bottom, their baseline at top
+    svg += `<text x="${sx(10)}" y="${sy(-1.5)}" text-anchor="middle" fill="var(--text)" font-size="8" font-weight="600" opacity="0.5" letter-spacing="0.05em">NET</text>`;
+    svg += `<text x="${sx(10)}" y="${sy(23.5)}" text-anchor="middle" fill="var(--text3)" font-size="8" font-weight="600" letter-spacing="0.05em">THEIR BASELINE</text>`;
+    svg += `<text x="${sx(10)}" y="${sy(3.5)}" text-anchor="middle" fill="var(--text3)" font-size="7" opacity="0.35">NVZ</text>`;
+  } else {
+    // Defense: your baseline at bottom, net at top
+    svg += `<text x="${sx(10)}" y="${sy(23.5)}" text-anchor="middle" fill="var(--text)" font-size="8" font-weight="600" opacity="0.5" letter-spacing="0.05em">NET</text>`;
+    svg += `<text x="${sx(10)}" y="${sy(-1.5)}" text-anchor="middle" fill="var(--accent)" font-size="8" font-weight="600" letter-spacing="0.05em">YOUR BASELINE</text>`;
+    svg += `<text x="${sx(10)}" y="${sy(18.5)}" text-anchor="middle" fill="var(--text3)" font-size="7" opacity="0.35">NVZ</text>`;
+  }
+
+  // L/R labels near baseline
+  const lrY = isAttack ? 22.3 : -0.3;
+  svg += `<text x="${sx(5)}" y="${sy(lrY)}" text-anchor="middle" fill="var(--text3)" font-size="6" opacity="0.35">L</text>`;
+  svg += `<text x="${sx(15)}" y="${sy(lrY)}" text-anchor="middle" fill="var(--text3)" font-size="6" opacity="0.35">R</text>`;
+
+  // === BIN SHOTS — only those landing on the relevant half ===
+  const cols = 6, rows = 4;
+  const bins = {}, winBins = {}, lossBins = {};
+  let maxBin = 0;
+
+  shots.forEach(s => {
+    let x = s.impactX, z = s.impactZ;
     if (x == null || z == null || x < 0 || x > 20 || z < 0 || z > 44) return;
+    // Mirror to normalize: my team near side (z<22)
     if (s._mirror && s.hasRealImpact) { x = 20 - x; z = 44 - z; }
-    var col = Math.min(cols - 1, Math.floor(x / courtW * cols));
-    var row = Math.min(rows - 1, Math.floor(z / courtH * rows));
-    var key = col + ',' + row;
+
+    // Filter to correct half
+    if (isAttack && z <= 22) return;   // attack = only shots on their side (z>22)
+    if (!isAttack && z >= 22) return;  // defense = only shots on your side (z<22)
+
+    // Map to half-court coords (0-22 range)
+    const hz = isAttack ? (z - 22) : z; // 0 = net side, 22 = baseline side
+
+    const col = Math.min(cols - 1, Math.floor(x / courtW * cols));
+    const row = Math.min(rows - 1, Math.floor(hz / halfH * rows));
+    const key = `${col},${row}`;
     bins[key] = (bins[key] || 0) + 1;
-    if (s._won) winBins[key] = (winBins[key] || 0) + 1;
+    // Colors always from YOUR team's POV.
+    // For 'attack' (myTeamShots): _won = your team won. Green = won, Red = lost.
+    // For 'defense' (theirTeamShots): _won = THEIR team won. Invert: _won means you LOST.
+    const youWon = isAttack ? s._won : !s._won;
+    if (youWon) winBins[key] = (winBins[key] || 0) + 1;
     else lossBins[key] = (lossBins[key] || 0) + 1;
     if (bins[key] > maxBin) maxBin = bins[key];
   });
 
-  // Draw heatmap zones
-  var cellW = displayW / cols, cellH = displayH / rows;
-  Object.entries(bins).forEach(function(entry) {
-    var key = entry[0], count = entry[1];
-    var parts = key.split(',');
-    var col = +parts[0], row = +parts[1];
-    var w = winBins[key] || 0;
-    var l = lossBins[key] || 0;
-    var winRate = w / (w + l);
-    var intensity = Math.min(0.7, 0.1 + 0.6 * (count / maxBin));
-    var color = winRate >= 0.5 ? 'rgba(61,214,140,' + intensity + ')' : 'rgba(232,68,90,' + intensity + ')';
-    var cx = padLR + col * cellW;
-    var cy = padTop + (rows - 1 - row) * cellH;
-    svg += '<rect x="' + cx + '" y="' + cy + '" width="' + cellW + '" height="' + cellH + '" fill="' + color + '" rx="2"/>';
-    if (count >= 3) {
-      svg += '<text x="' + (cx + cellW/2) + '" y="' + (cy + cellH/2 + 3) + '" text-anchor="middle" fill="var(--text)" font-size="9" font-weight="600" opacity="0.8">' + count + '</text>';
+  // === DRAW HEATMAP ZONES ===
+  const cellW = displayW / cols, cellH = displayH / rows;
+  Object.entries(bins).forEach(([key, count]) => {
+    const [col, row] = key.split(',').map(Number);
+    const w = winBins[key] || 0;
+    const l = lossBins[key] || 0;
+    const winRate = w / (w + l);
+    const intensity = Math.min(0.75, 0.12 + 0.63 * (count / maxBin));
+    // Green = your team won rally, Red = your team lost rally (consistent POV)
+    const color = winRate >= 0.5 ? `rgba(61,214,140,${intensity})` : `rgba(232,68,90,${intensity})`;
+    const cx = padLR + col * cellW;
+    const cy = padTop + (rows - 1 - row) * cellH;
+    svg += `<rect x="${cx}" y="${cy}" width="${cellW}" height="${cellH}" fill="${color}" rx="3"/>`;
+    if (count >= 2) {
+      svg += `<text x="${cx + cellW/2}" y="${cy + cellH/2 + 4}" text-anchor="middle" fill="var(--text)" font-size="10" font-weight="700" opacity="0.85">${count}</text>`;
     }
   });
 
