@@ -396,7 +396,28 @@ input[type=range]{accent-color:var(--accent);}
       <div style="flex:1;position:relative;min-height:0;">
       <div id="shot-count-badge">Select a player</div>
       <svg id="court-svg" xmlns="http://www.w3.org/2000/svg"></svg>
-      <svg id="dink-arcs-svg" xmlns="http://www.w3.org/2000/svg" style="display:none;position:absolute;top:0;left:0;width:100%;height:100%;background:var(--bg);z-index:5;"></svg>
+      <div id="dink-arcs-container" style="display:none;position:absolute;top:0;left:0;width:100%;height:100%;background:var(--bg);z-index:5;">
+        <div style="position:absolute;top:8px;left:8px;z-index:10;display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+          <select id="dink-side-filter" onchange="renderDinkArcs()" style="background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:4px 8px;border-radius:6px;font-size:11px;cursor:pointer;">
+            <option value="all">All positions</option>
+            <option value="left">Left side (origin)</option>
+            <option value="right">Right side (origin)</option>
+          </select>
+          <select id="dink-dir-filter" onchange="renderDinkArcs()" style="background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:4px 8px;border-radius:6px;font-size:11px;cursor:pointer;">
+            <option value="all">All directions</option>
+            <option value="cross">Cross-court</option>
+            <option value="line">Down the line</option>
+          </select>
+          <select id="dink-color-mode2" onchange="renderDinkArcs()" style="background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:4px 8px;border-radius:6px;font-size:11px;cursor:pointer;">
+            <option value="clearance">Net clearance</option>
+            <option value="stroke">FH / BH</option>
+            <option value="outcome">Outcome</option>
+          </select>
+          <span style="font-size:10px;color:var(--text3);margin-left:4px;">Drag to rotate · Scroll to zoom</span>
+        </div>
+        <canvas id="dink-arcs-canvas" style="width:100%;height:100%;cursor:grab;"></canvas>
+        <div id="dink-arcs-info" style="position:absolute;bottom:8px;left:50%;transform:translateX(-50%);font-size:11px;color:var(--text3);background:rgba(10,12,15,.85);padding:4px 12px;border-radius:6px;"></div>
+      </div>
       <div style="position:absolute;bottom:12px;right:12px;display:flex;flex-direction:column;gap:4px;z-index:20;">
         <button onclick="resetZoom()" title="Reset zoom (⌂)" style="width:30px;height:30px;background:rgba(10,12,15,.9);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;" onmouseover="this.style.background='var(--bg3)'" onmouseout="this.style.background='rgba(10,12,15,.9)'">⌂</button>
         <div id="zoom-level" style="font-family:var(--font-mono);font-size:9px;color:var(--text3);text-align:center;background:rgba(10,12,15,.75);border-radius:4px;padding:2px 4px;">100%</div>
@@ -3134,174 +3155,281 @@ function updateViewerStatsBar(player, selGames, filteredShots) {
 }
 
 // ═══════════════════════════════════════════
-// DINK ARC SIDE VIEW
+// 3D DINK ARC VISUALIZATION
 // ═══════════════════════════════════════════
+const dinkCam = { az: 20, el: 32, dist: 14, dragging: false, lx: 0, ly: 0 };
+
 function toggleDinkArcs() {
   const btn = document.getElementById('btn-dink-arcs');
-  const svgEl = document.getElementById('dink-arcs-svg');
+  const container = document.getElementById('dink-arcs-container');
   const courtSvg = document.getElementById('court-svg');
-  if (!svgEl || !courtSvg) return;
-  const isActive = svgEl.style.display !== 'none';
+  if (!container || !courtSvg) return;
+  const isActive = container.style.display !== 'none';
   if (isActive) {
-    svgEl.style.display = 'none';
+    container.style.display = 'none';
     courtSvg.style.visibility = 'visible';
     btn.classList.remove('active');
   } else {
-    renderDinkArcs();
-    svgEl.style.display = 'block';
+    container.style.display = 'block';
     courtSvg.style.visibility = 'hidden';
     btn.classList.add('active');
+    setupDinkCanvas();
+    renderDinkArcs();
   }
 }
 
+function setupDinkCanvas() {
+  const c = document.getElementById('dink-arcs-canvas');
+  if (!c || c._ready) return;
+  c._ready = true;
+  c.addEventListener('mousedown', e => {
+    dinkCam.dragging = true; dinkCam.lx = e.clientX; dinkCam.ly = e.clientY;
+    c.style.cursor = 'grabbing';
+  });
+  window.addEventListener('mousemove', e => {
+    if (!dinkCam.dragging) return;
+    dinkCam.az -= (e.clientX - dinkCam.lx) * 0.4;
+    dinkCam.el = Math.max(5, Math.min(85, dinkCam.el + (e.clientY - dinkCam.ly) * 0.3));
+    dinkCam.lx = e.clientX; dinkCam.ly = e.clientY;
+    renderDinkArcs();
+  });
+  window.addEventListener('mouseup', () => { if(dinkCam.dragging){dinkCam.dragging=false;c.style.cursor='grab';} });
+  c.addEventListener('wheel', e => {
+    e.preventDefault();
+    dinkCam.dist = Math.max(6, Math.min(35, dinkCam.dist * (1 + e.deltaY * 0.002)));
+    renderDinkArcs();
+  }, { passive: false });
+  c.addEventListener('touchstart', e => { if(e.touches.length===1){dinkCam.dragging=true;dinkCam.lx=e.touches[0].clientX;dinkCam.ly=e.touches[0].clientY;} });
+  c.addEventListener('touchmove', e => {
+    if(!dinkCam.dragging||e.touches.length!==1)return;e.preventDefault();
+    const t=e.touches[0];dinkCam.az-=(t.clientX-dinkCam.lx)*0.4;
+    dinkCam.el=Math.max(5,Math.min(85,dinkCam.el+(t.clientY-dinkCam.ly)*0.3));
+    dinkCam.lx=t.clientX;dinkCam.ly=t.clientY;renderDinkArcs();
+  }, { passive: false });
+  c.addEventListener('touchend', () => { dinkCam.dragging = false; });
+}
+
 function renderDinkArcs() {
-  const svgEl = document.getElementById('dink-arcs-svg');
-  if (!svgEl) return;
+  const canvas = document.getElementById('dink-arcs-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const parent = canvas.parentElement;
+  const rect = parent.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const W = rect.width, H = rect.height;
+
+  ctx.fillStyle = '#0a0c0f';
+  ctx.fillRect(0, 0, W, H);
 
   const player = document.getElementById('player-select').value;
   if (!player || !state.games.length) {
-    svgEl.innerHTML = '<text x="50%" y="50%" text-anchor="middle" fill="var(--text3)" font-size="14">Select a player to view dink arcs</text>';
+    ctx.fillStyle = '#8b96a8'; ctx.font = '14px Inter,system-ui'; ctx.textAlign = 'center';
+    ctx.fillText('Select a player to view dink arcs', W/2, H/2);
     return;
   }
 
-  // Collect dink shots with trajectory data
   const selGames = state.games.filter(g => state.viewer.selectedGames.has(g.key));
-  const dinks = [];
+  const allDinks = [];
   selGames.forEach(g => {
     const pd = g.players.find(p => p.name === player);
     if (!pd) return;
-    // Use median origin-Z to determine mirror (same logic as main court view)
-    const realOrigins2 = g.shots.filter(s => s.pid === pd.idx && s.originZ != null).map(s => s.originZ);
+    const ro = g.shots.filter(s => s.pid === pd.idx && s.originZ != null).map(s => s.originZ);
     let needsMirror = false;
-    if (realOrigins2.length > 0) {
-      realOrigins2.sort((a,b) => a - b);
-      needsMirror = realOrigins2[Math.floor(realOrigins2.length / 2)] > 22;
-    } else {
-      needsMirror = pd.team === 1;
-    }
+    if (ro.length > 0) { ro.sort((a,b)=>a-b); needsMirror = ro[Math.floor(ro.length/2)] > 22; }
+    else { needsMirror = pd.team === 1; }
     g.shots.forEach(sh => {
       if (sh.pid !== pd.idx) return;
       if (sh.shotType !== 'dink' && sh.shotType !== 'drop') return;
-      // Need at least origin and impact positions with height data
-      if (sh.originZ == null && sh.shooterZ == null) return;
       if (sh.impactZ == null) return;
-      dinks.push({...sh, _mirror: needsMirror});
+      const oX = sh.originX ?? sh.shooterX ?? 10;
+      const oZ = sh.originZ ?? sh.shooterZ ?? 20;
+      const iX = sh.impactX ?? 10;
+      const iZ = sh.impactZ;
+      const oH = sh.originHeight ?? 2.5;
+      const iH = sh.impactHeight ?? 0.2;
+      const pH = sh.peakHeight ?? Math.max(oH, iH, 3.5);
+      allDinks.push({ oX, oZ, oH, iX, iZ, iH, pH, shot: sh, _mirror: needsMirror });
     });
   });
 
-  if (dinks.length < 2) {
-    svgEl.innerHTML = '<text x="50%" y="50%" text-anchor="middle" fill="var(--text3)" font-size="14">Not enough dink data with trajectory info</text>';
-    return;
+  const mirrored = allDinks.map(d => {
+    let { oX, oZ, oH, iX, iZ, iH, pH, shot, _mirror } = d;
+    if (_mirror && shot.hasRealImpact) {
+      oX = 20 - oX; oZ = 44 - oZ; iX = 20 - iX; iZ = 44 - iZ;
+    }
+    return { oX, oZ, oH, iX, iZ, iH, pH, shot };
+  });
+
+  const sideF = document.getElementById('dink-side-filter')?.value || 'all';
+  const dirF = document.getElementById('dink-dir-filter')?.value || 'all';
+  const colorM = document.getElementById('dink-color-mode2')?.value || 'clearance';
+  const filtered = mirrored.filter(d => {
+    if (sideF === 'left' && d.oX > 10) return false;
+    if (sideF === 'right' && d.oX <= 10) return false;
+    if (dirF === 'cross' && ((d.oX<10&&d.iX<10)||(d.oX>=10&&d.iX>=10))) return false;
+    if (dirF === 'line' && ((d.oX<10&&d.iX>=10)||(d.oX>=10&&d.iX<10))) return false;
+    return true;
+  });
+
+  const toRad = d => d * Math.PI / 180;
+  const az = toRad(dinkCam.az), el = toRad(dinkCam.el);
+  const ca = Math.cos(az), sa = Math.sin(az);
+  const ce = Math.cos(el), se = Math.sin(el);
+  const ppu = Math.min(W, H) / (dinkCam.dist * 2.2);
+
+  function proj(wx, wy, wz) {
+    const dx = wx - 10, dy = wy, dz = wz - 22;
+    const rx = dx * ca + dz * sa;
+    const rz = -dx * sa + dz * ca;
+    const ry = dy * ce - rz * se;
+    const rz2 = dy * se + rz * ce;
+    return [W/2 + rx * ppu, H*0.55 - ry * ppu, rz2];
   }
 
-  // Side view: X = court depth (distance from net), Y = height
-  // We show a zoomed-in view around the kitchen zone (7ft each side of net)
-  const W = 600, H = 340;
-  const PAD = {top: 30, right: 30, bottom: 50, left: 50};
-  const plotW = W - PAD.left - PAD.right;
-  const plotH = H - PAD.top - PAD.bottom;
-
-  // Court depth range: show 14ft around the net (7ft each side = kitchen zone)
-  const depthMin = 15; // 7ft from net on player's side
-  const depthMax = 29; // 7ft from net on opponent's side
-  const heightMax = 8; // 8ft should capture all dink arcs
-
-  const xScale = d => PAD.left + ((d - depthMin) / (depthMax - depthMin)) * plotW;
-  const yScale = h => PAD.top + plotH - (h / heightMax) * plotH;
-
-  let svg = '';
-
-  // Background grid
-  svg += `<rect x="0" y="0" width="${W}" height="${H}" fill="var(--bg)"/>`;
-  for (let h = 0; h <= heightMax; h += 1) {
-    const y = yScale(h);
-    svg += `<line x1="${PAD.left}" y1="${y}" x2="${W-PAD.right}" y2="${y}" stroke="var(--border)" stroke-width="0.5"/>`;
-    svg += `<text x="${PAD.left-6}" y="${y+3}" text-anchor="end" fill="var(--text3)" font-size="9" font-family="var(--font-mono)">${h}ft</text>`;
-  }
-  for (let d = depthMin; d <= depthMax; d += 2) {
-    const x = xScale(d);
-    svg += `<line x1="${x}" y1="${PAD.top}" x2="${x}" y2="${H-PAD.bottom}" stroke="var(--border)" stroke-width="0.5"/>`;
-    const label = d < 22 ? `${22-d}ft yours` : d === 22 ? 'NET' : `${d-22}ft opp`;
-    svg += `<text x="${x}" y="${H-PAD.bottom+14}" text-anchor="middle" fill="var(--text3)" font-size="8" font-family="var(--font-mono)">${label}</text>`;
+  function line3d(x1,y1,z1,x2,y2,z2,color,w) {
+    const [a,b]=proj(x1,y1,z1),[c,d]=proj(x2,y2,z2);
+    ctx.beginPath();ctx.moveTo(a,b);ctx.lineTo(c,d);
+    ctx.strokeStyle=color;ctx.lineWidth=w;ctx.stroke();
   }
 
-  // Court surface
-  svg += `<line x1="${PAD.left}" y1="${yScale(0)}" x2="${W-PAD.right}" y2="${yScale(0)}" stroke="var(--text3)" stroke-width="1.5"/>`;
+  function fillQuad(pts,color) {
+    const pp=pts.map(([x,y,z])=>proj(x,y,z));
+    ctx.beginPath();ctx.moveTo(pp[0][0],pp[0][1]);
+    for(let i=1;i<pp.length;i++)ctx.lineTo(pp[i][0],pp[i][1]);
+    ctx.closePath();ctx.fillStyle=color;ctx.fill();
+  }
 
-  // Net (vertical line at z=22, height = 3ft at center, 2.83ft at sides)
-  const netX = xScale(22);
-  svg += `<line x1="${netX}" y1="${yScale(0)}" x2="${netX}" y2="${yScale(3)}" stroke="var(--net)" stroke-width="2.5" opacity="0.9"/>`;
-  svg += `<text x="${netX}" y="${yScale(3)-6}" text-anchor="middle" fill="var(--net)" font-size="9" font-weight="700">NET 3ft</text>`;
+  fillQuad([[0,0,0],[20,0,0],[20,0,44],[0,0,44]],'rgba(255,255,255,0.04)');
+  fillQuad([[0,0,15],[20,0,15],[20,0,22],[0,0,22]],'rgba(0,212,170,0.06)');
+  fillQuad([[0,0,22],[20,0,22],[20,0,29],[0,0,29]],'rgba(0,212,170,0.06)');
 
-  // Kitchen lines
-  const kitPlayerX = xScale(15); // z=15 = kitchen line on player's half (after mirror)
-  const kitOppX = xScale(29); // z=29 = kitchen line on opponent's half
-  svg += `<line x1="${kitPlayerX}" y1="${yScale(0)-2}" x2="${kitPlayerX}" y2="${yScale(0)+6}" stroke="var(--accent)" stroke-width="1.5" opacity="0.4"/>`;
-  svg += `<line x1="${kitOppX}" y1="${yScale(0)-2}" x2="${kitOppX}" y2="${yScale(0)+6}" stroke="var(--accent)" stroke-width="1.5" opacity="0.4"/>`;
+  for (let z = 0; z <= 44; z += 2) {
+    const a = z === 15 || z === 29 ? 0.3 : z === 22 ? 0.0 : 0.08;
+    if (a > 0) line3d(0,0,z,20,0,z,'rgba(255,255,255,'+a+')',z===15||z===29?1.2:0.5);
+  }
+  for (let x = 0; x <= 20; x += 5) {
+    const a = x===0||x===20?0.15:x===10?0.12:0.06;
+    line3d(x,0,0,x,0,44,'rgba(255,255,255,'+a+')',x===0||x===20?1:0.5);
+  }
 
-  // Draw dink arcs
+  fillQuad([[0,0,22],[20,0,22],[20,3,22],[0,3,22]],'rgba(200,220,255,0.06)');
+  line3d(0,0,22,20,0,22,'rgba(255,255,255,0.5)',2);
+  line3d(0,3,22,20,3,22,'rgba(255,255,255,0.35)',1.5);
+  line3d(0,0,22,0,3,22,'rgba(255,255,255,0.15)',0.7);
+  line3d(20,0,22,20,3,22,'rgba(255,255,255,0.15)',0.7);
+  for (let h=0.5;h<3;h+=0.5) line3d(0,h,22,20,h,22,'rgba(255,255,255,0.05)',0.5);
+
+  line3d(10,0,0,10,0,15,'rgba(255,255,255,0.08)',0.5);
+  line3d(10,0,29,10,0,44,'rgba(255,255,255,0.08)',0.5);
+
+  for (let h=1;h<=8;h++) {
+    const [sx,sy]=proj(20.8,h,22);
+    ctx.fillStyle='rgba(255,255,255,0.2)';ctx.font='8px monospace';ctx.textAlign='left';
+    ctx.fillText(h+'ft',sx,sy+3);
+    line3d(20.3,h,22,20.7,h,22,'rgba(255,255,255,0.1)',0.5);
+  }
+  line3d(20.5,0,22,20.5,8,22,'rgba(255,255,255,0.06)',0.5);
+
+  const [nx,ny]=proj(10,0,5);
+  ctx.fillStyle='rgba(0,212,170,0.4)';ctx.font='bold 11px Inter,system-ui';ctx.textAlign='center';
+  ctx.fillText('YOUR SIDE',nx,ny+4);
+  const [fx,fy]=proj(10,0,39);
+  ctx.fillStyle='rgba(232,68,90,0.3)';
+  ctx.fillText('OPP SIDE',fx,fy+4);
+  const [llx,lly]=proj(-1.5,0,22);
+  ctx.fillStyle='rgba(255,255,255,0.2)';ctx.font='9px Inter,system-ui';
+  ctx.fillText('L',llx,lly);
+  const [rrx,rry]=proj(21.5,0,22);
+  ctx.fillText('R',rrx,rry);
+
   let dinkCount = 0, dropCount = 0;
-  dinks.forEach(sh => {
-    let oZ = sh.originZ ?? sh.shooterZ ?? 0;
-    let iZ = sh.impactZ;
-    let oH = sh.originHeight ?? 2.5; // default paddle contact height ~2.5ft
-    let iH = sh.impactHeight ?? 0.2; // default bounce height
-    let pH = sh.peakHeight ?? Math.max(oH, iH, 3.5); // default peak above net
+  const arcList = filtered.map(d => {
+    const mz = (d.oZ + d.iZ) / 2;
+    const [,,dep] = proj((d.oX+d.iX)/2, d.pH/2, mz);
+    return { ...d, _dep: dep };
+  }).sort((a,b) => a._dep - b._dep);
 
-    // Mirror for team 1 — only for real tracked coordinates
-    if (sh._mirror && sh.hasRealImpact) {
-      oZ = 44 - oZ;
-      iZ = 44 - iZ;
+  arcList.forEach(d => {
+    const STEPS = 20;
+    const pts = [];
+    for (let i = 0; i <= STEPS; i++) {
+      const t = i / STEPS;
+      const x = d.oX + (d.iX - d.oX) * t;
+      const z = d.oZ + (d.iZ - d.oZ) * t;
+      const baseH = (1-t)*d.oH + t*d.iH;
+      const arcH = 4*t*(1-t)*(d.pH - (d.oH+d.iH)/2);
+      const [sx,sy] = proj(x, baseH+arcH, z);
+      pts.push([sx, sy]);
     }
 
-    // Clamp to view range
-    if (oZ < depthMin - 3 || oZ > depthMax + 3) return;
-    if (iZ < depthMin - 3 || iZ > depthMax + 3) return;
-
-    // Color by net clearance
-    const clearance = sh.heightOverNet;
+    const sh = d.shot;
     let color;
-    if (clearance == null) {
-      color = 'rgba(120,150,200,0.4)'; // no data = dim blue
-    } else if (clearance > 4) {
-      color = 'rgba(232,68,90,0.65)'; // attackable high = red
-    } else if (clearance > 2) {
-      color = 'rgba(245,166,35,0.55)'; // moderate = yellow
+    if (colorM === 'clearance') {
+      const c = sh.heightOverNet;
+      if (c == null) color = 'rgba(120,150,200,0.45)';
+      else if (c > 4) color = 'rgba(232,68,90,0.7)';
+      else if (c > 2) color = 'rgba(245,166,35,0.6)';
+      else color = 'rgba(61,214,140,0.65)';
+    } else if (colorM === 'stroke') {
+      if (sh.stroke === 'fh') color = 'rgba(0,212,170,0.65)';
+      else if (sh.stroke === 'bh') color = 'rgba(155,127,232,0.65)';
+      else color = 'rgba(120,150,200,0.35)';
     } else {
-      color = 'rgba(61,214,140,0.6)'; // tight = green
+      if (sh.outcome === 'in') color = 'rgba(61,214,140,0.65)';
+      else if (sh.outcome === 'net') color = 'rgba(245,166,35,0.6)';
+      else color = 'rgba(232,68,90,0.7)';
     }
 
-    // Draw parabolic arc using quadratic bezier
-    const x1 = xScale(oZ), y1 = yScale(oH);
-    const x3 = xScale(iZ), y3 = yScale(iH);
-    // Control point at the peak — midpoint horizontally, peak vertically
-    const midZ = (oZ + iZ) / 2;
-    // For quadratic bezier, control point needs to be above to create correct arc
-    // Bezier peak = (start + 2*control + end)/4, so control = (4*peak - start - end) / 2
-    const cpX = xScale(midZ);
-    const cpY = yScale(2 * pH - 0.5 * (oH + iH)); // lift control point to match peak
+    ctx.beginPath();
+    ctx.moveTo(pts[0][0], pts[0][1]);
+    for (let i=1;i<pts.length;i++) ctx.lineTo(pts[i][0],pts[i][1]);
+    ctx.strokeStyle = color; ctx.lineWidth = 1.4; ctx.stroke();
 
-    svg += `<path d="M${x1.toFixed(1)},${y1.toFixed(1)} Q${cpX.toFixed(1)},${cpY.toFixed(1)} ${x3.toFixed(1)},${y3.toFixed(1)}" fill="none" stroke="${color}" stroke-width="1.3" opacity="0.7"/>`;
+    const last = pts[pts.length-1];
+    ctx.beginPath(); ctx.arc(last[0],last[1],2.5,0,Math.PI*2);
+    ctx.fillStyle = color; ctx.fill();
 
-    // Small dot at impact
-    svg += `<circle cx="${x3.toFixed(1)}" cy="${y3.toFixed(1)}" r="2" fill="${color}" opacity="0.8"/>`;
+    ctx.beginPath(); ctx.arc(pts[0][0],pts[0][1],1.5,0,Math.PI*2);
+    ctx.globalAlpha = 0.4; ctx.fillStyle = color; ctx.fill(); ctx.globalAlpha = 1;
 
     if (sh.shotType === 'dink') dinkCount++; else dropCount++;
   });
 
-  // Title and legend
-  svg += `<text x="${W/2}" y="18" text-anchor="middle" fill="var(--text)" font-size="13" font-weight="700" font-family="var(--font-head)">Dink & Drop Arcs — Side View</text>`;
-  svg += `<text x="${W/2}" y="${H-6}" text-anchor="middle" fill="var(--text3)" font-size="10">${dinkCount} dinks · ${dropCount} drops</text>`;
+  ctx.fillStyle = '#e8edf4'; ctx.font = 'bold 13px Inter,system-ui'; ctx.textAlign = 'center';
+  ctx.fillText('Dink & Drop Arcs \u2014 3D View', W/2, 22);
 
-  // Color legend
-  const legX = W - PAD.right - 100, legY = PAD.top + 10;
-  svg += `<rect x="${legX-4}" y="${legY-4}" width="108" height="52" rx="4" fill="rgba(10,12,15,0.85)" stroke="var(--border)" stroke-width="0.5"/>`;
-  svg += `<circle cx="${legX+6}" cy="${legY+8}" r="4" fill="rgba(61,214,140,0.8)"/><text x="${legX+14}" y="${legY+11}" fill="var(--text2)" font-size="9">Tight (<2ft)</text>`;
-  svg += `<circle cx="${legX+6}" cy="${legY+22}" r="4" fill="rgba(245,166,35,0.7)"/><text x="${legX+14}" y="${legY+25}" fill="var(--text2)" font-size="9">Moderate (2-4ft)</text>`;
-  svg += `<circle cx="${legX+6}" cy="${legY+36}" r="4" fill="rgba(232,68,90,0.7)"/><text x="${legX+14}" y="${legY+39}" fill="var(--text2)" font-size="9">Attackable (>4ft)</text>`;
+  const info = document.getElementById('dink-arcs-info');
+  if (info) {
+    info.textContent = dinkCount + ' dinks \u00b7 ' + dropCount + ' drops' +
+      (filtered.length < mirrored.length ? ' (filtered from ' + mirrored.length + ' total)' : '');
+  }
 
-  svgEl.setAttribute('viewBox', `0 0 ${W} ${H}`);
-  svgEl.innerHTML = svg;
+  const legX = W - 138, legY = 36;
+  ctx.fillStyle = 'rgba(10,12,15,0.88)';
+  ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+  ctx.lineWidth = 0.5;
+  ctx.beginPath();
+  const lw=125,lh=55,lr=4;
+  ctx.moveTo(legX+lr,legY);ctx.lineTo(legX+lw-lr,legY);ctx.quadraticCurveTo(legX+lw,legY,legX+lw,legY+lr);
+  ctx.lineTo(legX+lw,legY+lh-lr);ctx.quadraticCurveTo(legX+lw,legY+lh,legX+lw-lr,legY+lh);
+  ctx.lineTo(legX+lr,legY+lh);ctx.quadraticCurveTo(legX,legY+lh,legX,legY+lh-lr);
+  ctx.lineTo(legX,legY+lr);ctx.quadraticCurveTo(legX,legY,legX+lr,legY);
+  ctx.closePath(); ctx.fill(); ctx.stroke();
+
+  ctx.font = '9px Inter,system-ui'; ctx.textAlign = 'left';
+  const labels = colorM === 'clearance'
+    ? [['rgba(61,214,140,0.8)','Tight (<2ft)'],['rgba(245,166,35,0.7)','Moderate (2-4ft)'],['rgba(232,68,90,0.7)','Attackable (>4ft)']]
+    : colorM === 'stroke'
+    ? [['rgba(0,212,170,0.7)','Forehand'],['rgba(155,127,232,0.7)','Backhand'],['rgba(120,150,200,0.4)','Unknown']]
+    : [['rgba(61,214,140,0.7)','In'],['rgba(245,166,35,0.6)','Net'],['rgba(232,68,90,0.7)','Out']];
+  labels.forEach(([c,l],i) => {
+    const y = legY + 14 + i*16;
+    ctx.beginPath();ctx.arc(legX+12,y,4,0,Math.PI*2);ctx.fillStyle=c;ctx.fill();
+    ctx.fillStyle='rgba(255,255,255,0.7)';ctx.fillText(l,legX+22,y+3);
+  });
 }
 
 function updateLegend() {
