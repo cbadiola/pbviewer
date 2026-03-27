@@ -322,20 +322,21 @@ input[type=range]{accent-color:var(--accent);}
         <div class="sb-section">
           <div class="sb-section-title">Shot Types</div>
           <div class="chip-grid" id="shot-type-chips">
-            <div class="chip active" data-sht="serve" onclick="toggleChip(this,'sht')">Serve</div>
-            <div class="chip active" data-sht="drive" onclick="toggleChip(this,'sht')">Drive</div>
-            <div class="chip active" data-sht="lob" onclick="toggleChip(this,'sht')">Lob</div>
-            <div class="chip active" data-sht="smash" onclick="toggleChip(this,'sht')">Smash</div>
-            <div class="chip active" data-sht="dink" onclick="toggleChip(this,'sht')">Dink</div>
-            <div class="chip active" data-sht="drop" onclick="toggleChip(this,'sht')">Drop</div>
-            <div class="chip active" data-sht="reset" onclick="toggleChip(this,'sht')">Reset</div>
-            <div class="chip active" data-sht="volley" onclick="toggleChip(this,'sht')">Volley</div>
-            <div class="chip active" data-sht="speedup" onclick="toggleChip(this,'sht')">Speed-up</div>
-            <div class="chip active" data-sht="return" onclick="toggleChip(this,'sht')">Return</div>
-            <div class="chip active" data-sht="atp" onclick="toggleChip(this,'sht')" style="border-color:#ff6b35">ATP</div>
-            <div class="chip active" data-sht="erne" onclick="toggleChip(this,'sht')" style="border-color:#ff6b35">Erne</div>
-            <div class="chip active" data-sht="other" onclick="toggleChip(this,'sht')">Other</div>
+            <div class="chip active" data-sht="serve" onclick="toggleChip(this,'sht')" oncontextmenu="return soloChip(event,this,'sht')">Serve</div>
+            <div class="chip active" data-sht="drive" onclick="toggleChip(this,'sht')" oncontextmenu="return soloChip(event,this,'sht')">Drive</div>
+            <div class="chip active" data-sht="lob" onclick="toggleChip(this,'sht')" oncontextmenu="return soloChip(event,this,'sht')">Lob</div>
+            <div class="chip active" data-sht="smash" onclick="toggleChip(this,'sht')" oncontextmenu="return soloChip(event,this,'sht')">Smash</div>
+            <div class="chip active" data-sht="dink" onclick="toggleChip(this,'sht')" oncontextmenu="return soloChip(event,this,'sht')">Dink</div>
+            <div class="chip active" data-sht="drop" onclick="toggleChip(this,'sht')" oncontextmenu="return soloChip(event,this,'sht')">Drop</div>
+            <div class="chip active" data-sht="reset" onclick="toggleChip(this,'sht')" oncontextmenu="return soloChip(event,this,'sht')">Reset</div>
+            <div class="chip active" data-sht="volley" onclick="toggleChip(this,'sht')" oncontextmenu="return soloChip(event,this,'sht')">Volley</div>
+            <div class="chip active" data-sht="speedup" onclick="toggleChip(this,'sht')" oncontextmenu="return soloChip(event,this,'sht')">Speed-up</div>
+            <div class="chip active" data-sht="return" onclick="toggleChip(this,'sht')" oncontextmenu="return soloChip(event,this,'sht')">Return</div>
+            <div class="chip active" data-sht="atp" onclick="toggleChip(this,'sht')" oncontextmenu="return soloChip(event,this,'sht')" style="border-color:#ff6b35">ATP</div>
+            <div class="chip active" data-sht="erne" onclick="toggleChip(this,'sht')" oncontextmenu="return soloChip(event,this,'sht')" style="border-color:#ff6b35">Erne</div>
+            <div class="chip active" data-sht="other" onclick="toggleChip(this,'sht')" oncontextmenu="return soloChip(event,this,'sht')">Other</div>
           </div>
+          <div style="font-size:9px;color:var(--text3);margin-top:2px;opacity:0.6;">Right-click a chip to solo it</div>
         </div>
         <div class="sb-section">
           <div class="sb-section-title">Display</div>
@@ -536,64 +537,121 @@ input[type=range]{accent-color:var(--accent);}
 <!-- HELP -->
 <div id="page-help" class="page">
   <div class="page-scroll">
-    <h1 class="help-h1">PB Viewer — Help</h1>
-    <p style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:20px;">PB Viewer visualizes your PBVision game data with coaching-relevant signals. Import your JSON exports, then use the Court Viewer and Dashboard to understand your patterns.</p>
+        <h1 class="help-h1">PB Viewer — Help</h1>
+    <p style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:20px;">PB Viewer visualizes your PBVision game data with coaching-relevant signals. Import your JSON exports, then use the Court Viewer and Dashboard to understand your patterns, track improvement, and identify areas to work on.</p>
 
     <h2 class="help-h2">Court Layout</h2>
     <div class="help-grid">
-      <div class="help-card"><div class="help-card-title">Full court shown</div><div class="help-card-body">Both halves visible. <strong>Your side (left/bottom)</strong>: muted origin markers showing where you were when you hit. <strong>Opponent's side (right/top)</strong>: impact markers where the ball went. <em>⚠ Impact positions are estimated by shot type — PBVision does not record ball landing coordinates.</em></div></div>
+      <div class="help-card"><div class="help-card-title">Full court shown</div><div class="help-card-body">Both halves visible. <strong>Your side (left/bottom)</strong>: muted origin markers showing where you were when you hit. <strong>Opponent's side (right/top)</strong>: impact markers where the ball went. <em>Impact positions are estimated by shot type — PBVision does not record ball landing coordinates.</em></div></div>
       <div class="help-card"><div class="help-card-title">Out-zone bands</div><div class="help-card-body">Faint red bands outside the court boundary show where out balls land: past the far baseline (long), past right/left sidelines (wide). Direction is from real PBVision data when available.</div></div>
       <div class="help-card"><div class="help-card-title">Serve zone</div><div class="help-card-body">A faint teal zone behind your baseline shows serve origins. Serves must land past the kitchen line — the service court is from the kitchen line to the far baseline.</div></div>
       <div class="help-card"><div class="help-card-title">Zoom and pan</div><div class="help-card-body">Scroll wheel zooms toward cursor. Click and drag to pan. Pinch to zoom on iPad. The ⌂ button (bottom-right) resets view. Resize window edge to switch between portrait and landscape layout.</div></div>
     </div>
 
-    <h2 class="help-h2">Sidebar Controls</h2>
+    <h2 class="help-h2">Shot Shapes (Symbology)</h2>
+    <p style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:12px;">Each shot type is drawn as a unique shape so you can identify patterns at a glance. The legend panel (top-right of court) shows all active shapes.</p>
     <div class="help-grid">
-      <div class="help-card"><div class="help-card-title">Player</div><div class="help-card-body">Select which player to analyze. Defaults to Carlo Badiola. The shot count shows how many games include that player.</div></div>
-      <div class="help-card"><div class="help-card-title">Outcome filter</div><div class="help-card-body">In / Net / Out. Filters both impact and origin markers. Net impacts show projected landing location. Out impacts use actual direction data (long/right/left) when tracked.</div></div>
-      <div class="help-card"><div class="help-card-title">Shot types</div><div class="help-card-body">Filter by serve, drive, dink, drop, lob, smash, volley, reset, speed-up, or other. Each type maps to a distinct shape in the legend.</div></div>
-      <div class="help-card"><div class="help-card-title">Display layers</div><div class="help-card-body"><strong>Impacts</strong> — markers on opponent's half. <strong>Origins</strong> — markers on your half. <strong>Traces</strong> — faint lines connecting origin to impact for in-court shots.</div></div>
-      <div class="help-card"><div class="help-card-title">Color By</div><div class="help-card-body"><strong>Outcome</strong>: green=in, orange=net (projected), red=out. <strong>FH/BH</strong>: teal=forehand, purple=backhand. <strong>Quality</strong>: gradient from red (poor) to green (excellent) using PBVision AI scores.</div></div>
-      <div class="help-card"><div class="help-card-title">Highlight overlays</div><div class="help-card-body">Adds dashed rings to matching markers. <strong>Retreating</strong> (red): you moved away from net &gt;3ft. <strong>Advancing</strong> (green): moving toward net &gt;3ft. <strong>Lateral</strong> (purple): wide reach &gt;3ft. <strong>High Stress</strong> (gold): any movement &gt;6ft.</div></div>
+      <div class="help-card"><div class="help-card-title">● Serve</div><div class="help-card-body">Solid circle. Appears in the service zone on your side (origin) and the service court on the opponent’s side (impact).</div></div>
+      <div class="help-card"><div class="help-card-title">◉ Drive</div><div class="help-card-body">Bull’s-eye (circle with inner dot). Drives are aggressive groundstrokes typically hit from the baseline or transition zone.</div></div>
+      <div class="help-card"><div class="help-card-title">✛ Lob</div><div class="help-card-body">Cross-in-circle. Lobs go over the opponent’s head — impacts land deep in their court.</div></div>
+      <div class="help-card"><div class="help-card-title">⬟ Smash</div><div class="help-card-body">Diamond shape. Overhead smashes hit with power, usually in response to a lob.</div></div>
+      <div class="help-card"><div class="help-card-title">■ Dink</div><div class="help-card-body">Solid square. Soft shots landing in or near the kitchen. The most common shot in competitive play.</div></div>
+      <div class="help-card"><div class="help-card-title">⬜ Drop</div><div class="help-card-body">Square-in-square (nested). Third-shot drops and transition drops aimed at the kitchen from deeper positions.</div></div>      <div class="help-card"><div class="help-card-title">▪ Reset</div><div class="help-card-body">Small square. Defensive resets to regain neutral position, typically absorbing pace.</div></div>
+      <div class="help-card"><div class="help-card-title">▲ Volley</div><div class="help-card-body">Filled triangle. Shots hit out of the air, usually at the net.</div></div>
+      <div class="help-card"><div class="help-card-title">△ Speed-up</div><div class="help-card-body">Outline triangle. Aggressive acceleration from the kitchen, trying to put the ball away.</div></div>
+      <div class="help-card"><div class="help-card-title">★ ATP / Erne</div><div class="help-card-body">Six-pointed star in orange. Around-the-post shots and erne shots — highlight plays that go around or over the net post.</div></div>
+      <div class="help-card"><div class="help-card-title">× Return / Other</div><div class="help-card-body">X mark. Returns of serve and unclassified shots. Muted/smaller markers indicate origin positions.</div></div>
     </div>
 
+    <h2 class="help-h2">Sidebar Controls</h2>
+    <div class="help-grid">
+      <div class="help-card"><div class="help-card-title">Player</div><div class="help-card-body">Select which player to analyze. The shot count and game count update in the header bar. All stats, insights, and markers reflect the selected player.</div></div>
+      <div class="help-card"><div class="help-card-title">Outcome filter</div><div class="help-card-body"><strong>In</strong> (green) / <strong>Net</strong> (orange) / <strong>Out</strong> (red). Filters both impact and origin markers. Net impacts show projected landing location. Out impacts use actual direction data (long/right/left) when tracked.</div></div>
+      <div class="help-card"><div class="help-card-title">Shot types</div><div class="help-card-body">13 shot type chips: Serve, Drive, Lob, Smash, Dink, Drop, Reset, Volley, Speed-up, Return, ATP, Erne, Other. Click to toggle on/off. <strong>Right-click any chip to solo</strong> — isolates just that one type. Right-click again to restore all.</div></div>
+      <div class="help-card"><div class="help-card-title">Display layers</div><div class="help-card-body"><strong>Impacts</strong> — markers on opponent’s half showing where the ball went. <strong>Origins</strong> — markers on your half showing where you were. <strong>Traces</strong> — faint lines connecting origin to impact for in-court shots, showing shot direction.</div></div>
+      <div class="help-card"><div class="help-card-title">Color By</div><div class="help-card-body"><strong>Outcome</strong>: green=in, orange=net, red=out. <strong>FH/BH</strong>: teal=forehand, purple=backhand. <strong>Quality</strong>: gradient from red (poor) to green (excellent) using PBVision AI quality scores.</div></div>
+      <div class="help-card"><div class="help-card-title">Symbol Size</div><div class="help-card-body">Slider (3–16 px) controls marker size on the court. Smaller sizes are useful for dense data sets; larger for spotting individual shots.</div></div>
+    </div>
+    <h2 class="help-h2">Highlight Overlays</h2>
+    <p style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:12px;">Toggle-chips that add visual emphasis (dashed rings or glows) to matching markers on the court, helping you spot movement patterns and key moments.</p>
+    <div class="help-grid">
+      <div class="help-card"><div class="help-card-title">Retreating</div><div class="help-card-body"><span style="color:#e8445a;">Red dashed ring.</span> Shots where you moved <strong>away</strong> from the net more than 3 ft — indicates being pushed back or out of position.</div></div>
+      <div class="help-card"><div class="help-card-title">Advancing</div><div class="help-card-body"><span style="color:#3dd68c;">Green dashed ring.</span> Shots where you moved <strong>toward</strong> the net more than 3 ft — transitioning forward or closing in.</div></div>
+      <div class="help-card"><div class="help-card-title">Lateral</div><div class="help-card-body"><span style="color:#9b7fe8;">Purple dashed ring.</span> Wide sideways reach more than 3 ft — stretched laterally to make the shot.</div></div>
+      <div class="help-card"><div class="help-card-title">High Stress</div><div class="help-card-body"><span style="color:#f5a623;">Gold dashed ring.</span> Any movement exceeding 6 ft — maximum-effort scramble shots regardless of direction.</div></div>
+      <div class="help-card"><div class="help-card-title">Errors</div><div class="help-card-body"><span style="color:#e8445a;">Red ring.</span> Highlights shots where the outcome was an error (net or out).</div></div>
+      <div class="help-card"><div class="help-card-title">Put-aways</div><div class="help-card-body"><span style="color:#ffffff;">White ring.</span> Shots that ended the rally successfully — put-away winners.</div></div>
+      <div class="help-card"><div class="help-card-title">Winners</div><div class="help-card-body"><span style="color:#f5a623;">Gold glow.</span> Clean winners — unreturnable shots that your opponent couldn’t get to.</div></div>
+      <div class="help-card"><div class="help-card-title">ATP/Erne</div><div class="help-card-body"><span style="color:#ff6b35;">Bright orange highlight.</span> Around-the-post and erne shots — rare, spectacular plays.</div></div>
+      <div class="help-card"><div class="help-card-title">Dink Arcs</div><div class="help-card-body">Switches to a <strong>3D side-view</strong> showing dink and drop trajectories arcing over the net. See the Dink Arcs section below for full details.</div></div>
+    </div>
+
+    <h2 class="help-h2">Dink Arcs — 3D View</h2>
+    <p style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:12px;">A 3D perspective showing the arc height of dinks and drops as they cross the net. Helps you see whether you’re keeping the ball low (tight) or giving your opponent attackable balls.</p>
+    <div class="help-grid">
+      <div class="help-card"><div class="help-card-title">Controls</div><div class="help-card-body"><strong>Drag</strong> to rotate the 3D camera. <strong>Scroll</strong> to zoom in/out. The ⌂ button resets the view angle. The info bar at the bottom shows total dink and drop counts.</div></div>
+      <div class="help-card"><div class="help-card-title">Position filter</div><div class="help-card-body">Filter arcs by your court position: All positions, Left side, or Right side.</div></div>
+      <div class="help-card"><div class="help-card-title">Direction filter</div><div class="help-card-body">Filter by shot direction: All directions, Cross-court, or Down the line.</div></div>
+      <div class="help-card"><div class="help-card-title">Shot type filter</div><div class="help-card-body">Show Dinks &amp; Drops combined, Dinks only, or Drops only.</div></div>
+      <div class="help-card"><div class="help-card-title">Color modes</div><div class="help-card-body">The dropdown and inline legend show what each color means. <strong>Net clearance</strong>: green=tight (&lt;2ft), orange=mid (2-4ft), red=high (&gt;4ft). <strong>FH/BH</strong>: teal=forehand, purple=backhand. <strong>Outcome</strong>: green=in, orange=net, red=out.</div></div>
+    </div>
     <h2 class="help-h2">Game Selection</h2>
     <div class="help-grid">
       <div class="help-card"><div class="help-card-title">Partner filter</div><div class="help-card-body">Chips at the top of the games panel show each partner with your win % when playing with them. Click to filter to only games with that partner.</div></div>
       <div class="help-card"><div class="help-card-title">Date bar chart</div><div class="help-card-body">Each bar is one calendar month — height = games, green fill = wins. Click any bar to toggle that month on or off. The current (partial) month shows in amber with a ~ marker.</div></div>
-      <div class="help-card"><div class="help-card-title">Rolling windows</div><div class="help-card-body">Buttons above the chart: <strong>2 wks</strong>, <strong>4 wks</strong>, <strong>8 wks</strong>, <strong>All</strong>. These select by exact date range regardless of calendar month, useful when you're partway through a month.</div></div>
-      <div class="help-card"><div class="help-card-title">Individual games</div><div class="help-card-body">The scrollable list below the chart shows each game. Check or uncheck to include or exclude individual games.</div></div>
-    </div>
-
-    <h2 class="help-h2">Coaching Insight Box</h2>
-    <p style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:12px;">The floating box (bottom-left of court) shows automatically computed coaching insights ranked by impact. Click <strong>⬆</strong> to expand and see the full diagnosis and drill recommendation. Use <strong>‹ ›</strong> to cycle through all available insights.</p>
-    <div class="help-grid">
-      <div class="help-card"><div class="help-card-title">3rd Shot Selection</div><div class="help-card-body">Compares your drop vs drive accuracy on the third ball and flags if you're choosing the lower-percentage option more often.</div></div>
-      <div class="help-card"><div class="help-card-title">Kitchen Transition Gap</div><div class="help-card-body">Measures accuracy drop between shots 1–3 and shots 4–6 — the window where you should be transitioning to the kitchen.</div></div>
-      <div class="help-card"><div class="help-card-title">Retreating Shots</div><div class="help-card-body">Identifies which shot types you attempt when being pushed back from the net. High retreating drives = attacking from a recovery position.</div></div>
-      <div class="help-card"><div class="help-card-title">Poach Discipline</div><div class="help-card-body">Compares accuracy on poach shots vs standard shots. A large gap suggests over-poaching.</div></div>
+      <div class="help-card"><div class="help-card-title">Rolling windows</div><div class="help-card-body">Buttons above the chart: <strong>1 wk</strong>, <strong>2 wks</strong>, <strong>4 wks</strong>, <strong>8 wks</strong>, <strong>All</strong>. These select by exact date range regardless of calendar month, useful when you’re partway through a month or want a quick recent snapshot.</div></div>
+      <div class="help-card"><div class="help-card-title">Individual games</div><div class="help-card-body">The scrollable list below the chart shows each game with score and W/L. Check or uncheck to include or exclude individual games from analysis.</div></div>
     </div>
 
     <h2 class="help-h2">Bottom Stats Bar</h2>
-    <p style="font-size:13px;color:var(--text2);line-height:1.7;">The bar at the bottom shows <strong>Filtered</strong> stats (left) for exactly the shots on screen, <strong>Overall</strong> record and rating (right), and accuracy/shot-mix tiles in between. Drag the top edge of the bar to resize it.</p>
-
-    <h2 class="help-h2">Shot Shapes</h2>
+    <p style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:12px;">The resizable bar at the bottom of the Court Viewer. Drag its top edge to expand or collapse. Shows real-time stats for exactly the shots visible on court.</p>
     <div class="help-grid">
-      <div class="help-card"><div class="help-card-title">●◉✛⬟ Back-court</div><div class="help-card-body">Circle = serve (solid). Bull's-eye = drive. Cross-in-circle = lob. Diamond = smash.</div></div>
-      <div class="help-card"><div class="help-card-title">■⬜▪ Kitchen</div><div class="help-card-body">Solid square = dink. Square-in-square = drop. Small square = reset.</div></div>
-      <div class="help-card"><div class="help-card-title">▲△ Mid-court</div><div class="help-card-body">Filled triangle = volley. Outline triangle = speed-up.</div></div>
-      <div class="help-card"><div class="help-card-title">× Other / Returns</div><div class="help-card-body">X mark = unclassified shots (mostly returns of serve).</div></div>
+      <div class="help-card"><div class="help-card-title">Filtered stats (left)</div><div class="help-card-body">Shot count, win %, in %, net %, out %, <strong>FH/BH split</strong> (forehand vs backhand percentage), <strong>Rushed %</strong> (shots hit while moving &gt;6ft — indicates scramble plays), and Kitchen %.</div></div>
+      <div class="help-card"><div class="help-card-title">Middle tiles</div><div class="help-card-body"><strong>Record</strong> (W-L for filtered games), <strong>Avg Rating</strong>, <strong>Accuracy %</strong> (shots in court), <strong>Kitchen %</strong> (arrival on serve), and a <strong>Shot Mix</strong> breakdown showing Drive, Dink, Drop, Volley, and Speed-up percentages as horizontal bars.</div></div>
+      <div class="help-card"><div class="help-card-title">Overall (right)</div><div class="help-card-body">Your overall record and rating across all selected games, separate from the filtered view. This stays constant as you toggle shot types.</div></div>
+    </div>
+    <h2 class="help-h2">Key Stats &amp; Ratios Explained</h2>
+    <div class="help-grid">
+      <div class="help-card"><div class="help-card-title">W / UE Ratio</div><div class="help-card-body"><strong>Winners ÷ Unforced Errors.</strong> Shown on the Dashboard as a decimal (e.g., 3.39). A ratio above 1.0 (green) means you’re producing more winners than unforced errors — a hallmark of controlled, aggressive play. Below 0.7 (red) signals too many free points given away. The subtitle shows the raw counts (e.g., 95W / 28UE).</div></div>
+      <div class="help-card"><div class="help-card-title">Accuracy (In %)</div><div class="help-card-body">Percentage of all filtered shots that landed in the court. A core consistency metric — most competitive players aim for 75%+ accuracy.</div></div>
+      <div class="help-card"><div class="help-card-title">Net Errors %</div><div class="help-card-body">Percentage of shots hitting the net. Distinct from “out” errors. High net error rates on dinks suggest you need to lift the ball more; on drives, you may be aiming too low.</div></div>
+      <div class="help-card"><div class="help-card-title">Kitchen %</div><div class="help-card-body">Kitchen arrival percentage on serve — how often you reach the non-volley zone after serving. Higher is better; it means you’re winning the transition game.</div></div>
+      <div class="help-card"><div class="help-card-title">Rushed %</div><div class="help-card-body">Percentage of shots hit while moving more than 6 ft. High values indicate you’re frequently out of position and scrambling — a sign of positioning issues or opponent pressure.</div></div>
+      <div class="help-card"><div class="help-card-title">FH / BH Split</div><div class="help-card-body">Forehand vs backhand usage percentage. A balanced split (near 50/50) suggests good court coverage. A heavy lean toward one side may reveal a weakness your opponents are exploiting — or a strength you’re favoring.</div></div>
+      <div class="help-card"><div class="help-card-title">Quality Score</div><div class="help-card-body">PBVision’s AI-generated shot quality rating. Ranges from poor (red) to excellent (green). Used in the “Color By: Quality” mode and in several coaching insights.</div></div>
+    </div>
+    <h2 class="help-h2">Dashboard</h2>
+    <p style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:12px;">The Dashboard gives you an at-a-glance overview of your performance across all selected games. Filter by time period: 2 weeks, 1 month, or all-time.</p>
+    <div class="help-grid">
+      <div class="help-card"><div class="help-card-title">KPI Cards</div><div class="help-card-body">Top row shows your headline numbers: <strong>Win Rate</strong> (W-L record), <strong>Avg Rating</strong> (DUPR), <strong>Accuracy (In)</strong>, <strong>Net Errors %</strong>, <strong>Kitchen %</strong>, and <strong>W/UE Ratio</strong> with color coding.</div></div>
+      <div class="help-card"><div class="help-card-title">Rating Over Time</div><div class="help-card-body">Line chart tracking your ratings game by game. Shows sub-scores: Overall, Serve, Offense, Defense, Agility, and Consistency. Hover over data points to see exact values.</div></div>
+      <div class="help-card"><div class="help-card-title">Coaching Priorities</div><div class="help-card-body">Ranked list from PBVision’s AI advice scores. Each priority shows a score out of 22 — higher means more frequently flagged. Color-coded borders: green = solid area, orange = needs attention, red = critical gap.</div></div>
+      <div class="help-card"><div class="help-card-title">Recent Games</div><div class="help-card-body">Your last games with date, score, W/L badge, partner name, and your DUPR rating at that session. Green = win, red = loss.</div></div>
+      <div class="help-card"><div class="help-card-title">Rating Breakdown</div><div class="help-card-body">Horizontal bar chart showing your 6 DUPR sub-category ratings: Serve, Return, Offense, Defense, Agility, Consistency. Quickly spot which areas pull your rating up or down.</div></div>
+      <div class="help-card"><div class="help-card-title">Shot Accuracy &amp; FH/BH</div><div class="help-card-body">Donut charts showing your In/Net/Out split and Forehand vs Backhand usage across all selected games.</div></div>
+    </div>
+    <h2 class="help-h2">Coaching Insights</h2>
+    <p style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:12px;">The floating insight box (bottom-left of the court) computes 20+ coaching analyses from your shot data. Click the expand arrow to see the full diagnosis and drill recommendation. Use ‹ › arrows to cycle through all available insights.</p>
+    <div class="help-grid">
+      <div class="help-card"><div class="help-card-title">3rd Shot Selection</div><div class="help-card-body">Compares your drop vs drive accuracy on the third ball and flags if you’re choosing the lower-percentage option more often.</div></div>
+      <div class="help-card"><div class="help-card-title">Kitchen Transition Gap</div><div class="help-card-body">Measures accuracy drop between shots 1–3 and shots 4–6 — the window where you should be transitioning to the kitchen.</div></div>
+      <div class="help-card"><div class="help-card-title">Position Loss Under Pressure</div><div class="help-card-body">Identifies retreating shots — which shot types you attempt when being pushed back. High retreating drives mean attacking from a recovery position.</div></div>
+      <div class="help-card"><div class="help-card-title">Winner / Error Balance</div><div class="help-card-body">Your clean winners, unforced errors, and W/UE ratio. Targets a ratio above 1.0 as the benchmark for controlled aggression.</div></div>
+      <div class="help-card"><div class="help-card-title">Dink Net Clearance</div><div class="help-card-body">Analyzes how high your dinks clear the net using tracked ball data. Shows tight (&lt;2ft), moderate (2-4ft), and attackable (&gt;4ft) percentages.</div></div>
+      <div class="help-card"><div class="help-card-title">FH vs BH</div><div class="help-card-body">Compares accuracy, quality, and drive speed between your forehand and backhand sides to identify which needs more work.</div></div>
+      <div class="help-card"><div class="help-card-title">Return Patterns</div><div class="help-card-body">Return accuracy by stroke, how often you advance on returns, and whether you’re attacking the return or playing it safe.</div></div>
+      <div class="help-card"><div class="help-card-title">Kitchen Dominance</div><div class="help-card-body">Percentage of shots from the kitchen zone vs baseline — measures how well you’re winning the positioning battle.</div></div>
+      <div class="help-card"><div class="help-card-title">Drive &amp; Speed-up Velocity</div><div class="help-card-body">Ball speed trends using tracked data. Compares first-half vs second-half speeds to see if you’re losing power or ramping up.</div></div>
+      <div class="help-card"><div class="help-card-title">Serve Depth</div><div class="help-card-body">Landing depth distribution (deep/mid/short) for serves using tracked ball data. Deeper serves give your team more time to transition.</div></div>
+      <div class="help-card"><div class="help-card-title">More insights</div><div class="help-card-body">Additional analyses include: Clutch Performance (tiebreak play), Scramble Cost (movement stress impact), Partner Spacing, Dink Loft &amp; Arc (spin proxy), Drop Shot Net Clearance, Shot Timing, and more — all computed automatically from your data.</div></div>
     </div>
 
-    <h2 class="help-h2">Dashboard</h2>
-    <p style="font-size:13px;color:var(--text2);line-height:1.7;">Win rate, accuracy, kitchen %, and rating KPIs. Rating Over Time chart shows all 7 DUPR sub-scores. Filter by 2-week, 1-month, or all-time. Coaching priorities are from PBVision's AI advice scores ranked by frequency.</p>
-
     <h2 class="help-h2">Data &amp; Privacy</h2>
-    <p style="font-size:13px;color:var(--text2);line-height:1.7;">All data stays in your browser's localStorage. 49 games are pre-loaded in this file. Import additional JSON exports via <strong>+ Add Games</strong>. Export your library with the ⬇ Export button in My Games.</p>
+    <p style="font-size:13px;color:var(--text2);line-height:1.7;">All data stays in your browser’s localStorage. Games are pre-loaded from the data file. Import additional JSON exports via <strong>+ Add Games</strong>. Export your library with the Export button in My Games. You can also sync your library to a GitHub repo for backup and sharing across devices.</p>
 
-    <h2 class="help-h2">What's Estimated vs Ground Truth</h2>
-    <p style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:8px;"><strong>Verified from PBVision data:</strong> outcome (in/net/out), out direction (long/right/left), shot type, stroke (FH/BH), player court side, movement magnitude and direction (smov), quality score.</p>
-    <p style="font-size:13px;color:var(--text2);line-height:1.7;"><strong>Estimated (zone-based):</strong> exact impact landing position, exact origin position. These are approximated using shot-type zones and movement data. Use for clustering and pattern recognition — not precise coordinates.</p>
+    <h2 class="help-h2">What’s Estimated vs Ground Truth</h2>
+    <p style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:8px;"><strong>Verified from PBVision data:</strong> outcome (in/net/out), out direction (long/right/left), shot type, stroke (FH/BH), player court side, movement magnitude and direction, quality score, ball speed, ball trajectory (when augmented).</p>
+    <p style="font-size:13px;color:var(--text2);line-height:1.7;"><strong>Estimated (zone-based):</strong> exact impact landing position, exact origin position. These are approximated using shot-type zones and movement data. Use for clustering and pattern recognition — not precise coordinates. Augmented games with tracked ball data provide real trajectory and net clearance values.</p>
   </div>
 </div>
 
@@ -2170,7 +2228,7 @@ function renderDateBarChart(games, player) {
 
   // Quick-select buttons
   const quickBtns = `<div style="display:flex;gap:3px;margin-bottom:6px;flex-wrap:wrap;">
-    ${[['2w','2 wks'],['4w','4 wks'],['8w','8 wks'],['all','All']].map(([key,label])=>
+    ${[['1w','1 wk'],['2w','2 wks'],['4w','4 wks'],['8w','8 wks'],['all','All']].map(([key,label])=>
       `<button onclick="applyDateWindow('${key}')" 
         style="font-size:9px;padding:2px 6px;border-radius:3px;cursor:pointer;font-family:var(--font-mono);
         background:${state.viewer.dateWindow===key?'var(--accent-dim)':'var(--bg3)'};
@@ -2232,7 +2290,7 @@ function applyDateWindow(key) {
   const player = document.getElementById('player-select').value;
   if (!player) return;
   const now = Date.now()/1000;
-  const weeks = key==='2w'?2:key==='4w'?4:key==='8w'?8:null;
+  const weeks = key==='1w'?1:key==='2w'?2:key==='4w'?4:key==='8w'?8:null;
   const cutoff = weeks ? now - weeks*7*86400 : 0;
   state.games
     .filter(g=>g.players.find(p=>p.name===player))
@@ -2325,6 +2383,39 @@ function toggleChip(el, group) {
     } else el.classList.add('active');
   }
   updateCourtView();
+}
+function soloChip(evt, el, group) {
+  evt.preventDefault();
+  const val = el.dataset.sht || el.dataset.out;
+  const set = group==='sht' ? state.viewer.activeShotTypes : state.viewer.activeOutcomes;
+  const allTypes = group==='sht'
+    ? ['serve','drive','lob','smash','dink','drop','reset','volley','speedup','return','atp','erne','other']
+    : ['in','net','out'];
+  const isSoloed = set.size === 1 && set.has(val);
+  const container = group==='sht' ? document.getElementById('shot-type-chips') : document.getElementById('outcome-chips');
+  if (isSoloed) {
+    allTypes.forEach(t => set.add(t));
+    container.querySelectorAll('.chip').forEach(c => {
+      if (group==='out') {
+        const v = c.dataset.out;
+        c.classList.add('active', v==='in'?'active-in':v==='net'?'active-net':'active-out');
+      } else c.classList.add('active');
+    });
+  } else {
+    set.clear();
+    set.add(val);
+    container.querySelectorAll('.chip').forEach(c => {
+      const v = c.dataset.sht || c.dataset.out;
+      c.classList.remove('active','active-in','active-out','active-net');
+      if (v === val) {
+        if (group==='out') {
+          c.classList.add('active', val==='in'?'active-in':val==='net'?'active-net':'active-out');
+        } else c.classList.add('active');
+      }
+    });
+  }
+  updateCourtView();
+  return false;
 }
 function toggleLayer(el, layer) {
   if(state.viewer.layers.has(layer)){state.viewer.layers.delete(layer);el.classList.remove('active');}
