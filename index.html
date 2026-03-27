@@ -793,7 +793,8 @@ function loadFromStorage() {
   return [];
 }
 function saveToStorage() {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state.games)); localStorage.setItem(CONFIG_KEY, JSON.stringify(state.config)); } catch(e) {}
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state.games)); } catch(e) {}
+  try { localStorage.setItem(CONFIG_KEY, JSON.stringify(state.config)); } catch(e2) {}
 }
 
 // ═══════════════════════════════════════════
