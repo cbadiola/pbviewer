@@ -76,7 +76,7 @@ body{font-family:var(--font-body);background:var(--bg);color:var(--text);font-si
 .kpi-val.good{color:var(--good);}
 .kpi-val.bad{color:var(--danger);}
 .kpi-val.warn{color:var(--warn);}
-.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+.dash-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px;}
 .card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px;}
 .card-title{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:14px;}
 .bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
@@ -679,8 +679,14 @@ input[type=range]{accent-color:var(--accent);}
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
       <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px;">
         <label style="font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px;">You</label>
-        <select id="matchup-player-select" onchange="buildMatchupOpponents()" style="width:100%;padding:8px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:12px;cursor:pointer;">
+        <select id="matchup-player-select" onchange="onMatchupPlayerChange()" style="width:100%;padding:8px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:12px;cursor:pointer;">
           <option value="">Select player</option>
+        </select>
+      </div>
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px;">
+        <label style="font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px;">Your Partner</label>
+        <select id="matchup-partner-select" onchange="onMatchupPartnerChange()" style="width:100%;padding:8px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:12px;cursor:pointer;">
+          <option value="">All Partners</option>
         </select>
       </div>
       <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px;">
@@ -2072,54 +2078,92 @@ function buildMatchupPage() {
   playerSel.innerHTML = '<option value="">\u2014 Select player \u2014</option>' + players.map(p =>
     `<option value="${p}">${p}</option>`).join('');
   if (!playerSel.value && players.length) playerSel.value = PRIMARY_USER || players[0];
+  onMatchupPlayerChange();
+}
+
+function onMatchupPlayerChange() {
+  hideMatchupResults();
+  buildMatchupPartners();
   buildMatchupOpponents();
 }
 
-function buildMatchupOpponents() {
-  const playerSel = document.getElementById('matchup-player-select');
-  const opponentSel = document.getElementById('matchup-opponent-select');
-  const me = playerSel.value;
+function onMatchupPartnerChange() {
+  hideMatchupResults();
+  buildMatchupOpponents();
+}
+
+function hideMatchupResults() {
   document.getElementById('matchup-summary-card').style.display = 'none';
   document.getElementById('matchup-heatmap-container').style.display = 'none';
   document.getElementById('matchup-scouting-container').style.display = 'none';
   document.getElementById('matchup-partner-breakdown').style.display = 'none';
+}
+
+function buildMatchupPartners() {
+  const me = document.getElementById('matchup-player-select').value;
+  const partnerSel = document.getElementById('matchup-partner-select');
+  if (!me) { partnerSel.innerHTML = '<option value="">All Partners</option>'; return; }
+  const partnerMap = {};
+  state.games.forEach(g => {
+    const myP = g.players.find(p => p.name === me);
+    if (!myP) return;
+    const partner = g.players.find(p => p.team === myP.team && p.name !== me);
+    if (!partner) return;
+    if (!partnerMap[partner.name]) partnerMap[partner.name] = 0;
+    partnerMap[partner.name]++;
+  });
+  const partners = Object.entries(partnerMap).sort((a, b) => b[1] - a[1]);
+  partnerSel.innerHTML = '<option value="">All Partners</option>' + partners.map(([name, count]) =>
+    `<option value="${name}">${name} (${count}g)</option>`
+  ).join('');
+}
+
+function buildMatchupOpponents() {
+  const me = document.getElementById('matchup-player-select').value;
+  const partnerFilter = document.getElementById('matchup-partner-select').value;
+  const opponentSel = document.getElementById('matchup-opponent-select');
   if (!me) { opponentSel.innerHTML = '<option value="">\u2014 Select opposing team \u2014</option>'; return; }
   const teamMap = {};
   state.games.forEach(g => {
     const myP = g.players.find(p => p.name === me);
     if (!myP) return;
+    if (partnerFilter) {
+      const partner = g.players.find(p => p.team === myP.team && p.name !== me);
+      if (!partner || partner.name !== partnerFilter) return;
+    }
     const opps = g.players.filter(p => p.team !== myP.team).map(p => p.name).sort();
     const key = opps.join(' & ');
-    if (opps.includes(me)) return; // can't play vs yourself
+    if (opps.includes(me)) return;
     if (!teamMap[key]) teamMap[key] = { names: opps, count: 0 };
     teamMap[key].count++;
   });
   const teams = Object.entries(teamMap).sort((a, b) => b[1].count - a[1].count);
   opponentSel.innerHTML = '<option value="">\u2014 Select opposing team \u2014</option>' + teams.map(([key, t]) =>
-    `<option value="${key}">${key} (${t.count}g)</option>`).join('');
+    `<option value="${key}">${key} (${t.count}g)</option>`
+  ).join('');
 }
+
 function renderMatchupAnalysis() {
   const me = document.getElementById('matchup-player-select').value;
   const oppTeamKey = document.getElementById('matchup-opponent-select').value;
+  const partnerFilter = document.getElementById('matchup-partner-select').value;
   if (!me || !oppTeamKey) {
-    document.getElementById('matchup-summary-card').style.display = 'none';
-    document.getElementById('matchup-heatmap-container').style.display = 'none';
-    document.getElementById('matchup-scouting-container').style.display = 'none';
-    document.getElementById('matchup-partner-breakdown').style.display = 'none';
+    hideMatchupResults();
     return;
   }
   const oppNames = oppTeamKey.split(' & ');
   const matchupGames = state.games.filter(g => {
     const myP = g.players.find(p => p.name === me);
     if (!myP) return false;
+    if (partnerFilter) {
+      const partner = g.players.find(p => p.team === myP.team && p.name !== me);
+      if (!partner || partner.name !== partnerFilter) return false;
+    }
     const opps = g.players.filter(p => p.team !== myP.team).map(p => p.name).sort();
     return opps.join(' & ') === oppTeamKey;
   });
   if (!matchupGames.length) {
-    document.getElementById('matchup-summary-card').style.display = 'none';
-    document.getElementById('matchup-heatmap-container').style.display = 'none';
-    document.getElementById('matchup-scouting-container').style.display = 'none';
-    document.getElementById('matchup-partner-breakdown').style.display = 'none';
+    hideMatchupResults();
     return;
   }
   let wins = 0, losses = 0, pointsFor = 0, pointsAgainst = 0;
@@ -2156,7 +2200,7 @@ function renderMatchupAnalysis() {
   });
   const pointDiff = pointsFor - pointsAgainst;
   document.getElementById('matchup-summary-card').style.display = 'block';
-  document.getElementById('matchup-summary-title').textContent = 'You vs ' + oppTeamKey;
+  document.getElementById('matchup-summary-title').textContent = partnerFilter ? me + ' & ' + partnerFilter + ' vs ' + oppTeamKey : 'You vs ' + oppTeamKey;
   document.getElementById('matchup-games-count').textContent = matchupGames.length;
   document.getElementById('matchup-record').textContent = wins + 'W\u2013' + losses + 'L';
   document.getElementById('matchup-record').style.color = wins >= losses ? 'var(--good)' : 'var(--danger)';
@@ -2167,7 +2211,7 @@ function renderMatchupAnalysis() {
   ).join('');
   const partnerDiv = document.getElementById('matchup-partner-breakdown');
   const partnerEntries = Object.entries(partnerStats);
-  if (partnerEntries.length > 1) {
+  if (!partnerFilter && partnerEntries.length > 1) {
     partnerDiv.style.display = 'block';
     partnerDiv.innerHTML = '<div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px;">' +
       '<div class="card-title">Your Record by Partner</div>' +
@@ -2177,8 +2221,9 @@ function renderMatchupAnalysis() {
         '<div style="font-size:20px;font-weight:800;color:' + (s.w >= s.l ? 'var(--good)' : 'var(--danger)') + ';">' + s.w + 'W\u2013' + s.l + 'L</div></div>'; }).join('') +
       '</div></div>';
   } else { partnerDiv.style.display = 'none'; }
-  renderMatchupHeatmap('matchup-heatmap-yours', myTeamShots, 'Your Team');
-  renderMatchupHeatmap('matchup-heatmap-theirs', theirTeamShots, 'Their Team');
+  const myLabel = partnerFilter ? `${me} & ${partnerFilter}` : 'Your Team';
+  renderMatchupHeatmap('matchup-heatmap-yours', myTeamShots, myLabel);
+  renderMatchupHeatmap('matchup-heatmap-theirs', theirTeamShots, oppTeamKey);
   document.getElementById('matchup-heatmap-container').style.display = 'block';
   generateScoutingReport(myTeamShots, theirTeamShots, me, oppNames, matchupGames);
 }
