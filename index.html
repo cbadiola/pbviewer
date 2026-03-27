@@ -17,6 +17,22 @@
   --radius:10px;--radius-sm:6px;--sidebar-w:220px;--nav-h:56px;
 }
 [data-theme="light"]{--bg:#f0f3f7;--bg2:#fff;--bg3:#e8ecf2;--bg4:#dde3ec;--border:rgba(0,0,0,0.07);--border2:rgba(0,0,0,0.12);--text:#111827;--text2:#3b4553;--text3:#6b7280;--accent-dim:rgba(0,212,170,0.1);}
+[data-theme="light"] #hover-tooltip{background:rgba(255,255,255,0.97)!important;border-color:rgba(0,0,0,0.15)!important;box-shadow:0 4px 16px rgba(0,0,0,0.12);}
+[data-theme="light"] #court-legend{background:rgba(255,255,255,0.95)!important;border-color:rgba(0,0,0,0.12)!important;box-shadow:0 2px 8px rgba(0,0,0,0.08);}
+[data-theme="light"] #court-legend *{color:#374151!important;}
+[data-theme="light"] #court-legend div[style*="rgba(255,255,255,0.5)"]{color:#6b7280!important;}
+[data-theme="light"] #court-legend div[style*="rgba(255,255,255,0.38)"]{color:#9ca3af!important;}
+[data-theme="light"] #shot-count-badge{background:rgba(255,255,255,0.92)!important;border-color:rgba(0,0,0,0.12)!important;color:#111827!important;box-shadow:0 2px 6px rgba(0,0,0,0.08);}
+[data-theme="light"] #insight-float{background:rgba(255,255,255,0.97)!important;border-color:rgba(0,0,0,0.12)!important;box-shadow:0 2px 12px rgba(0,0,0,0.1);}
+[data-theme="light"] #insight-float span[style*="rgba(255,255,255"]{color:#111827!important;}
+[data-theme="light"] #insight-float button{background:rgba(0,0,0,0.06)!important;border-color:rgba(0,0,0,0.15)!important;color:#374151!important;}
+[data-theme="light"] #insight-float-title{color:#111827!important;}
+[data-theme="light"] #insight-float-pattern{color:#374151!important;}
+[data-theme="light"] #ins-counter{color:#6b7280!important;}
+[data-theme="light"] #ins-toggle{color:#6b7280!important;}
+[data-theme="light"] #dink-arcs-info{background:rgba(255,255,255,0.9)!important;color:#374151!important;}
+[data-theme="light"] #zoom-level{background:rgba(255,255,255,0.9)!important;}
+[data-theme="light"] #court-main button[title="Reset zoom (\u2302)"]{background:rgba(255,255,255,0.92)!important;border-color:rgba(0,0,0,0.12)!important;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html,body{height:100%;overflow:hidden;}
 body{font-family:var(--font-body);background:var(--bg);color:var(--text);font-size:13px;}
@@ -2014,7 +2030,7 @@ function renderGameDetail(key, el) {
       </div>`;
     }).join('');
 
-    return `<div style="flex:1;min-width:220px;border:1px solid ${won?'rgba(61,214,140,0.3)':'rgba(255,255,255,0.08)'};border-radius:8px;overflow:hidden;background:var(--bg3);">
+    return `<div style="flex:1;min-width:220px;border:1px solid ${won?'rgba(61,214,140,0.3)':'var(--border)'};border-radius:8px;overflow:hidden;background:var(--bg3);">
       <div style="padding:8px 12px;background:${won?'rgba(61,214,140,0.1)':'rgba(232,68,90,0.07)'};border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;">
         <span style="font-size:13px;font-weight:700;color:${won?'var(--good)':'var(--danger)'};">${teamScore}</span>
         <span style="font-size:11px;font-weight:600;color:${won?'var(--good)':'var(--danger)'};">${won?'WON':'LOST'}</span>
@@ -2390,17 +2406,18 @@ function drawCourt(cc) {
   const isDark = document.body.getAttribute('data-theme')!=='light';
   const courtFill = isDark?'#1a3a5c':'#2a6da8';
   const kitFill   = isDark?'rgba(245,166,35,0.07)':'rgba(245,166,35,0.10)';
-  const lineCol   = 'rgba(255,255,255,0.75)';
+  const lineCol   = isDark?'rgba(255,255,255,0.75)':'rgba(255,255,255,0.85)';
   const netCol    = '#fff';
   const kitCol    = '#f5a623';
   const bg        = isDark?'#0a0c0f':'#e8ecf2';
   const textCol   = isDark?'rgba(255,255,255,0.32)':'rgba(0,0,0,0.32)';
+  const netLabelCol = isDark?'rgba(255,255,255,.5)':'rgba(0,0,0,0.4)';
 
   let s = `<defs>
     <filter id="glow"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
     <filter id="glow2"><feGaussianBlur stdDeviation="5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
     <marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
-      <path d="M0,0 L6,3 L0,6 Z" fill="rgba(255,255,255,0.3)"/>
+      <path d="M0,0 L6,3 L0,6 Z" fill="${isDark?'rgba(255,255,255,0.3)':'rgba(0,0,0,0.2)'}"/>
     </marker>
   </defs>`;
   s += `<rect width="${W}" height="${H}" fill="${bg}"/>`;
@@ -2439,7 +2456,7 @@ function drawCourt(cc) {
     s += `<text x="${centerX}" y="${(netY+courtBottom)/2+4}" text-anchor="middle" font-size="9" fill="${textCol}" font-family="var(--font-mono)">YOUR SIDE ↑</text>`;
     s += `<text x="${centerX}" y="${(netY+courtTop)/2+4}" text-anchor="middle" font-size="9" fill="${textCol}" font-family="var(--font-mono)">OPPONENT'S SIDE</text>`;
     s += `<text x="${centerX}" y="${(netY+courtTop)/2+16}" text-anchor="middle" font-size="8" fill="rgba(245,166,35,0.35)" font-family="var(--font-mono)" font-style="italic">⚠ impacts estimated</text>`;
-    s += `<text x="${courtLeft-4}" y="${netY+4}" text-anchor="end" font-size="9" fill="rgba(255,255,255,.5)" font-family="var(--font-mono)">NET</text>`;
+    s += `<text x="${courtLeft-4}" y="${netY+4}" text-anchor="end" font-size="9" fill="${netLabelCol}" font-family="var(--font-mono)">NET</text>`;
   } else {
     // Landscape court (rotated 90°)
     const cL=cc.mL,cR=cc.mL+cc.dW,cT=cc.mT,cB=cc.mT+cc.dH;
@@ -2474,7 +2491,7 @@ function drawCourt(cc) {
     s += `<text x="${(cL+netY)/2}" y="${centerX-6}" text-anchor="middle" font-size="9" fill="${textCol}" font-family="var(--font-mono)">← YOUR SIDE</text>`;
     s += `<text x="${(netY+cR)/2}" y="${centerX-6}" text-anchor="middle" font-size="9" fill="${textCol}" font-family="var(--font-mono)">OPPONENT'S SIDE →</text>`;
     s += `<text x="${(netY+cR)/2}" y="${centerX+8}" text-anchor="middle" font-size="8" fill="rgba(245,166,35,0.35)" font-family="var(--font-mono)" font-style="italic">⚠ impacts estimated</text>`;
-    s += `<text x="${netY}" y="${cT-8}" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.5)" font-family="var(--font-mono)">NET</text>`;
+    s += `<text x="${netY}" y="${cT-8}" text-anchor="middle" font-size="9" fill="${netLabelCol}" font-family="var(--font-mono)">NET</text>`;
   }
   return s;
 }
