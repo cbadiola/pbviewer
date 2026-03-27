@@ -310,6 +310,10 @@ input[type=range]{accent-color:var(--accent);}
           <select class="select-styled" id="player-select" onchange="onPlayerChange()">
             <option value="">— Select player —</option>
           </select>
+          <div id="hand-toggle" style="display:none;margin-top:4px;font-size:10px;color:var(--text3);cursor:pointer;user-select:none;" onclick="toggleHandedness()">
+            <span id="hand-icon" style="font-size:12px;">R</span> <span id="hand-label">Right-handed</span>
+            <span style="opacity:0.4;margin-left:2px;">(click to change)</span>
+          </div>
         </div>
         <div class="sb-section">
           <div class="sb-section-title">Outcome</div>
@@ -1863,7 +1867,7 @@ function updateDashboard() {
 
   // FH/BH donut
   let fh=0,bh=0;
-  games.forEach(g=>{const c=getActiveData(g);if(!c)return;g.shots.filter(s=>s.pid===c.idx).forEach(s=>{if(s.stroke==='fh')fh++;else if(s.stroke==='bh')bh++;});});
+  games.forEach(g=>{const c=getActiveData(g);if(!c)return;g.shots.filter(s=>s.pid===c.idx).forEach(s=>{const es=effStroke(s.stroke);if(es==='fh')fh++;else if(es==='bh')bh++;});});
   const tot=fh+bh||1;
   renderDonut('stroke-donut',[
     {label:'Forehand',val:fh/tot,color:'var(--accent)'},
@@ -2144,6 +2148,7 @@ function buildViewerSidebar() {
     });
   if (cur) sel.value=cur;
   if (!sel.value && playerMap.size) sel.value=PRIMARY_USER||[...playerMap.keys()][0];
+  updateHandToggle();
 
   const player = sel.value;
 
@@ -2356,6 +2361,37 @@ function toggleViewerGame(key,checked) {
   if(checked) state.viewer.selectedGames.add(key); else state.viewer.selectedGames.delete(key);
   updateCourtView();
 }
+function isPlayerLefty(name) {
+  return !!(state.config.leftHanded && state.config.leftHanded[name]);
+}
+function effStroke(raw) {
+  if (!raw || raw === '2h') return raw;
+  if (isPlayerLefty(state.activePlayer)) return raw === 'fh' ? 'bh' : 'fh';
+  return raw;
+}
+function updateHandToggle() {
+  const el = document.getElementById('hand-toggle');
+  const icon = document.getElementById('hand-icon');
+  const label = document.getElementById('hand-label');
+  const player = document.getElementById('player-select').value;
+  if (!el || !player) { if (el) el.style.display = 'none'; return; }
+  el.style.display = 'block';
+  const lefty = isPlayerLefty(player);
+  icon.textContent = lefty ? 'L' : 'R';
+  icon.style.color = lefty ? 'var(--accent)' : 'var(--text3)';
+  icon.style.fontWeight = lefty ? '700' : '400';
+  label.textContent = lefty ? 'Left-handed' : 'Right-handed';
+}
+function toggleHandedness() {
+  const player = document.getElementById('player-select').value;
+  if (!player) return;
+  if (!state.config.leftHanded) state.config.leftHanded = {};
+  state.config.leftHanded[player] = !state.config.leftHanded[player];
+  if (!state.config.leftHanded[player]) delete state.config.leftHanded[player];
+  saveToStorage();
+  updateHandToggle();
+  updateCourtView();
+}
 function onPlayerChange() {
   const player=document.getElementById('player-select').value;
   if (player && player !== state.activePlayer) {
@@ -2368,6 +2404,7 @@ function onPlayerChange() {
   }
   state.viewer.selectedGames.clear();
   state.games.filter(g=>g.players.find(p=>p.name===player)).forEach(g=>state.viewer.selectedGames.add(g.key));
+  updateHandToggle();
   buildViewerSidebar(); updateCourtView();
 }
 function toggleChip(el, group) {
@@ -2918,7 +2955,8 @@ function updateCourtView() {
     // Soft-out: if tagged "out" but impact coords are inside court, use muted red
     const isSoftOut = sh.outcome === 'out' && isInBounds(sh);
     const outcomeColor = isSoftOut ? SOFT_OUT_COLOR : (OUTCOME_COLORS[sh.outcome] || '#aaa');
-    const strokeColor  = sh.stroke ? (STROKE_COLORS[sh.stroke] || outcomeColor) : '#888';
+    const effSt = effStroke(sh.stroke);
+    const strokeColor  = effSt ? (STROKE_COLORS[effSt] || outcomeColor) : '#888';
     const qColor       = qualityColor(sh.quality);
     const isRushed     = sh.stress > 6;
     const isError      = sh.outcome==='net' || sh.outcome==='out';
@@ -3130,8 +3168,8 @@ function updateViewerStatsBar(player, selGames, filteredShots) {
   const fsNetPct = Math.round(fsNet/fsTotal*100);
   const fsOutPct = Math.round(fsOut/fsTotal*100);
   // FH/BH for filtered shots
-  const fsFH = fs.filter(s=>s.stroke==='fh').length;
-  const fsBH = fs.filter(s=>s.stroke==='bh').length;
+  const fsFH = fs.filter(s=>effStroke(s.stroke)==='fh').length;
+  const fsBH = fs.filter(s=>effStroke(s.stroke)==='bh').length;
   const fsFHBH = fsFH+fsBH||1;
   // Rushed for filtered shots
   const fsRushed = fs.filter(s=>s.stress>6 && s.stress>0).length;
@@ -3142,7 +3180,7 @@ function updateViewerStatsBar(player, selGames, filteredShots) {
   selGames.forEach(g=>{
     const p=g.players.find(q=>q.name===player); if(!p) return;
     g.shots.filter(s=>s.pid===p.idx).forEach(s=>{
-      if(s.stroke==='fh') fh++; else if(s.stroke==='bh') bh++;
+      const es=effStroke(s.stroke); if(es==='fh') fh++; else if(es==='bh') bh++;
       if(s.stress>0){totalStress++; if(s.stress>6) rushed++;}
     });
   });
@@ -3233,8 +3271,8 @@ function updateViewerStatsBar(player, selGames, filteredShots) {
     const fsIn  = fs.filter(s=>s.outcome==='in').length;
     const fsNet = fs.filter(s=>s.outcome==='net').length;
     const fsOut = fs.filter(s=>s.outcome==='out').length;
-    const fsFH  = fs.filter(s=>s.stroke==='fh').length;
-    const fsBH  = fs.filter(s=>s.stroke==='bh').length;
+    const fsFH  = fs.filter(s=>effStroke(s.stroke)==='fh').length;
+    const fsBH  = fs.filter(s=>effStroke(s.stroke)==='bh').length;
     const fsStr = fsFH+fsBH||1;
     const fsRush = fs.filter(s=>s.stress>6).length;
     const fsStressN = fs.filter(s=>s.stress>0).length||1;
@@ -3534,8 +3572,9 @@ function renderDinkArcs() {
       else if (c > 2) color = 'rgba(245,166,35,0.6)';
       else color = 'rgba(61,214,140,0.65)';
     } else if (colorM === 'stroke') {
-      if (sh.stroke === 'fh') color = 'rgba(0,212,170,0.65)';
-      else if (sh.stroke === 'bh') color = 'rgba(155,127,232,0.65)';
+      const esSh = effStroke(sh.stroke);
+      if (esSh === 'fh') color = 'rgba(0,212,170,0.65)';
+      else if (esSh === 'bh') color = 'rgba(155,127,232,0.65)';
       else color = 'rgba(120,150,200,0.35)';
     } else {
       if (sh.outcome === 'in') color = 'rgba(61,214,140,0.65)';
@@ -3690,6 +3729,7 @@ try {
     if (_btn) _btn.textContent = '☀️';
     state.config.theme = 'light';
   }
+  if (_cfg.leftHanded) state.config.leftHanded = _cfg.leftHanded;
 } catch(e) {}
 // NOTE: Do NOT call updateDashboard() here — DOM elements don't exist yet at
 // script-parse time. All rendering happens in loadAppData() → DOMContentLoaded.
@@ -3848,8 +3888,8 @@ function computeInsights(filteredShots, allShots) {
     const retIn   = inPct(returns);
     const retQ    = avgQ(returns);
     // BH vs FH returns
-    const bhRet   = returns.filter(s=>s.stroke==='bh');
-    const fhRet   = returns.filter(s=>s.stroke==='fh');
+    const bhRet   = returns.filter(s=>effStroke(s.stroke)==='bh');
+    const fhRet   = returns.filter(s=>effStroke(s.stroke)==='fh');
     const bhRetIn = inPct(bhRet);
     const fhRetIn = inPct(fhRet);
     // Are returns setting up kitchen approach?
@@ -4353,8 +4393,8 @@ function computeInsights(filteredShots, allShots) {
   }
 
   // ── INSIGHT: Forehand/Backhand Imbalance ──
-  const fhShots = allShots.filter(s => s.stroke === 'fh' && s.shidx >= 2);
-  const bhShots = allShots.filter(s => s.stroke === 'bh' && s.shidx >= 2);
+  const fhShots = allShots.filter(s => effStroke(s.stroke) === 'fh' && s.shidx >= 2);
+  const bhShots = allShots.filter(s => effStroke(s.stroke) === 'bh' && s.shidx >= 2);
   if (fhShots.length >= 15 && bhShots.length >= 15) {
     const fhIn = inPct(fhShots);
     const bhIn = inPct(bhShots);
