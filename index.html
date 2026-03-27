@@ -414,7 +414,7 @@ input[type=range]{accent-color:var(--accent);}
       <svg id="court-svg" xmlns="http://www.w3.org/2000/svg"></svg>
       <div id="dink-arcs-container" style="display:none;position:absolute;top:0;left:0;width:100%;height:100%;background:var(--bg);z-index:5;">
         <div style="position:absolute;top:8px;left:8px;z-index:10;display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
-          <select id="dink-side-filter" onchange="renderDinkArcs()" style="background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:4px 8px;border-radius:6px;font-size:11px;cursor:pointer;">
+          <select id="dink-side-filter" onchange="updateDinkColorLegend();renderDinkArcs()" style="background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:4px 8px;border-radius:6px;font-size:11px;cursor:pointer;">
             <option value="all">All positions</option>
             <option value="left">Left side (origin)</option>
             <option value="right">Right side (origin)</option>
@@ -434,6 +434,7 @@ input[type=range]{accent-color:var(--accent);}
             <option value="stroke">FH / BH</option>
             <option value="outcome">Outcome</option>
           </select>
+          <span id="dink-color-legend" style="display:inline-flex;align-items:center;gap:8px;margin-left:6px;font-size:10px;color:var(--text2);background:var(--bg2);padding:3px 10px;border-radius:6px;border:1px solid var(--border);"></span>
           <span style="font-size:10px;color:var(--text3);margin-left:4px;">Drag to rotate · Scroll to zoom</span>
         </div>
         <canvas id="dink-arcs-canvas" style="width:100%;height:100%;cursor:grab;"></canvas>
@@ -3198,21 +3199,39 @@ function updateViewerStatsBar(player, selGames, filteredShots) {
 // ═══════════════════════════════════════════
 const dinkCam = { az: 20, el: 32, dist: 14, dragging: false, lx: 0, ly: 0 };
 
+function updateDinkColorLegend() {
+  const el = document.getElementById('dink-color-legend');
+  if (!el) return;
+  const mode = document.getElementById('dink-color-mode2')?.value || 'clearance';
+  const dot = (color, label) => `<span style="display:inline-flex;align-items:center;gap:3px;"><span style="width:8px;height:8px;border-radius:50%;background:${color};display:inline-block;flex-shrink:0;"></span>${label}</span>`;
+  if (mode === 'clearance') {
+    el.innerHTML = dot('#3dd68c','Tight <2ft') + dot('#f5a623','Mid 2-4ft') + dot('#e8445a','High >4ft') + dot('rgba(120,150,200,0.5)','No data');
+  } else if (mode === 'stroke') {
+    el.innerHTML = dot('#00d4aa','Forehand') + dot('#9b7fe8','Backhand') + dot('rgba(120,150,200,0.45)','Unknown');
+  } else {
+    el.innerHTML = dot('#3dd68c','In') + dot('#f5a623','Net') + dot('#e8445a','Out');
+  }
+}
+
 function toggleDinkArcs() {
   const btn = document.getElementById('btn-dink-arcs');
   const container = document.getElementById('dink-arcs-container');
   const courtSvg = document.getElementById('court-svg');
   if (!container || !courtSvg) return;
   const isActive = container.style.display !== 'none';
+  const courtLeg = document.getElementById('court-legend');
   if (isActive) {
     container.style.display = 'none';
     courtSvg.style.visibility = 'visible';
     btn.classList.remove('active');
+    if (courtLeg) courtLeg.style.display = '';
   } else {
     container.style.display = 'block';
     courtSvg.style.visibility = 'hidden';
     btn.classList.add('active');
+    if (courtLeg) courtLeg.style.display = 'none';
     setupDinkCanvas();
+    updateDinkColorLegend();
     renderDinkArcs();
   }
 }
