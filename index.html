@@ -719,18 +719,21 @@ input[type=range]{accent-color:var(--accent);}
     </div>
 
     <div id="matchup-heatmap-container" style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:20px;display:none;">
-      <div class="card-title">Where Shots Land — Your Team vs Theirs (Green=Win / Red=Loss)</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;">
+      <div class="card-title">Shot Placement \u2014 Your POV</div>
+      <p style="font-size:11px;color:var(--text3);margin:4px 0 12px;">Normalized to your team's perspective \u2014 you always play from the bottom</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
         <div>
-          <div style="font-size:10px;font-weight:600;text-transform:uppercase;color:var(--text3);margin-bottom:6px;text-align:center;">Your Team's Shots</div>
-          <div id="matchup-heatmap-yours" style="width:100%;height:320px;background:var(--bg3);border-radius:6px;"></div>
+          <div style="font-size:10px;font-weight:600;text-transform:uppercase;color:var(--text3);margin-bottom:6px;text-align:center;" id="matchup-heatmap-yours-label">Where Your Shots Land</div>
+          <div id="matchup-heatmap-yours" style="width:100%;height:380px;background:var(--bg3);border-radius:6px;"></div>
         </div>
         <div>
-          <div style="font-size:10px;font-weight:600;text-transform:uppercase;color:var(--text3);margin-bottom:6px;text-align:center;">Their Team's Shots</div>
-          <div id="matchup-heatmap-theirs" style="width:100%;height:320px;background:var(--bg3);border-radius:6px;"></div>
+          <div style="font-size:10px;font-weight:600;text-transform:uppercase;color:var(--text3);margin-bottom:6px;text-align:center;" id="matchup-heatmap-theirs-label">Where Their Shots Land</div>
+          <div id="matchup-heatmap-theirs" style="width:100%;height:380px;background:var(--bg3);border-radius:6px;"></div>
         </div>
       </div>
-      <div style="margin-top:8px;font-size:10px;color:var(--text3);text-align:center;">Green = rally won, Red = rally lost, Number = shot count in zone</div>
+      <div style="margin-top:8px;font-size:10px;color:var(--text3);text-align:center;">
+        <span style="color:#3dd68c;">\u25cf</span> Green = rally won \u00a0\u00a0 <span style="color:#e8445a;">\u25cf</span> Red = rally lost \u00a0\u00a0 Number = shot count in zone
+      </div>
     </div>
 
     <div id="matchup-scouting-container" style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px;display:none;">
@@ -2189,12 +2192,24 @@ function renderMatchupAnalysis() {
     if (!partnerStats[partnerName]) partnerStats[partnerName] = { w: 0, l: 0, games: 0 };
     partnerStats[partnerName].games++;
     if (won) partnerStats[partnerName].w++; else partnerStats[partnerName].l++;
+    // Determine if my team needs mirroring for this game.
+    const myTeamOrigins = g.shots
+      .filter(s => { const p = g.players.find(pl => pl.idx === s.pid); return p && p.team === myTeam && s.originZ != null; })
+      .map(s => s.originZ);
+    let needsMirror = false;
+    if (myTeamOrigins.length > 0) {
+      myTeamOrigins.sort((a, b) => a - b);
+      needsMirror = myTeamOrigins[Math.floor(myTeamOrigins.length / 2)] > 22;
+    } else {
+      needsMirror = myTeam === 1;
+    }
     g.shots.forEach(s => {
       const isMyTeam = g.players.find(p => p.idx === s.pid && p.team === myTeam);
+      const shotData = Object.assign({}, s, { _mirror: needsMirror });
       if (isMyTeam) {
-        myTeamShots.push(Object.assign({}, s, { _team: myTeam, _won: s.rallyWon === myTeam }));
+        myTeamShots.push(Object.assign({}, shotData, { _team: myTeam, _won: s.rallyWon === myTeam }));
       } else {
-        theirTeamShots.push(Object.assign({}, s, { _team: 1 - myTeam, _won: s.rallyWon !== myTeam }));
+        theirTeamShots.push(Object.assign({}, shotData, { _team: 1 - myTeam, _won: s.rallyWon !== myTeam }));
       }
     });
   });
@@ -2222,36 +2237,67 @@ function renderMatchupAnalysis() {
       '</div></div>';
   } else { partnerDiv.style.display = 'none'; }
   const myLabel = partnerFilter ? `${me} & ${partnerFilter}` : 'Your Team';
-  renderMatchupHeatmap('matchup-heatmap-yours', myTeamShots, myLabel);
-  renderMatchupHeatmap('matchup-heatmap-theirs', theirTeamShots, oppTeamKey);
+  document.getElementById('matchup-heatmap-yours-label').textContent = 'Where ' + myLabel + "'s Shots Land";
+  document.getElementById('matchup-heatmap-theirs-label').textContent = 'Where ' + oppTeamKey + "'s Shots Land";
+  renderMatchupHeatmap('matchup-heatmap-yours', myTeamShots, myLabel, false);
+  renderMatchupHeatmap('matchup-heatmap-theirs', theirTeamShots, oppTeamKey, true);
   document.getElementById('matchup-heatmap-container').style.display = 'block';
   generateScoutingReport(myTeamShots, theirTeamShots, me, oppNames, matchupGames);
 }
-function renderMatchupHeatmap(containerId, shots, label) {
+function renderMatchupHeatmap(containerId, shots, label, isTheirTeam) {
   const container = document.getElementById(containerId);
   const width = container.clientWidth || 240;
-  const height = container.clientHeight || 320;
+  const height = container.clientHeight || 380;
+
+  // Court: 20ft wide x 44ft long. Net at z=22. Kitchen: z=15 to z=29.
   const courtW = 20, courtH = 44;
-  const padding = 20;
-  const displayW = width - 2 * padding;
-  const displayH = height - 2 * padding;
+  const padTop = 30, padBot = 30, padLR = 24;
+  const displayW = width - 2 * padLR;
+  const displayH = height - padTop - padBot;
   const scaleX = displayW / courtW;
   const scaleY = displayH / courtH;
-  let svg = '<svg width="' + width + '" height="' + height + '" xmlns="http://www.w3.org/2000/svg" style="background:var(--bg3);border-radius:6px;">';
-  svg += '<rect x="' + padding + '" y="' + padding + '" width="' + displayW + '" height="' + displayH + '" fill="none" stroke="var(--border)" stroke-width="1"/>';
-  svg += '<line x1="' + padding + '" y1="' + (padding + displayH/2) + '" x2="' + (padding + displayW) + '" y2="' + (padding + displayH/2) + '" stroke="var(--text3)" stroke-width="1.5" stroke-dasharray="4,3"/>';
-  var kitchenNear = padding + (44 - 15) * scaleY;
-  var kitchenFar = padding + (44 - 29) * scaleY;
-  svg += '<line x1="' + padding + '" y1="' + kitchenNear + '" x2="' + (padding + displayW) + '" y2="' + kitchenNear + '" stroke="var(--border)" stroke-width="0.5" stroke-dasharray="2,2"/>';
-  svg += '<line x1="' + padding + '" y1="' + kitchenFar + '" x2="' + (padding + displayW) + '" y2="' + kitchenFar + '" stroke="var(--border)" stroke-width="0.5" stroke-dasharray="2,2"/>';
-  svg += '<line x1="' + (padding + displayW/2) + '" y1="' + padding + '" x2="' + (padding + displayW/2) + '" y2="' + (padding + displayH) + '" stroke="var(--border)" stroke-width="0.5" opacity="0.4"/>';
-  svg += '<text x="' + (padding + displayW/2) + '" y="' + (kitchenNear - 3) + '" text-anchor="middle" fill="var(--text3)" font-size="8" opacity="0.5">kitchen</text>';
-  svg += '<text x="' + (padding + displayW/2) + '" y="' + (kitchenFar + 10) + '" text-anchor="middle" fill="var(--text3)" font-size="8" opacity="0.5">kitchen</text>';
+
+  // Convert court coords to SVG. z=0 bottom (near/your side), z=44 top (far/their side).
+  var sx = function(cx) { return padLR + cx * scaleX; };
+  var sy = function(cz) { return padTop + (courtH - cz) * scaleY; };
+
+  var svg = '<svg width="' + width + '" height="' + height + '" xmlns="http://www.w3.org/2000/svg" style="background:var(--bg3);border-radius:6px;">';
+
+  // Court surface
+  svg += '<rect x="' + sx(0) + '" y="' + sy(44) + '" width="' + displayW + '" height="' + displayH + '" fill="rgba(0,100,180,0.06)" rx="2"/>';
+  // Kitchen zone fills
+  var kitchenH = 7 * scaleY;
+  svg += '<rect x="' + sx(0) + '" y="' + sy(22) + '" width="' + displayW + '" height="' + kitchenH + '" fill="rgba(0,180,140,0.07)"/>';
+  svg += '<rect x="' + sx(0) + '" y="' + sy(29) + '" width="' + displayW + '" height="' + kitchenH + '" fill="rgba(0,180,140,0.07)"/>';
+  // Outer boundary
+  svg += '<rect x="' + sx(0) + '" y="' + sy(44) + '" width="' + displayW + '" height="' + displayH + '" fill="none" stroke="var(--text3)" stroke-width="1.5"/>';
+  // Net line
+  svg += '<line x1="' + sx(0) + '" y1="' + sy(22) + '" x2="' + sx(20) + '" y2="' + sy(22) + '" stroke="var(--text)" stroke-width="2" opacity="0.5"/>';
+  svg += '<text x="' + (sx(20) + 3) + '" y="' + (sy(22) + 3) + '" fill="var(--text3)" font-size="7" opacity="0.6">NET</text>';
+  // Kitchen lines (NVZ)
+  svg += '<line x1="' + sx(0) + '" y1="' + sy(15) + '" x2="' + sx(20) + '" y2="' + sy(15) + '" stroke="var(--accent)" stroke-width="1" opacity="0.5"/>';
+  svg += '<line x1="' + sx(0) + '" y1="' + sy(29) + '" x2="' + sx(20) + '" y2="' + sy(29) + '" stroke="var(--accent)" stroke-width="1" opacity="0.5"/>';
+  // Center lines (baseline to kitchen on each side)
+  svg += '<line x1="' + sx(10) + '" y1="' + sy(0) + '" x2="' + sx(10) + '" y2="' + sy(15) + '" stroke="var(--border)" stroke-width="0.8"/>';
+  svg += '<line x1="' + sx(10) + '" y1="' + sy(29) + '" x2="' + sx(10) + '" y2="' + sy(44) + '" stroke="var(--border)" stroke-width="0.8"/>';
+  // Side labels
+  svg += '<text x="' + sx(10) + '" y="' + sy(-1.5) + '" text-anchor="middle" fill="var(--accent)" font-size="8" font-weight="600" letter-spacing="0.1em">YOUR SIDE</text>';
+  svg += '<text x="' + sx(10) + '" y="' + sy(45.5) + '" text-anchor="middle" fill="var(--text3)" font-size="8" font-weight="600" letter-spacing="0.1em">THEIR SIDE</text>';
+  // NVZ labels
+  svg += '<text x="' + sx(10) + '" y="' + sy(18.5) + '" text-anchor="middle" fill="var(--text3)" font-size="7" opacity="0.4">NVZ</text>';
+  svg += '<text x="' + sx(10) + '" y="' + sy(25.5) + '" text-anchor="middle" fill="var(--text3)" font-size="7" opacity="0.4">NVZ</text>';
+  // L/R labels
+  svg += '<text x="' + sx(5) + '" y="' + sy(-0.3) + '" text-anchor="middle" fill="var(--text3)" font-size="6" opacity="0.4">L</text>';
+  svg += '<text x="' + sx(15) + '" y="' + sy(-0.3) + '" text-anchor="middle" fill="var(--text3)" font-size="6" opacity="0.4">R</text>';
+
+  // Bin shots with mirror normalization
   var cols = 6, rows = 8;
-  var bins = {}, maxBin = 0, winBins = {}, lossBins = {};
+  var bins = {}, winBins = {}, lossBins = {};
+  var maxBin = 0;
   shots.forEach(function(s) {
     var x = s.impactX, z = s.impactZ;
     if (x == null || z == null || x < 0 || x > 20 || z < 0 || z > 44) return;
+    if (s._mirror && s.hasRealImpact) { x = 20 - x; z = 44 - z; }
     var col = Math.min(cols - 1, Math.floor(x / courtW * cols));
     var row = Math.min(rows - 1, Math.floor(z / courtH * rows));
     var key = col + ',' + row;
@@ -2260,25 +2306,30 @@ function renderMatchupHeatmap(containerId, shots, label) {
     else lossBins[key] = (lossBins[key] || 0) + 1;
     if (bins[key] > maxBin) maxBin = bins[key];
   });
+
+  // Draw heatmap zones
   var cellW = displayW / cols, cellH = displayH / rows;
-  Object.entries(bins).forEach(function(e) {
-    var key = e[0], count = e[1];
+  Object.entries(bins).forEach(function(entry) {
+    var key = entry[0], count = entry[1];
     var parts = key.split(',');
-    var col = parseInt(parts[0]), row = parseInt(parts[1]);
-    var w = winBins[key] || 0, l = lossBins[key] || 0;
+    var col = +parts[0], row = +parts[1];
+    var w = winBins[key] || 0;
+    var l = lossBins[key] || 0;
     var winRate = w / (w + l);
     var intensity = Math.min(0.7, 0.1 + 0.6 * (count / maxBin));
     var color = winRate >= 0.5 ? 'rgba(61,214,140,' + intensity + ')' : 'rgba(232,68,90,' + intensity + ')';
-    var cx = padding + col * cellW;
-    var cy = padding + (rows - 1 - row) * cellH;
+    var cx = padLR + col * cellW;
+    var cy = padTop + (rows - 1 - row) * cellH;
     svg += '<rect x="' + cx + '" y="' + cy + '" width="' + cellW + '" height="' + cellH + '" fill="' + color + '" rx="2"/>';
     if (count >= 3) {
       svg += '<text x="' + (cx + cellW/2) + '" y="' + (cy + cellH/2 + 3) + '" text-anchor="middle" fill="var(--text)" font-size="9" font-weight="600" opacity="0.8">' + count + '</text>';
     }
   });
+
   svg += '</svg>';
   container.innerHTML = svg;
 }
+
 function generateScoutingReport(myShots, theirShots, myName, oppNames, games) {
   const container = document.getElementById('matchup-scouting');
   if (!myShots.length && !theirShots.length) {
