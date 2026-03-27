@@ -424,6 +424,11 @@ input[type=range]{accent-color:var(--accent);}
             <option value="cross">Cross-court</option>
             <option value="line">Down the line</option>
           </select>
+          <select id="dink-shot-type-filter" onchange="renderDinkArcs()" style="background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:4px 8px;border-radius:6px;font-size:11px;cursor:pointer;">
+            <option value="all">Dinks & Drops</option>
+            <option value="dink">Dinks only</option>
+            <option value="drop">Drops only</option>
+          </select>
           <select id="dink-color-mode2" onchange="renderDinkArcs()" style="background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:4px 8px;border-radius:6px;font-size:11px;cursor:pointer;">
             <option value="clearance">Net clearance</option>
             <option value="stroke">FH / BH</option>
@@ -2783,7 +2788,14 @@ function updateCourtView() {
   const colorMode     = state.viewer.colorMode || 'outcome';
 
   const OUTCOME_COLORS = { in:'#3dd68c', net:'#f5a623', out:'#e8445a' };
+  const SOFT_OUT_COLOR = 'rgba(232,68,90,0.35)'; // muted red for "out" shots w/ in-bounds coords
   const STROKE_COLORS  = { fh:'#00d4aa', bh:'#9b7fe8' };
+  // Helper: is impact coordinate inside court bounds?
+  function isInBounds(sh) {
+    const ix = sh.impactX, iz = sh.impactZ;
+    if (ix == null || iz == null) return false;
+    return ix >= 0 && ix <= 20 && iz >= 0 && iz <= 44;
+  }
   const ORIGIN_BASE    = 'rgba(180,200,255,0.32)';
 
   // ── PRE-DRAW TRACE LINES (behind markers)
@@ -2811,7 +2823,9 @@ function updateCourtView() {
     const impSVG = toSVG(imp.x, imp.z);
     const oriSVG = toSVG(ori.x, ori.z);
 
-    const outcomeColor = OUTCOME_COLORS[sh.outcome] || '#aaa';
+    // Soft-out: if tagged "out" but impact coords are inside court, use muted red
+    const isSoftOut = sh.outcome === 'out' && isInBounds(sh);
+    const outcomeColor = isSoftOut ? SOFT_OUT_COLOR : (OUTCOME_COLORS[sh.outcome] || '#aaa');
     const strokeColor  = sh.stroke ? (STROKE_COLORS[sh.stroke] || outcomeColor) : '#888';
     const qColor       = qualityColor(sh.quality);
     const isRushed     = sh.stress > 6;
@@ -2927,7 +2941,8 @@ function showShotHover(e, idx, cc, toSVG) {
   if (traceGroup) {
     const midX = (impSVG.svgX+oriSVG.svgX)/2;
     const midY = (impSVG.svgY+oriSVG.svgY)/2;
-    const outcomeColor = {in:'#3dd68c',net:'#f5a623',out:'#e8445a'}[sh.outcome]||'#aaa';
+    const softOut = sh.outcome === 'out' && isInBounds(sh);
+    const outcomeColor = softOut ? 'rgba(232,68,90,0.4)' : ({in:'#3dd68c',net:'#f5a623',out:'#e8445a'}[sh.outcome]||'#aaa');
     traceGroup.innerHTML = `
       <line x1="${oriSVG.svgX.toFixed(1)}" y1="${oriSVG.svgY.toFixed(1)}" x2="${impSVG.svgX.toFixed(1)}" y2="${impSVG.svgY.toFixed(1)}"
         stroke="${outcomeColor}" stroke-width="2" opacity="0.5" filter="url(#glow)" stroke-dasharray="4,3"/>
@@ -3294,9 +3309,12 @@ function renderDinkArcs() {
   const sideF = document.getElementById('dink-side-filter')?.value || 'all';
   const dirF = document.getElementById('dink-dir-filter')?.value || 'all';
   const colorM = document.getElementById('dink-color-mode2')?.value || 'clearance';
+  const shotTypeF = document.getElementById('dink-shot-type-filter')?.value || 'all';
   const filtered = mirrored.filter(d => {
-    if (sideF === 'left' && d.oX > 10) return false;
-    if (sideF === 'right' && d.oX <= 10) return false;
+    if (shotTypeF === 'dink' && d.shot.shotType !== 'dink') return false;
+    if (shotTypeF === 'drop' && d.shot.shotType !== 'drop') return false;
+    if (sideF === 'left' && d.oX <= 10) return false;
+    if (sideF === 'right' && d.oX > 10) return false;
     if (dirF === 'cross' && ((d.oX<10&&d.iX<10)||(d.oX>=10&&d.iX>=10))) return false;
     if (dirF === 'line' && ((d.oX<10&&d.iX>=10)||(d.oX>=10&&d.iX<10))) return false;
     return true;
@@ -3330,7 +3348,7 @@ function renderDinkArcs() {
     ctx.closePath();ctx.fillStyle=color;ctx.fill();
   }
 
-  fillQuad([[0,0,0],[20,0,0],[20,0,44],[0,0,44]],'rgba(255,255,255,0.04)');
+  fillQuad([[0,0,0],[20,0,0],[20,0,44],[0,0,44]],`rgba(${wc},0.04)`);
   fillQuad([[0,0,15],[20,0,15],[20,0,22],[0,0,22]],'rgba(0,212,170,0.06)');
   fillQuad([[0,0,22],[20,0,22],[20,0,29],[0,0,29]],'rgba(0,212,170,0.06)');
 
@@ -3344,22 +3362,22 @@ function renderDinkArcs() {
   }
 
   fillQuad([[0,0,22],[20,0,22],[20,3,22],[0,3,22]],'rgba(200,220,255,0.06)');
-  line3d(0,0,22,20,0,22,'rgba(255,255,255,0.5)',2);
-  line3d(0,3,22,20,3,22,'rgba(255,255,255,0.35)',1.5);
-  line3d(0,0,22,0,3,22,'rgba(255,255,255,0.15)',0.7);
-  line3d(20,0,22,20,3,22,'rgba(255,255,255,0.15)',0.7);
-  for (let h=0.5;h<3;h+=0.5) line3d(0,h,22,20,h,22,'rgba(255,255,255,0.05)',0.5);
+  line3d(0,0,22,20,0,22,`rgba(${wc},0.5)`,2);
+  line3d(0,3,22,20,3,22,`rgba(${wc},0.35)`,1.5);
+  line3d(0,0,22,0,3,22,`rgba(${wc},0.15)`,0.7);
+  line3d(20,0,22,20,3,22,`rgba(${wc},0.15)`,0.7);
+  for (let h=0.5;h<3;h+=0.5) line3d(0,h,22,20,h,22,`rgba(${wc},0.05)`,0.5);
 
-  line3d(10,0,0,10,0,15,'rgba(255,255,255,0.08)',0.5);
-  line3d(10,0,29,10,0,44,'rgba(255,255,255,0.08)',0.5);
+  line3d(10,0,0,10,0,15,`rgba(${wc},0.08)`,0.5);
+  line3d(10,0,29,10,0,44,`rgba(${wc},0.08)`,0.5);
 
   for (let h=1;h<=8;h++) {
     const [sx,sy]=proj(20.8,h,22);
-    ctx.fillStyle='rgba(255,255,255,0.2)';ctx.font='8px monospace';ctx.textAlign='left';
+    ctx.fillStyle=`rgba(${wc},0.2)`;ctx.font='8px monospace';ctx.textAlign='left';
     ctx.fillText(h+'ft',sx,sy+3);
-    line3d(20.3,h,22,20.7,h,22,'rgba(255,255,255,0.1)',0.5);
+    line3d(20.3,h,22,20.7,h,22,`rgba(${wc},0.1)`,0.5);
   }
-  line3d(20.5,0,22,20.5,8,22,'rgba(255,255,255,0.06)',0.5);
+  line3d(20.5,0,22,20.5,8,22,`rgba(${wc},0.06)`,0.5);
 
   const [nx,ny]=proj(10,0,5);
   ctx.fillStyle='rgba(0,212,170,0.4)';ctx.font='bold 11px Inter,system-ui';ctx.textAlign='center';
@@ -3368,10 +3386,10 @@ function renderDinkArcs() {
   ctx.fillStyle='rgba(232,68,90,0.3)';
   ctx.fillText('OPP SIDE',fx,fy+4);
   const [llx,lly]=proj(-1.5,0,22);
-  ctx.fillStyle='rgba(255,255,255,0.2)';ctx.font='9px Inter,system-ui';
-  ctx.fillText('L',llx,lly);
+  ctx.fillStyle=`rgba(${wc},0.2)`;ctx.font='9px Inter,system-ui';
+  ctx.fillText('R',llx,lly);
   const [rrx,rry]=proj(21.5,0,22);
-  ctx.fillText('R',rrx,rry);
+  ctx.fillText('L',rrx,rry);
 
   let dinkCount = 0, dropCount = 0;
   const arcList = filtered.map(d => {
@@ -3426,7 +3444,7 @@ function renderDinkArcs() {
     if (sh.shotType === 'dink') dinkCount++; else dropCount++;
   });
 
-  ctx.fillStyle = '#e8edf4'; ctx.font = 'bold 13px Inter,system-ui'; ctx.textAlign = 'center';
+  ctx.fillStyle = isDarkMode ? '#e8edf4' : '#1f2937'; ctx.font = 'bold 13px Inter,system-ui'; ctx.textAlign = 'center';
   ctx.fillText('Dink & Drop Arcs \u2014 3D View', W/2, 22);
 
   const info = document.getElementById('dink-arcs-info');
@@ -3447,16 +3465,16 @@ function renderDinkArcs() {
   ctx.lineTo(legX,legY+lr);ctx.quadraticCurveTo(legX,legY,legX+lr,legY);
   ctx.closePath(); ctx.fill(); ctx.stroke();
 
-  ctx.font = '9px Inter,system-ui'; ctx.textAlign = 'left';
-  const labels = colorM === 'clearance'
-    ? [['rgba(61,214,140,0.8)','Tight (<2ft)'],['rgba(245,166,35,0.7)','Moderate (2-4ft)'],['rgba(232,68,90,0.7)','Attackable (>4ft)']]
-    : colorM === 'stroke'
-    ? [['rgba(0,212,170,0.7)','Forehand'],['rgba(155,127,232,0.7)','Backhand'],['rgba(120,150,200,0.4)','Unknown']]
-    : [['rgba(61,214,140,0.7)','In'],['rgba(245,166,35,0.6)','Net'],['rgba(232,68,90,0.7)','Out']];
+  // Header
+  ctx.font = 'bold 8px Inter,system-ui'; ctx.textAlign = 'left';
+  ctx.fillStyle = legHead;
+  ctx.fillText(modeTitle, legX + 12, legY + 13);
+
+  ctx.font = '10px Inter,system-ui';
   labels.forEach(([c,l],i) => {
-    const y = legY + 14 + i*16;
-    ctx.beginPath();ctx.arc(legX+12,y,4,0,Math.PI*2);ctx.fillStyle=c;ctx.fill();
-    ctx.fillStyle='rgba(255,255,255,0.7)';ctx.fillText(l,legX+22,y+3);
+    const y = legY + 22 + i*18;
+    ctx.beginPath();ctx.arc(legX+14,y,5,0,Math.PI*2);ctx.fillStyle=c;ctx.fill();
+    ctx.fillStyle = legText;ctx.fillText(l,legX+26,y+4);
   });
 }
 
@@ -3482,6 +3500,7 @@ function updateLegend() {
     h += row('#3dd68c','In');
     h += row('#f5a623','Net (stops at net)');
     h += row('#e8445a','Out');
+    h += row('rgba(232,68,90,0.35)','Out (in-bounds coords)');
   } else if (cm === 'stroke') {
     h += sec('Stroke');
     h += row('#00d4aa','Forehand');
